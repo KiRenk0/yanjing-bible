@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.YanJing" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorAccent">#245B49</item>
+        <item name="android:windowBackground">#FAF9F5</item>
+    </style>
+</resources>

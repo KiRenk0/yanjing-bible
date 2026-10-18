@@ -1,0 +1,8 @@
+{
+  "name": "yanjing-data-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reproducible offline Bible asset preparation; not an app runtime dependency",
+  "scripts": { "data": "node scripts/prepare-data.mjs" },
+  "devDependencies": { "opencc-js": "1.0.5" }
+}
