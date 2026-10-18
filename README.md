@@ -2,6 +2,16 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.2.1：Android 16 崩溃修复
+
+针对 Xiaomi 17 Pro（SM8850）／Android 16 的无日志闪退反馈，将 ONNX Runtime 从 1.23.2 升级到 **1.25.1**。上游 [#27884](https://github.com/microsoft/onnxruntime/issues/27884) 记录了相同芯片／系统上的 SME CPU 指令检测问题，并确认原生 1.24.4 已修复；Maven 未发布 1.24.4，因此采用后续的 1.25.1。没有该设备日志，尚未在此小米真机复现，不能断言反馈中的崩溃只有这个原因。
+
+推理放入不对外导出的 `:semantic` 绑定服务，主进程不加载 ONNX；即便原生推理进程退出，也保留阅读、收藏、更新与已启用的其他搜索模式，并提示句意搜索暂不可用。服务死亡后停止本次运行内的自动重启，避免反复崩溃。模型缓存每次进程首次加载前核对 SHA-256，修复长度相同但内容损坏的缓存。另修复非有限字号设置可能导致的文字布局异常。
+
+设置新增“导出本机诊断”：保存本机未捕获的 Java 异常，Android 11+ 读取系统提供的近期进程退出原因（包含原生崩溃原因和信号），经系统分享面板由用户选择导出。不会自动上传，不读取查询、历史或收藏。原生崩溃不会由 Java 异常处理器捕获，系统退出记录也可能因设备策略不可用。ONNX 遥测显式关闭。
+
+[修复依据、代码复查与验证边界](docs/crash-fix-review.md)。
+
 
 ## v1.2.0：古兰经查询
 
@@ -20,7 +30,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.2.0.apk`。无需登录，内置模型与全部经文，安装后即可离线搜索。
+Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.2.1.apk`。无需登录，内置模型与全部经文，安装后即可离线搜索。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 
@@ -36,7 +46,7 @@ Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包�
 
 ## 离线句意检索
 
-采用 MIT 授权的 [BAAI/bge-small-zh-v1.5](https://huggingface.co/BAAI/bge-small-zh-v1.5)，通过 [Xenova ONNX 转换](https://huggingface.co/Xenova/bge-small-zh-v1.5) 固定修订 `75c43b069aac4d136ba6bc1122f995fedcfd2781`。模型约 24 MB、512 维，使用 ONNX Runtime 1.23.2 在手机 CPU 推理；CLS 池化、L2 归一化，查询添加模型建议的检索前缀。首次使用会将模型放入私有目录。
+采用 MIT 授权的 [BAAI/bge-small-zh-v1.5](https://huggingface.co/BAAI/bge-small-zh-v1.5)，通过 [Xenova ONNX 转换](https://huggingface.co/Xenova/bge-small-zh-v1.5) 固定修订 `75c43b069aac4d136ba6bc1122f995fedcfd2781`。模型约 24 MB、512 维，使用 ONNX Runtime 1.25.1 在手机 CPU 的独立进程推理；CLS 池化、L2 归一化，查询添加模型建议的检索前缀。首次使用会将模型放入私有目录。
 
 全部简体和合本正文预先生成量化索引，约 16 MB。检索后按出处展示所选版本的原文，简繁体查询归一化。其他译本的独有措辞可配合“原文搜索”；英文句意查询不在此中文模型的主要能力范围内。
 
@@ -73,7 +83,7 @@ Material 3 **1.5.0-beta01** 提供公开 Expressive API（2026-10-18 核实）�
 
 ## 构建与验证
 
-JDK 17、Gradle 9.5.0、AGP 9.3.3、Kotlin/Compose compiler 2.3.21、Android SDK 37.0、Build Tools 36.0.0。Windows 建议使用最新补丁的 JDK 17，避免旧 JDK 所附 VC++ 运行库与桌面 ONNX 测试冲突。AGP 使用内置 Kotlin。
+应用编译使用 JDK 17，Android 16 的 Robolectric 测试运行时另需 JDK 21；Gradle 9.5.0、AGP 9.3.3、Kotlin/Compose compiler 2.3.21、Android SDK 37.0、Build Tools 36.0.0。可通过 Gradle 的 `org.gradle.java.installations.paths` 指定本机 JDK 安装目录。Windows 建议使用最新补丁的 JDK，避免旧 JDK 所附 VC++ 运行库与桌面 ONNX 测试冲突。AGP 使用内置 Kotlin。
 
 ```powershell
 # 如无 SDK，脚本下载官方工具并接受 SDK 开发条款。

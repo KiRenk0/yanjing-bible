@@ -21,7 +21,7 @@ import java.io.File
 
 /** Runs real Compose UI and local assets, without relying on an emulator's hypervisor. */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], qualifiers = "zh-rCN-w412dp-h915dp-xhdpi")
+@Config(sdk = [35,36], qualifiers = "zh-rCN-w412dp-h915dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AppFlowTest {
     @get:Rule(order = 0) val reset = object : ExternalResource() {
@@ -31,8 +31,14 @@ class AppFlowTest {
             val context = ApplicationProvider.getApplicationContext<Context>()
             context.getSharedPreferences("updates",Context.MODE_PRIVATE).edit().clear().putBoolean("autoCheck",false).commit()
             context.getSharedPreferences("yanjing",Context.MODE_PRIVATE).edit().clear().commit()
+            semanticService = org.robolectric.Robolectric.buildService(org.yanjing.app.data.SemanticService::class.java).create()
+            org.robolectric.Shadows.shadowOf(context as android.app.Application).setComponentNameAndServiceForBindService(
+                android.content.ComponentName(context, org.yanjing.app.data.SemanticService::class.java),
+                semanticService.get().onBind(android.content.Intent()))
         }
+        override fun after() { semanticService.destroy() }
     }
+    private lateinit var semanticService: org.robolectric.android.controller.ServiceController<org.yanjing.app.data.SemanticService>
     @get:Rule(order = 1) val compose = createAndroidComposeRule<MainActivity>()
 
     @Before fun restoreDefaultModes() {

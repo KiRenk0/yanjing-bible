@@ -51,7 +51,7 @@ await git(['push','origin',tag]);
 const body=`${metadata.notes}\n\nAndroid 8.0 及以上，通用 APK。内置圣经四套文本、古兰经中阿双语与 BGE 模型。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络。安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和及验证摘要。测试记录见 verification.json；尚无物理 Android 设备验证。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:'main',name:`言·经 ${tag} · 新增古兰经中阿双语查询`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:'main',name:`言·经 ${tag} · Android 16 兼容与崩溃修复`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}

@@ -8,7 +8,7 @@ import java.nio.LongBuffer
 import kotlin.math.sqrt
 
 class SentenceEmbedder(modelPath: String, private val tokenizer: WordPieceTokenizer) : Closeable {
-    private val environment = OrtEnvironment.getEnvironment()
+    private val environment = OrtEnvironment.getEnvironment().apply { setTelemetry(false) }
     private val session = OrtSession.SessionOptions().use { options ->
         options.setIntraOpNumThreads(2)
         options.setInterOpNumThreads(1)

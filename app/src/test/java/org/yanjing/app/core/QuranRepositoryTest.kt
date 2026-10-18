@@ -17,7 +17,11 @@ class QuranRepositoryTest {
     @Test fun semanticRepositorySwitchesIndexesAndBridgesChineseMeaningToArabic() = runBlocking {
         val context=ApplicationProvider.getApplicationContext<Context>()
         val repository=BibleRepository(context)
-        val semantic=SemanticRepository(context,repository.normalizer)
+        val service=org.robolectric.Robolectric.buildService(SemanticService::class.java).create()
+        val binder=org.yanjing.app.semantic.ISemanticEncoder.Stub.asInterface(service.get().onBind(android.content.Intent()))
+        val semantic=SemanticRepository(context,repository.normalizer,object : SemanticEncoder {
+            override suspend fun encode(text: String) = binder.encode(text)
+        })
         try {
             val arabic=repository.load(BibleVersion.QURAN_AR)
             val result=semantic.search("对父母说话要有礼貌，不要流露厌烦",arabic,Testament.ALL,10)
@@ -27,7 +31,7 @@ class QuranRepositoryTest {
             val biblical=semantic.search("做错了就坦白承认，不要掩饰",bible,Testament.ALL,10)
             assertTrue(biblical.hits.any { it.verse.key==VerseKey(20,28,13) })
             assertTrue(biblical.hits.all { it.verse.key.book in 1..66 })
-        } finally { semantic.close() }
+        } finally { semantic.close(); service.destroy() }
     }
     @Test fun comparisonsFavoritesAndExportsRetainScriptureAndAttribution() = runBlocking {
         val repository=BibleRepository(ApplicationProvider.getApplicationContext<Context>())

@@ -10,7 +10,7 @@
 - Material Symbols：Google Material Design Icons，Apache-2.0。https://github.com/google/material-design-icons
 - BAAI/bge-small-zh-v1.5：MIT，© 2023 BAAI。用于本机句意编码，CLS 池化与 L2 归一化。https://huggingface.co/BAAI/bge-small-zh-v1.5
 - ONNX 转换：Xenova/bge-small-zh-v1.5，固定修订 75c43b069aac4d136ba6bc1122f995fedcfd2781，int8 模型；保留原 MIT 许可。https://huggingface.co/Xenova/bge-small-zh-v1.5
-- ONNX Runtime 1.23.2：Microsoft，MIT，并附其第三方声明。https://github.com/microsoft/onnxruntime
+- ONNX Runtime 1.25.1：Microsoft，MIT，并附该版本的第三方声明。https://github.com/microsoft/onnxruntime/tree/v1.25.1
 - AndroidX WorkManager：Apache-2.0，用于版本检查与可恢复下载。
 
 程序会清除原始模块中的标记标签及中文源文本的分词空格，不改变经文词句。简繁转换可能涉及异体字选择，核对时可切换繁体源文本。原始文件与生成资源的 SHA-256、每版节数写入 data-manifest.json。所用源码版本为 e1b254cef86d0e65b1a5d1a94b8b112d0f296a2c。

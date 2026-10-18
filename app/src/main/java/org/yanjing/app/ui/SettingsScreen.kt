@@ -14,10 +14,17 @@ import androidx.compose.ui.unit.sp
 import org.yanjing.app.*
 import org.yanjing.app.R
 import org.yanjing.app.core.*
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.*
+import org.yanjing.app.diagnostics.Diagnostics
 
 @Composable
 fun SettingsScreen(state: AppState, model: AppViewModel, onVersions: () -> Unit, onLegal: () -> Unit) {
     var clearHistory by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var exporting by remember { mutableStateOf(false) }
+    var diagnosticError by remember { mutableStateOf<String?>(null) }
     val fontSlider = rememberSliderState(value = state.fontSize, steps = 5, trackRange = 16f..28f)
     LaunchedEffect(state.fontSize) { fontSlider.value = state.fontSize }
     LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -71,6 +78,22 @@ fun SettingsScreen(state: AppState, model: AppViewModel, onVersions: () -> Unit,
             Surface(onClick = onLegal, shape = MaterialTheme.shapes.large) {
                 ListItem(content = { Text("开源许可与经文来源") }, supportingContent = { Text("查看所用组件、文本来源与授权说明") }, leadingContent = { Symbol(R.drawable.sym_info) }, trailingContent = { Symbol(R.drawable.sym_chevron_right) })
             }
+            Surface(onClick = {
+                if (!exporting) scope.launch {
+                    exporting=true; diagnosticError=null
+                    try {
+                        val intent=withContext(Dispatchers.IO) { Diagnostics.shareIntent(context) }
+                        context.startActivity(intent)
+                    } catch (cancelled: CancellationException) { throw cancelled }
+                    catch (_: Exception) { diagnosticError="无法导出诊断，请稍后重试" }
+                    finally { exporting=false }
+                }
+            }, shape = MaterialTheme.shapes.large) {
+                ListItem(content = { Text(if (exporting) "正在准备诊断…" else "导出本机诊断") },
+                    supportingContent = { Text("包含设备和崩溃信息，由你选择分享；不会自动上传") },
+                    leadingContent = { Symbol(R.drawable.sym_info) })
+            }
+            diagnosticError?.let { Text(it,color=MaterialTheme.colorScheme.error) }
         }
         item {
             OutlinedCard {

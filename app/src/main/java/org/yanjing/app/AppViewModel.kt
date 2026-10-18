@@ -44,7 +44,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         mutable.update { it.copy(version = version, appearance = appearance,
             modes = repository.setting("searchModes", "SEMANTIC,EXPRESSION").split(',').mapNotNull { value -> SearchMode.entries.firstOrNull { it.name == value } }.toSet().ifEmpty { setOf(SearchMode.SEMANTIC, SearchMode.EXPRESSION) },
             dynamicColor = repository.setting("dynamic", "true").toBoolean(),
-            fontSize = repository.setting("font", "18").toFloatOrNull()?.coerceIn(16f, 28f) ?: 18f,
+            fontSize = repository.setting("font", "18").toFloatOrNull()?.takeIf { it.isFinite() }?.coerceIn(16f, 28f) ?: 18f,
             readerBook = repository.setting("readerBook", "43").toIntOrNull()?.takeIf(version::acceptsBook) ?: version.defaultBook,
             readerChapter = repository.setting("readerChapter", "1").toIntOrNull()?.coerceAtLeast(1) ?: 1) }
         loadVersion(version)
@@ -170,7 +170,11 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun closeDetail() { detailJob?.cancel(); mutable.update { it.copy(detail = null) } }
     fun appearance(value: Appearance) { repository.setting("appearance", value.name, true); mutable.update { it.copy(appearance = value) } }
     fun dynamicColor(value: Boolean) { repository.setting("dynamic", value.toString(), true); mutable.update { it.copy(dynamicColor = value) } }
-    fun fontSize(value: Float) { repository.setting("font", value.toString(), true); mutable.update { it.copy(fontSize = value) } }
+    fun fontSize(value: Float) {
+        if (!value.isFinite()) return
+        val bounded = value.coerceIn(16f,28f)
+        repository.setting("font", bounded.toString(), true); mutable.update { it.copy(fontSize = bounded) }
+    }
     suspend fun legalText(): String = withContext(Dispatchers.IO) { repository.notices() + "\n\n" + repository.licenses() }
     override fun onCleared() {
         if (semanticDelegate.isInitialized()) semantic.close()
