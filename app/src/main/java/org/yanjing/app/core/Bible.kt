@@ -3,26 +3,37 @@ package org.yanjing.app.core
 import java.text.Normalizer
 import java.util.Locale
 
-enum class BibleVersion(val id: String, val title: String, val description: String) {
+enum class Scripture(val title: String) { BIBLE("圣经"), QURAN("古兰经") }
+
+enum class BibleVersion(val id: String, val title: String, val description: String, val scripture: Scripture = Scripture.BIBLE) {
     CUVS("cuvs", "和合本·简体", "白话文 · 简体转换"),
     CUVT("cuvt", "和合本·繁體", "白話文 · 繁體原文"),
     WENLI("wenli", "文理和合本", "文言文 · 繁體"),
-    KJV("kjv", "King James Version", "English · 1769")
+    KJV("kjv", "King James Version", "English · 1769"),
+    QURAN_ZH("quran_zh", "古兰经·马坚译本", "中文经义译本 · QuranEnc", Scripture.QURAN),
+    QURAN_AR("quran_ar", "古兰经·阿拉伯文", "Tanzil Uthmani · 1.1", Scripture.QURAN);
+
+    val isQuran: Boolean get() = scripture == Scripture.QURAN
+    val isRtl: Boolean get() = this == QURAN_AR
+    val peers: List<BibleVersion> get() = entries.filter { it.scripture == scripture }
+    val defaultBook: Int get() = if (isQuran) Quran.BOOK else 43
+    fun acceptsBook(book: Int) = if (isQuran) book == Quran.BOOK else book in 1..66
 }
 
 data class VerseKey(val book: Int, val chapter: Int, val verse: Int) {
     val encoded: String get() = "$book:$chapter:$verse"
-    val reference: String get() = "${Books.names[book - 1]} $chapter:$verse"
+    val reference: String get() = if (book == Quran.BOOK) "古兰经 $chapter:$verse" else "${Books.names[book - 1]} $chapter:$verse"
     companion object {
         fun decode(raw: String): VerseKey? {
             val values = raw.split(':').map { it.toIntOrNull() ?: return null }
-            return if (values.size == 3 && values[0] in 1..66 && values[1] > 0 && values[2] > 0)
+            return if (values.size == 3 && values[0] in 1..67 && values[1] > 0 && values[2] > 0 &&
+                (values[0] != Quran.BOOK || (values[1] in 1..114 && values[2] <= Quran.verseCounts[values[1] - 1])))
                 VerseKey(values[0], values[1], values[2]) else null
         }
     }
 }
 
-data class Verse(val key: VerseKey, val text: String, val normalized: String)
+data class Verse(val key: VerseKey, val text: String, val normalized: String, val notes: String = "")
 data class SearchHit(val verse: Verse, val score: Double, val reason: String, val matchedModes: Set<SearchMode> = emptySet())
 enum class SearchMode(val title: String, val description: String) {
     SEMANTIC("句意搜索", "理解中文句子的意思，即使用词不同也查找相关经文"),
@@ -30,7 +41,7 @@ enum class SearchMode(val title: String, val description: String) {
     KEYWORD("原文搜索", "查找包含输入内容的原文，支持简繁体")
 }
 enum class Testament(val title: String) { ALL("全本圣经"), OLD("旧约"), NEW("新约");
-    fun accepts(book: Int) = this == ALL || (this == OLD && book < 40) || (this == NEW && book >= 40)
+    fun accepts(book: Int) = this == ALL || (this == OLD && book in 1..39) || (this == NEW && book in 40..66)
 }
 data class SearchResponse(val hits: List<SearchHit>, val total: Int, val message: String? = null)
 
@@ -59,12 +70,15 @@ class TextNormalizer(private val traditionalMap: Map<Char, Char> = emptyMap()) {
         .map { traditionalMap[it] ?: it }.joinToString("")
     fun script(text: String): String = forSemantic(text).lowercase(Locale.ROOT)
     fun normalize(text: String): String = script(text).filter { it.isLetterOrDigit() }
+    fun normalizeArabic(text: String): String = Normalizer.normalize(text, Normalizer.Form.NFKD)
+        .filter { it.isLetterOrDigit() && it != 'ـ' && it != 'ۥ' && it != 'ۦ' }.map { when (it) { 'ٱ', 'أ', 'إ', 'آ' -> 'ا'; 'ى' -> 'ي'; else -> it } }.joinToString("")
 }
 
 data class ReferenceQuery(val book: Int, val chapter: Int, val start: Int?, val end: Int?)
 object ReferenceParser {
     private val pattern = Regex("^(.+?)\\s*(\\d+)\\s*(?:(?::|章)\\s*(\\d+)\\s*(?:[-–—]\\s*(\\d+))?\\s*(?:节)?)?\\s*(?:章)?$")
-    fun parse(raw: String, normalizer: TextNormalizer): ReferenceQuery? {
+    fun parse(raw: String, normalizer: TextNormalizer, scripture: Scripture = Scripture.BIBLE): ReferenceQuery? {
+        if (scripture == Scripture.QURAN) return Quran.parse(raw, normalizer)
         val m = pattern.matchEntire(normalizer.script(raw.trim())) ?: return null
         val name = m.groupValues[1].filterNot { it.isWhitespace() }
         val book = Books.aliases().entries.firstOrNull {

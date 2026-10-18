@@ -18,7 +18,7 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
     fun search(raw: String, mode: SearchMode = SearchMode.EXPRESSION, testament: Testament = Testament.ALL, limit: Int = 60): SearchResponse {
         if (raw.isBlank()) return SearchResponse(emptyList(), 0)
         if (raw.length > 200) return SearchResponse(emptyList(), 0, "请输入 200 字以内的内容。")
-        ReferenceParser.parse(raw, normalizer)?.let { reference ->
+        ReferenceParser.parse(raw, normalizer, version.scripture)?.let { reference ->
             val chapter = chapter(reference.book, reference.chapter)
             if (chapter.isEmpty() || reference.chapter <= 0 ||
                 (reference.start != null && (reference.start <= 0 || reference.end!! < reference.start ||
@@ -35,7 +35,7 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
                 .map { SearchHit(it, 100.0, if (merged) "出处定位 · 此版合并分节" else "出处定位") }
             return SearchResponse(result.take(limit), result.size)
         }
-        val query = normalizer.normalize(raw)
+        val query = if (version.isRtl) normalizer.normalizeArabic(raw) else normalizer.normalize(raw)
         if (query.isEmpty()) return SearchResponse(emptyList(), 0, "请输入文字、关键词或经文出处。")
         if (mode == SearchMode.SEMANTIC) return SearchResponse(emptyList(), 0, "句意搜索需要语义检索组件。")
         if (mode == SearchMode.KEYWORD) {
@@ -44,7 +44,7 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
             return SearchResponse(result.take(limit), result.size)
         }
         val expanded = mutableMapOf<VerseKey, Double>()
-        ExpressionLexicon.groups.forEach { group ->
+        ExpressionLexicon.forVersion(version).forEach { group ->
             val match = group.phrases.maxOf { phrase ->
                 val p = normalizer.normalize(phrase)
                 when {

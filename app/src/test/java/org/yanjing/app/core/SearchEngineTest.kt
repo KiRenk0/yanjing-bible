@@ -33,7 +33,7 @@ class SearchEngineTest {
     }
 
     @Test fun allBundledCorporaHave66Books1189ChaptersAndUniqueKeys() {
-        BibleVersion.entries.forEach { version ->
+        BibleVersion.entries.filterNot { it.isQuran }.forEach { version ->
             val verses = read(version.id)
             assertTrue(verses.size > 30000)
             assertEquals(66, verses.map { it.key.book }.distinct().size)
@@ -45,7 +45,7 @@ class SearchEngineTest {
 
     @Test fun everyExpressionReferenceExistsInAllCorpora() {
         val keys = ExpressionLexicon.groups.flatMap { it.references }.toSet()
-        BibleVersion.entries.forEach { version ->
+        BibleVersion.entries.filterNot { it.isQuran }.forEach { version ->
             val present = read(version.id).map { it.key }.toSet()
             val resolved = keys.map { VerseMappings.resolve(version, it) }.toSet()
             assertTrue("missing expression references in ${version.id}: ${resolved - present}", present.containsAll(resolved))
@@ -137,7 +137,7 @@ class SearchEngineTest {
         assertEquals(21, cuvs.chapters(43))
         assertEquals(51, cuvs.chapter(43, 1).size)
         assertEquals(VerseKey(43,3,16), VerseKey.decode("43:3:16"))
-        assertNull(VerseKey.decode("67:1:1"))
+        assertNull(VerseKey.decode("68:1:1"))
         assertNull(VerseKey.decode("43:0:1"))
         assertNull(VerseKey.decode("not-a-reference"))
     }

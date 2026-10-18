@@ -12,7 +12,7 @@ class HybridSearch(
         if (raw.length > 200) return SearchResponse(emptyList(), 0, "请输入 200 字以内的内容。")
         if (normalizer.normalize(raw).isEmpty()) return SearchResponse(emptyList(), 0, "请输入文字、关键词或经文出处。")
         if (modes.isEmpty()) return SearchResponse(emptyList(), 0, "请至少选择一种搜索模式。")
-        if (ReferenceParser.parse(raw, normalizer) != null) return engine.search(raw, SearchMode.KEYWORD, testament, limit)
+        if (ReferenceParser.parse(raw, normalizer, engine.version.scripture) != null) return engine.search(raw, SearchMode.KEYWORD, testament, limit)
         val responses = mutableListOf<Pair<SearchMode, SearchResponse>>()
         val failures = mutableListOf<String>()
         // Run lighter searches first; the CPU model is shared and serialized by its repository.
@@ -31,7 +31,7 @@ class HybridSearch(
             return response.copy(hits = response.hits.map { it.copy(matchedModes = setOf(mode)) },
                 message = if (failures.isEmpty()) response.message else failures.joinToString("；") + "。当前结果来自${mode.title}。")
         }
-        val exactExpressionKeys = ExpressionLexicon.groups.filter { group -> group.phrases.any { normalizer.normalize(it) == normalizer.normalize(raw) } }
+        val exactExpressionKeys = ExpressionLexicon.forVersion(engine.version).filter { group -> group.phrases.any { normalizer.normalize(it) == normalizer.normalize(raw) } }
             .flatMap { it.references }.map { VerseMappings.resolve(engine.version, it) }.toSet()
         data class Fused(val verse: Verse, var score: Double, val modes: MutableSet<SearchMode>, var priority: Int = 0)
         val fused = linkedMapOf<VerseKey, Fused>()

@@ -5,3 +5,9 @@
 *.jar -text
 *.png -text
 *.zip -text
+# Preserve original source files and the mandatory verbatim copyright blocks.
+app/src/main/assets/quran/*.csv -text -whitespace
+app/src/main/assets/quran/*.xml -text -whitespace
+app/src/main/assets/bibles/quran_ar.tsv -whitespace
+app/src/main/assets/Tanzil-NOTICE.txt -text -whitespace
+third_party/Tanzil-NOTICE.txt -text -whitespace

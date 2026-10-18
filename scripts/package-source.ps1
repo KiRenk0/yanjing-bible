@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$output = Join-Path $root 'dist\yanjing-1.1.0-source.zip'
+$output = Join-Path $root 'dist\yanjing-1.2.0-source.zip'
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 New-Item -ItemType Directory -Force -Path (Join-Path $root 'dist') | Out-Null

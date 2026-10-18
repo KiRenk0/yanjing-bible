@@ -14,17 +14,21 @@ class SemanticRepository(context: Context, private val normalizer: TextNormalize
     private val app = context.applicationContext
     private val mutex = Mutex()
     private var embedder: SentenceEmbedder? = null
-    private var index: SemanticIndex? = null
+    private val indexes = mutableMapOf<Scripture, SemanticIndex>()
     private val prefix = "为这个句子生成表示以用于检索相关文章："
 
     suspend fun search(raw: String, engine: SearchEngine, testament: Testament, limit: Int): SearchResponse = mutex.withLock {
         if (embedder == null) withContext(Dispatchers.IO) { initialize() }
+        val index = indexes[engine.version.scripture] ?: withContext(Dispatchers.IO) {
+            SemanticIndex(app.assets.open(if (engine.version.isQuran) "semantic/quran.i8" else "semantic/verses.i8"))
+                .also { indexes[engine.version.scripture] = it }
+        }
         withContext(Dispatchers.Default) {
             ensureActive()
             val vector = requireNotNull(embedder).encode(prefix + normalizer.forSemantic(raw))
             ensureActive()
             val job = currentCoroutineContext().job
-            val candidates = requireNotNull(index).nearest(vector, limit,
+            val candidates = index.nearest(vector, limit,
                 accepts = { testament.accepts(it.book) && engine.verse(it) != null }, checkpoint = { job.ensureActive() })
             // An empirical floor suppresses unrelated matches; it is not a probability.
             val hits = candidates.filter { it.cosine >= 0.5f }.mapNotNull { candidate ->
@@ -49,14 +53,12 @@ class SemanticRepository(context: Context, private val normalizer: TextNormalize
             check(temporary.renameTo(model)) { "无法保存语义模型" }
         }
         val tokenizer = WordPieceTokenizer(app.assets.open("semantic/vocab.txt").bufferedReader().use { it.readLines() })
-        val loadedIndex = SemanticIndex(app.assets.open("semantic/verses.i8"))
         val loadedEmbedder = SentenceEmbedder(model.absolutePath, tokenizer)
-        index = loadedIndex
         embedder = loadedEmbedder
     }
     fun close() {
         // Cleanup waits off the main thread for an in-flight native inference to finish.
         val cleanup = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-        cleanup.launch { try { mutex.withLock { embedder?.close(); embedder = null; index = null } } finally { cleanup.cancel() } }
+        cleanup.launch { try { mutex.withLock { embedder?.close(); embedder = null; indexes.clear() } } finally { cleanup.cancel() } }
     }
 }

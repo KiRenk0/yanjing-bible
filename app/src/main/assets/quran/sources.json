@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "retrieved": "2026-10-19",
+  "chapters": 114,
+  "verses": 6236,
+  "chinese": {
+    "translator": "穆罕默德·马坚（Muhammad Makeen）",
+    "publisher": "QuranEnc.com / Rowwad Translation Center",
+    "version": "1.0.2",
+    "source": "https://quranenc.com/zh/home/d/csv/chinese_makin",
+    "check": "https://quranenc.com/check/chinese_makin/v1.0.2-csv.1",
+    "metadata": "https://quranenc.com/api/v1/translations/list/zh",
+    "terms": "https://quranenc.com/en/home/about",
+    "file": "chinese-makin-v1.0.2.csv",
+    "sha256": "fb83ef2eee252db31448edeb38aef69327c9ff7b0591e5fd6bb7e6f526ad54c7"
+  },
+  "arabic": {
+    "publisher": "Tanzil Project",
+    "version": "1.1",
+    "source": "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=xml&agree=true",
+    "terms": "https://tanzil.net/docs/text_license",
+    "file": "uthmani-v1.1.xml",
+    "sha256": "203f0f1bf3158b1e5be4ab9f8f6870e570aab6d9a626fe6192a70b75d4afe0fd"
+  },
+  "chapterMetadata": {
+    "arabicSource": "https://tanzil.net/res/text/metadata/quran-data.xml",
+    "chineseSource": "https://quranenc.com/zh/browse/chinese_makin",
+    "arabicSha256": "8867c1d88191472adec9db694b3cd9f135b1a2ef580574d32cf888dcb22c5c7a",
+    "chinesePageSha256": "1b8606ad14e24f576d5d483db9d62167f726472ed1f63326ddc3a2443477182c"
+  }
+}

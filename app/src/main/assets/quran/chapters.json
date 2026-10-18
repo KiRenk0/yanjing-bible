@@ -1,0 +1,800 @@
+[
+  {
+    "number": 1,
+    "verses": 7,
+    "name": "法谛海",
+    "arabicName": "الفاتحة",
+    "transliteration": "Al-Faatiha"
+  },
+  {
+    "number": 2,
+    "verses": 286,
+    "name": "百格勒",
+    "arabicName": "البقرة",
+    "transliteration": "Al-Baqara"
+  },
+  {
+    "number": 3,
+    "verses": 200,
+    "name": "阿黎仪姆兰",
+    "arabicName": "آل عمران",
+    "transliteration": "Aal-i-Imraan"
+  },
+  {
+    "number": 4,
+    "verses": 176,
+    "name": "尼萨仪",
+    "arabicName": "النساء",
+    "transliteration": "An-Nisaa"
+  },
+  {
+    "number": 5,
+    "verses": 120,
+    "name": "马以代",
+    "arabicName": "المائدة",
+    "transliteration": "Al-Maaida"
+  },
+  {
+    "number": 6,
+    "verses": 165,
+    "name": "艾奈阿姆",
+    "arabicName": "الأنعام",
+    "transliteration": "Al-An'aam"
+  },
+  {
+    "number": 7,
+    "verses": 206,
+    "name": "艾尔拉弗",
+    "arabicName": "الأعراف",
+    "transliteration": "Al-A'raaf"
+  },
+  {
+    "number": 8,
+    "verses": 75,
+    "name": "安法勒",
+    "arabicName": "الأنفال",
+    "transliteration": "Al-Anfaal"
+  },
+  {
+    "number": 9,
+    "verses": 129,
+    "name": "讨白",
+    "arabicName": "التوبة",
+    "transliteration": "At-Tawba"
+  },
+  {
+    "number": 10,
+    "verses": 109,
+    "name": "优努斯",
+    "arabicName": "يونس",
+    "transliteration": "Yunus"
+  },
+  {
+    "number": 11,
+    "verses": 123,
+    "name": "呼德",
+    "arabicName": "هود",
+    "transliteration": "Hud"
+  },
+  {
+    "number": 12,
+    "verses": 111,
+    "name": "优素福",
+    "arabicName": "يوسف",
+    "transliteration": "Yusuf"
+  },
+  {
+    "number": 13,
+    "verses": 43,
+    "name": "赖尔得",
+    "arabicName": "الرعد",
+    "transliteration": "Ar-Ra'd"
+  },
+  {
+    "number": 14,
+    "verses": 52,
+    "name": "易卜拉欣",
+    "arabicName": "ابراهيم",
+    "transliteration": "Ibrahim"
+  },
+  {
+    "number": 15,
+    "verses": 99,
+    "name": "希只尔",
+    "arabicName": "الحجر",
+    "transliteration": "Al-Hijr"
+  },
+  {
+    "number": 16,
+    "verses": 128,
+    "name": "奈哈勒",
+    "arabicName": "النحل",
+    "transliteration": "An-Nahl"
+  },
+  {
+    "number": 17,
+    "verses": 111,
+    "name": "伊斯拉",
+    "arabicName": "الإسراء",
+    "transliteration": "Al-Israa"
+  },
+  {
+    "number": 18,
+    "verses": 110,
+    "name": "凯海府",
+    "arabicName": "الكهف",
+    "transliteration": "Al-Kahf"
+  },
+  {
+    "number": 19,
+    "verses": 98,
+    "name": "麦尔彦",
+    "arabicName": "مريم",
+    "transliteration": "Maryam"
+  },
+  {
+    "number": 20,
+    "verses": 135,
+    "name": "塔哈",
+    "arabicName": "طه",
+    "transliteration": "Taa-Haa"
+  },
+  {
+    "number": 21,
+    "verses": 112,
+    "name": "安比雅",
+    "arabicName": "الأنبياء",
+    "transliteration": "Al-Anbiyaa"
+  },
+  {
+    "number": 22,
+    "verses": 78,
+    "name": "哈知",
+    "arabicName": "الحج",
+    "transliteration": "Al-Hajj"
+  },
+  {
+    "number": 23,
+    "verses": 118,
+    "name": "慕米农",
+    "arabicName": "المؤمنون",
+    "transliteration": "Al-Muminoon"
+  },
+  {
+    "number": 24,
+    "verses": 64,
+    "name": "努尔",
+    "arabicName": "النور",
+    "transliteration": "An-Noor"
+  },
+  {
+    "number": 25,
+    "verses": 77,
+    "name": "弗尔干",
+    "arabicName": "الفرقان",
+    "transliteration": "Al-Furqaan"
+  },
+  {
+    "number": 26,
+    "verses": 227,
+    "name": "抒尔拉",
+    "arabicName": "الشعراء",
+    "transliteration": "Ash-Shu'araa"
+  },
+  {
+    "number": 27,
+    "verses": 93,
+    "name": "奈木勒",
+    "arabicName": "النمل",
+    "transliteration": "An-Naml"
+  },
+  {
+    "number": 28,
+    "verses": 88,
+    "name": "改赛素",
+    "arabicName": "القصص",
+    "transliteration": "Al-Qasas"
+  },
+  {
+    "number": 29,
+    "verses": 69,
+    "name": "安凯逋特",
+    "arabicName": "العنكبوت",
+    "transliteration": "Al-Ankaboot"
+  },
+  {
+    "number": 30,
+    "verses": 60,
+    "name": "鲁姆",
+    "arabicName": "الروم",
+    "transliteration": "Ar-Room"
+  },
+  {
+    "number": 31,
+    "verses": 34,
+    "name": "鲁格曼",
+    "arabicName": "لقمان",
+    "transliteration": "Luqman"
+  },
+  {
+    "number": 32,
+    "verses": 30,
+    "name": "赛直德",
+    "arabicName": "السجدة",
+    "transliteration": "As-Sajda"
+  },
+  {
+    "number": 33,
+    "verses": 73,
+    "name": "艾哈萨卜",
+    "arabicName": "الأحزاب",
+    "transliteration": "Al-Ahzaab"
+  },
+  {
+    "number": 34,
+    "verses": 54,
+    "name": "赛伯邑",
+    "arabicName": "سبإ",
+    "transliteration": "Saba"
+  },
+  {
+    "number": 35,
+    "verses": 45,
+    "name": "法颓尔",
+    "arabicName": "فاطر",
+    "transliteration": "Faatir"
+  },
+  {
+    "number": 36,
+    "verses": 83,
+    "name": "雅辛",
+    "arabicName": "يس",
+    "transliteration": "Yaseen"
+  },
+  {
+    "number": 37,
+    "verses": 182,
+    "name": "萨法特",
+    "arabicName": "الصافات",
+    "transliteration": "As-Saaffaat"
+  },
+  {
+    "number": 38,
+    "verses": 88,
+    "name": "萨德",
+    "arabicName": "ص",
+    "transliteration": "Saad"
+  },
+  {
+    "number": 39,
+    "verses": 75,
+    "name": "助迈尔",
+    "arabicName": "الزمر",
+    "transliteration": "Az-Zumar"
+  },
+  {
+    "number": 40,
+    "verses": 85,
+    "name": "阿斐尔",
+    "arabicName": "غافر",
+    "transliteration": "Al-Ghaafir"
+  },
+  {
+    "number": 41,
+    "verses": 54,
+    "name": "奉绥来特",
+    "arabicName": "فصلت",
+    "transliteration": "Fussilat"
+  },
+  {
+    "number": 42,
+    "verses": 53,
+    "name": "舒拉",
+    "arabicName": "الشورى",
+    "transliteration": "Ash-Shura"
+  },
+  {
+    "number": 43,
+    "verses": 89,
+    "name": "助赫鲁弗",
+    "arabicName": "الزخرف",
+    "transliteration": "Az-Zukhruf"
+  },
+  {
+    "number": 44,
+    "verses": 59,
+    "name": "睹罕",
+    "arabicName": "الدخان",
+    "transliteration": "Ad-Dukhaan"
+  },
+  {
+    "number": 45,
+    "verses": 37,
+    "name": "查西叶",
+    "arabicName": "الجاثية",
+    "transliteration": "Al-Jaathiya"
+  },
+  {
+    "number": 46,
+    "verses": 35,
+    "name": "艾哈戛弗",
+    "arabicName": "الأحقاف",
+    "transliteration": "Al-Ahqaf"
+  },
+  {
+    "number": 47,
+    "verses": 38,
+    "name": "穆罕默德",
+    "arabicName": "محمد",
+    "transliteration": "Muhammad"
+  },
+  {
+    "number": 48,
+    "verses": 29,
+    "name": "费特哈",
+    "arabicName": "الفتح",
+    "transliteration": "Al-Fath"
+  },
+  {
+    "number": 49,
+    "verses": 18,
+    "name": "侯吉拉特",
+    "arabicName": "الحجرات",
+    "transliteration": "Al-Hujuraat"
+  },
+  {
+    "number": 50,
+    "verses": 45,
+    "name": "戛弗",
+    "arabicName": "ق",
+    "transliteration": "Qaaf"
+  },
+  {
+    "number": 51,
+    "verses": 60,
+    "name": "达里雅特",
+    "arabicName": "الذاريات",
+    "transliteration": "Adh-Dhaariyat"
+  },
+  {
+    "number": 52,
+    "verses": 49,
+    "name": "突尔",
+    "arabicName": "الطور",
+    "transliteration": "At-Tur"
+  },
+  {
+    "number": 53,
+    "verses": 62,
+    "name": "奈智姆",
+    "arabicName": "النجم",
+    "transliteration": "An-Najm"
+  },
+  {
+    "number": 54,
+    "verses": 55,
+    "name": "改买尔",
+    "arabicName": "القمر",
+    "transliteration": "Al-Qamar"
+  },
+  {
+    "number": 55,
+    "verses": 78,
+    "name": "安赖哈曼",
+    "arabicName": "الرحمن",
+    "transliteration": "Ar-Rahmaan"
+  },
+  {
+    "number": 56,
+    "verses": 96,
+    "name": "瓦格尔",
+    "arabicName": "الواقعة",
+    "transliteration": "Al-Waaqia"
+  },
+  {
+    "number": 57,
+    "verses": 29,
+    "name": "哈迪德",
+    "arabicName": "الحديد",
+    "transliteration": "Al-Hadid"
+  },
+  {
+    "number": 58,
+    "verses": 22,
+    "name": "穆扎迪莱",
+    "arabicName": "المجادلة",
+    "transliteration": "Al-Mujaadila"
+  },
+  {
+    "number": 59,
+    "verses": 24,
+    "name": "哈什尔",
+    "arabicName": "الحشر",
+    "transliteration": "Al-Hashr"
+  },
+  {
+    "number": 60,
+    "verses": 13,
+    "name": "慕姆太哈奈",
+    "arabicName": "الممتحنة",
+    "transliteration": "Al-Mumtahana"
+  },
+  {
+    "number": 61,
+    "verses": 14,
+    "name": "蒜弗",
+    "arabicName": "الصف",
+    "transliteration": "As-Saff"
+  },
+  {
+    "number": 62,
+    "verses": 11,
+    "name": "主麻",
+    "arabicName": "الجمعة",
+    "transliteration": "Al-Jumu'a"
+  },
+  {
+    "number": 63,
+    "verses": 11,
+    "name": "莫拿非古乃",
+    "arabicName": "المنافقون",
+    "transliteration": "Al-Munaafiqoon"
+  },
+  {
+    "number": 64,
+    "verses": 18,
+    "name": "台昂卜尼",
+    "arabicName": "التغابن",
+    "transliteration": "At-Taghaabun"
+  },
+  {
+    "number": 65,
+    "verses": 12,
+    "name": "特俩格",
+    "arabicName": "الطلاق",
+    "transliteration": "At-Talaaq"
+  },
+  {
+    "number": 66,
+    "verses": 12,
+    "name": "台哈列姆",
+    "arabicName": "التحريم",
+    "transliteration": "At-Tahrim"
+  },
+  {
+    "number": 67,
+    "verses": 30,
+    "name": "姆勒克",
+    "arabicName": "الملك",
+    "transliteration": "Al-Mulk"
+  },
+  {
+    "number": 68,
+    "verses": 52,
+    "name": "改赖姆",
+    "arabicName": "القلم",
+    "transliteration": "Al-Qalam"
+  },
+  {
+    "number": 69,
+    "verses": 52,
+    "name": "哈盖",
+    "arabicName": "الحاقة",
+    "transliteration": "Al-Haaqqa"
+  },
+  {
+    "number": 70,
+    "verses": 44,
+    "name": "买阿列支",
+    "arabicName": "المعارج",
+    "transliteration": "Al-Ma'aarij"
+  },
+  {
+    "number": 71,
+    "verses": 28,
+    "name": "努哈",
+    "arabicName": "نوح",
+    "transliteration": "Nooh"
+  },
+  {
+    "number": 72,
+    "verses": 28,
+    "name": "精尼",
+    "arabicName": "الجن",
+    "transliteration": "Al-Jinn"
+  },
+  {
+    "number": 73,
+    "verses": 20,
+    "name": "孟赞密鲁",
+    "arabicName": "المزمل",
+    "transliteration": "Al-Muzzammil"
+  },
+  {
+    "number": 74,
+    "verses": 56,
+    "name": "孟荡西尔",
+    "arabicName": "المدثر",
+    "transliteration": "Al-Muddaththir"
+  },
+  {
+    "number": 75,
+    "verses": 40,
+    "name": "格雅迈",
+    "arabicName": "القيامة",
+    "transliteration": "Al-Qiyaama"
+  },
+  {
+    "number": 76,
+    "verses": 31,
+    "name": "印萨尼",
+    "arabicName": "الانسان",
+    "transliteration": "Al-Insaan"
+  },
+  {
+    "number": 77,
+    "verses": 50,
+    "name": "姆尔赛拉特",
+    "arabicName": "المرسلات",
+    "transliteration": "Al-Mursalaat"
+  },
+  {
+    "number": 78,
+    "verses": 40,
+    "name": "奈白易",
+    "arabicName": "النبإ",
+    "transliteration": "An-Naba"
+  },
+  {
+    "number": 79,
+    "verses": 46,
+    "name": "那寂阿特",
+    "arabicName": "النازعات",
+    "transliteration": "An-Naazi'aat"
+  },
+  {
+    "number": 80,
+    "verses": 42,
+    "name": "阿百塞",
+    "arabicName": "عبس",
+    "transliteration": "Abasa"
+  },
+  {
+    "number": 81,
+    "verses": 29,
+    "name": "太克威尔",
+    "arabicName": "التكوير",
+    "transliteration": "At-Takwir"
+  },
+  {
+    "number": 82,
+    "verses": 19,
+    "name": "引斐塔尔",
+    "arabicName": "الإنفطار",
+    "transliteration": "Al-Infitaar"
+  },
+  {
+    "number": 83,
+    "verses": 36,
+    "name": "穆团斐弗乃",
+    "arabicName": "المطففين",
+    "transliteration": "Al-Mutaffifin"
+  },
+  {
+    "number": 84,
+    "verses": 25,
+    "name": "引史卡格",
+    "arabicName": "الإنشقاق",
+    "transliteration": "Al-Inshiqaaq"
+  },
+  {
+    "number": 85,
+    "verses": 22,
+    "name": "补鲁智",
+    "arabicName": "البروج",
+    "transliteration": "Al-Burooj"
+  },
+  {
+    "number": 86,
+    "verses": 17,
+    "name": "塔里格",
+    "arabicName": "الطارق",
+    "transliteration": "At-Taariq"
+  },
+  {
+    "number": 87,
+    "verses": 19,
+    "name": "艾尔拉",
+    "arabicName": "الأعلى",
+    "transliteration": "Al-A'laa"
+  },
+  {
+    "number": 88,
+    "verses": 26,
+    "name": "阿史叶",
+    "arabicName": "الغاشية",
+    "transliteration": "Al-Ghaashiya"
+  },
+  {
+    "number": 89,
+    "verses": 30,
+    "name": "斐智尔",
+    "arabicName": "الفجر",
+    "transliteration": "Al-Fajr"
+  },
+  {
+    "number": 90,
+    "verses": 20,
+    "name": "白赖德",
+    "arabicName": "البلد",
+    "transliteration": "Al-Balad"
+  },
+  {
+    "number": 91,
+    "verses": 15,
+    "name": "晒姆斯",
+    "arabicName": "الشمس",
+    "transliteration": "Ash-Shams"
+  },
+  {
+    "number": 92,
+    "verses": 21,
+    "name": "赖以里",
+    "arabicName": "الليل",
+    "transliteration": "Al-Lail"
+  },
+  {
+    "number": 93,
+    "verses": 11,
+    "name": "堵哈",
+    "arabicName": "الضحى",
+    "transliteration": "Ad-Dhuhaa"
+  },
+  {
+    "number": 94,
+    "verses": 8,
+    "name": "晒尔哈",
+    "arabicName": "الشرح",
+    "transliteration": "Ash-Sharh"
+  },
+  {
+    "number": 95,
+    "verses": 8,
+    "name": "梯尼",
+    "arabicName": "التين",
+    "transliteration": "At-Tin"
+  },
+  {
+    "number": 96,
+    "verses": 19,
+    "name": "阿赖格",
+    "arabicName": "العلق",
+    "transliteration": "Al-Alaq"
+  },
+  {
+    "number": 97,
+    "verses": 5,
+    "name": "盖德尔",
+    "arabicName": "القدر",
+    "transliteration": "Al-Qadr"
+  },
+  {
+    "number": 98,
+    "verses": 8,
+    "name": "佰以奈",
+    "arabicName": "البينة",
+    "transliteration": "Al-Bayyina"
+  },
+  {
+    "number": 99,
+    "verses": 8,
+    "name": "宰利宰莱",
+    "arabicName": "الزلزلة",
+    "transliteration": "Az-Zalzala"
+  },
+  {
+    "number": 100,
+    "verses": 11,
+    "name": "阿底雅特",
+    "arabicName": "العاديات",
+    "transliteration": "Al-Aadiyaat"
+  },
+  {
+    "number": 101,
+    "verses": 11,
+    "name": "戛里尔",
+    "arabicName": "القارعة",
+    "transliteration": "Al-Qaari'a"
+  },
+  {
+    "number": 102,
+    "verses": 8,
+    "name": "太卡素尔",
+    "arabicName": "التكاثر",
+    "transliteration": "At-Takaathur"
+  },
+  {
+    "number": 103,
+    "verses": 3,
+    "name": "阿斯尔",
+    "arabicName": "العصر",
+    "transliteration": "Al-Asr"
+  },
+  {
+    "number": 104,
+    "verses": 9,
+    "name": "胡买宰",
+    "arabicName": "الهمزة",
+    "transliteration": "Al-Humaza"
+  },
+  {
+    "number": 105,
+    "verses": 5,
+    "name": "斐里",
+    "arabicName": "الفيل",
+    "transliteration": "Al-Fil"
+  },
+  {
+    "number": 106,
+    "verses": 4,
+    "name": "古莱什",
+    "arabicName": "قريش",
+    "transliteration": "Quraish"
+  },
+  {
+    "number": 107,
+    "verses": 7,
+    "name": "马欧尼",
+    "arabicName": "الماعون",
+    "transliteration": "Al-Maa'un"
+  },
+  {
+    "number": 108,
+    "verses": 3,
+    "name": "考赛尔",
+    "arabicName": "الكوثر",
+    "transliteration": "Al-Kawthar"
+  },
+  {
+    "number": 109,
+    "verses": 6,
+    "name": "卡斐伦",
+    "arabicName": "الكافرون",
+    "transliteration": "Al-Kaafiroon"
+  },
+  {
+    "number": 110,
+    "verses": 3,
+    "name": "奈斯尔",
+    "arabicName": "النصر",
+    "transliteration": "An-Nasr"
+  },
+  {
+    "number": 111,
+    "verses": 5,
+    "name": "麦瑟迪",
+    "arabicName": "المسد",
+    "transliteration": "Al-Masad"
+  },
+  {
+    "number": 112,
+    "verses": 4,
+    "name": "以赫拉斯",
+    "arabicName": "الإخلاص",
+    "transliteration": "Al-Ikhlaas"
+  },
+  {
+    "number": 113,
+    "verses": 5,
+    "name": "法赖格",
+    "arabicName": "الفلق",
+    "transliteration": "Al-Falaq"
+  },
+  {
+    "number": 114,
+    "verses": 6,
+    "name": "拿斯",
+    "arabicName": "الناس",
+    "transliteration": "An-Naas"
+  }
+]

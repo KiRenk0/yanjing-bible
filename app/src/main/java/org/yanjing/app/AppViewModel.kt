@@ -45,7 +45,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             modes = repository.setting("searchModes", "SEMANTIC,EXPRESSION").split(',').mapNotNull { value -> SearchMode.entries.firstOrNull { it.name == value } }.toSet().ifEmpty { setOf(SearchMode.SEMANTIC, SearchMode.EXPRESSION) },
             dynamicColor = repository.setting("dynamic", "true").toBoolean(),
             fontSize = repository.setting("font", "18").toFloatOrNull()?.coerceIn(16f, 28f) ?: 18f,
-            readerBook = repository.setting("readerBook", "43").toIntOrNull()?.coerceIn(1,66) ?: 43,
+            readerBook = repository.setting("readerBook", "43").toIntOrNull()?.takeIf(version::acceptsBook) ?: version.defaultBook,
             readerChapter = repository.setting("readerChapter", "1").toIntOrNull()?.coerceAtLeast(1) ?: 1) }
         loadVersion(version)
         updates.start()
@@ -53,8 +53,19 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadVersion(version: BibleVersion) {
         searchJob?.cancel(); loadJob?.cancel(); closeDetail(); engine = null
-        mutable.update { it.copy(version = version, loading = true, searching = false, error = null, response = SearchResponse(emptyList(),0), chapter = emptyList()) }
+        val previous = mutable.value
+        val changingScripture = previous.version.scripture != version.scripture
+        if (changingScripture) {
+            repository.setting("readerBook-${previous.version.scripture.name}", previous.readerBook.toString(), true)
+            repository.setting("readerChapter-${previous.version.scripture.name}", previous.readerChapter.toString(), true)
+        }
+        val book = if (changingScripture) repository.setting("readerBook-${version.scripture.name}", version.defaultBook.toString()).toIntOrNull()?.takeIf(version::acceptsBook) ?: version.defaultBook
+            else previous.readerBook.takeIf(version::acceptsBook) ?: version.defaultBook
+        val chapter = if (changingScripture) repository.setting("readerChapter-${version.scripture.name}", "1").toIntOrNull()?.coerceAtLeast(1) ?: 1 else previous.readerChapter
+        mutable.update { it.copy(version = version, readerBook = book, readerChapter = chapter, testament = if (changingScripture) Testament.ALL else it.testament,
+            query = if (changingScripture) "" else it.query, loading = true, searching = false, error = null, response = SearchResponse(emptyList(),0), chapter = emptyList()) }
         repository.setting("version", version.id, true)
+        repository.setting("version-${version.scripture.name}", version.id, true)
         loadJob = viewModelScope.launch {
             try {
                 val loaded = repository.load(version)
@@ -67,6 +78,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 val chapter = s.readerChapter.coerceIn(1, count.coerceAtLeast(1))
                 mutable.update { it.copy(loading = false, saved = saved, history = repository.history(), counts = counts,
                     chapterCount = count, readerChapter = chapter, chapter = loaded.chapter(s.readerBook, chapter)) }
+                repository.setting("readerBook", s.readerBook.toString(), true)
+                repository.setting("readerChapter", chapter.toString(), true)
                 searchNow(false)
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { mutable.update { it.copy(loading = false, error = "经文库加载失败，请重试。") } }
@@ -75,6 +88,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun query(value: String) {
         mutable.update { it.copy(query = value.take(200)) }
         searchNow(true)
+    }
+    fun scripture(value: Scripture) {
+        if (value == mutable.value.version.scripture) return
+        val fallback = if (value == Scripture.QURAN) BibleVersion.QURAN_ZH else BibleVersion.CUVS
+        val remembered = repository.setting("version-${value.name}", fallback.id)
+        loadVersion(BibleVersion.entries.firstOrNull { it.id == remembered && it.scripture == value } ?: fallback)
     }
     fun modes(value: Set<SearchMode>) {
         if (value.isEmpty()) return
@@ -121,7 +140,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         mutable.update { it.copy(saved = saved) }
     }
     fun read(book: Int, chapter: Int) {
-        if (book !in 1..66) return
+        if (!mutable.value.version.acceptsBook(book)) return
         val currentEngine = engine
         if (currentEngine == null) {
             mutable.update { it.copy(readerBook = book, readerChapter = chapter.coerceAtLeast(1)) }

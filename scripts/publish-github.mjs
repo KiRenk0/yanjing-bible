@@ -42,15 +42,16 @@ if(user.login!=='KiRenk0')throw Error('Authenticated account is not the intended
 let repo=await api('GET',`/repos/${repository}`);
 if(!repo)repo=await api('POST','/user/repos',{name:'yanjing-bible',description:'言·经：Material 3 Expressive 中文圣经 Android 应用，离线句意检索、多模式搜索与安全更新。',private:false,has_wiki:false,auto_init:false});
 console.log('Repository ready: '+repo.html_url);
+await api('PATCH',`/repos/${repository}`,{description:'言·经：Material 3 Expressive Android 经文查询，内置圣经与古兰经中阿双语，支持离线句意检索、多模式搜索与安全更新。'});
 if(!(await git(['remote'])).split(/\r?\n/).includes('origin'))await git(['remote','add','origin',repo.clone_url]);
 if((await git(['remote','get-url','origin'])).trim()!==repo.clone_url)throw Error('Unexpected git remote');
 await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
 await git(['push','origin',tag]);
-const body=`新增离线句意搜索，搜索栏旁可多选三种模式；合并去重并显示命中模式。新增 GitHub Release 更新检查、自动下载、镜像切换、断点续传与签名校验。\n\nAndroid 8.0 及以上，通用 APK。内置四套文本与 BGE 模型。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络。安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和及验证摘要。测试记录见 verification.json；尚无物理 Android 设备验证。`;
+const body=`${metadata.notes}\n\nAndroid 8.0 及以上，通用 APK。内置圣经四套文本、古兰经中阿双语与 BGE 模型。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络。安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和及验证摘要。测试记录见 verification.json；尚无物理 Android 设备验证。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:'main',name:`言·经 ${tag} · 离线句意与多模式搜索`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:'main',name:`言·经 ${tag} · 新增古兰经中阿双语查询`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}
@@ -65,6 +66,6 @@ for(const name of names){
 const refreshed=await api('GET',`/repos/${repository}/releases/${release.id}`);
 if(!names.every(name=>refreshed.assets.some(a=>a.name===name && a.digest===`sha256:${hashes.get(name)}`)))throw Error('Incomplete draft release');
 release=await api('PATCH',`/repos/${repository}/releases/${release.id}`,{draft:false,prerelease:false,make_latest:'true',body});
-await api('PUT',`/repos/${repository}/topics`,{names:['android','bible','chinese','jetpack-compose','material3','offline','semantic-search']});
+await api('PUT',`/repos/${repository}/topics`,{names:['android','bible','quran','chinese','arabic','jetpack-compose','material3','offline','semantic-search']});
 fs.writeFileSync(path.join(root,'dist/publication.json'),JSON.stringify({repository:repo.html_url,release:release.html_url,tag,assets:release.assets.map(a=>({name:a.name,size:a.size,digest:a.digest,url:a.browser_download_url}))},null,2));
 console.log('Published: '+release.html_url);

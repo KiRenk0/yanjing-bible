@@ -1,0 +1,19 @@
+QuranEnc.com — Chinese Translation of the Meanings of the Noble Quran
+Translator: Muhammad Makeen (穆罕默德·马坚)
+Publisher/source: QuranEnc.com / Rowwad Translation Center
+Edition: chinese_makin v1.0.2 (2022-09-07), downloaded 2026-10-19.
+https://quranenc.com/en/browse/chinese_makin
+Terms: https://quranenc.com/en/home/about
+
+Contents of the translations can be downloaded and re-published, with the following terms and conditions:
+1. No modification, addition, or deletion of the content.
+2. Clearly referring to the publisher and the source (QuranEnc.com).
+3. Mentioning the version number when re-publishing the translation.
+4. Keeping the transcript information inside the document.
+5. Notifying the source (QuranEnc.com) of any note on the translation.
+6. Updating the translation according to the latest version issued from the source (QuranEnc.com).
+7. Inappropriate advertisements must not be included when displaying translations of the meanings of the Noble Quran.
+
+The complete original CSV and its transcript information are included in assets/quran/chinese-makin-v1.0.2.csv.
+Displayed verse texts are copied verbatim. Search normalization and vectors are separate derived indexes; they do not replace the original text.
+Translation rights remain with their respective rights holders. The app's MIT license does not relicense this translation.

@@ -63,7 +63,7 @@ fun SettingsScreen(state: AppState, model: AppViewModel, onVersions: () -> Unit,
             Text("经文与数据", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(8.dp))
             Surface(onClick = onVersions, shape = MaterialTheme.shapes.large) {
-                ListItem(content = { Text("内置版本") }, supportingContent = { Text("${state.version.title} · 4 套文本，3 种译本") }, leadingContent = { Symbol(R.drawable.sym_menu_book) }, trailingContent = { Symbol(R.drawable.sym_chevron_right) })
+                ListItem(content = { Text("内置经典与版本") }, supportingContent = { Text("圣经 4 套文本 · 古兰经中阿双语") }, leadingContent = { Symbol(R.drawable.sym_menu_book) }, trailingContent = { Symbol(R.drawable.sym_chevron_right) })
             }
             Surface(onClick = { clearHistory = true }, shape = MaterialTheme.shapes.large) {
                 ListItem(content = { Text("清空搜索历史") }, supportingContent = { Text("${state.history.size} 条记录 · 只保存在本机") }, leadingContent = { Symbol(R.drawable.sym_history) }, trailingContent = { Symbol(R.drawable.sym_chevron_right) })
@@ -76,7 +76,7 @@ fun SettingsScreen(state: AppState, model: AppViewModel, onVersions: () -> Unit,
             OutlinedCard {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("关于匹配", style = MaterialTheme.typography.titleSmall)
-                    Text("句意搜索使用本地 BGE 模型；可与日常表达、原文搜索同时启用。句意基于简体和合本匹配，再展示所选版本。结果只辅助查找，请结合上下文理解。", style = MaterialTheme.typography.bodyMedium)
+                    Text("句意搜索使用本地 BGE 模型；可与日常表达、原文搜索同时启用。圣经和古兰经各自使用中文文本索引，再展示所选版本。结果只辅助查找，请结合上下文理解。", style = MaterialTheme.typography.bodyMedium)
                     Text("模型、经文、收藏和查询均在本机。联网仅用于版本检查和安装包下载，不发送查询、收藏或历史。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }

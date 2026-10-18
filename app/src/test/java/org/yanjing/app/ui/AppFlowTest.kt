@@ -49,7 +49,7 @@ class AppFlowTest {
     }
     private fun screenshot(name: String) {
         val directory = File("build/screenshots").apply { mkdirs() }
-        val target = if (name == "04-compare") compose.onNode(isDialog()) else compose.onRoot()
+        val target = if (name.endsWith("-compare")) compose.onNode(isDialog()) else compose.onRoot()
         target.captureToImage().asAndroidBitmap().let { bitmap ->
             File(directory, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
         }
@@ -122,19 +122,57 @@ class AppFlowTest {
     @Test fun releasePromptAndDownloadProgressAreVisibleInSettings() {
         waitForText("完全离线 · 无需登录")
         val store = org.yanjing.app.update.UpdateStore(compose.activity.applicationContext)
-        store.release(org.yanjing.app.update.ReleaseInfo(3,"1.2.0",
-            "https://github.com/KiRenk0/yanjing-bible/releases/download/v1.2.0/yanjing-1.2.0.apk",
+        store.release(org.yanjing.app.update.ReleaseInfo((org.yanjing.app.BuildConfig.VERSION_CODE+1).toLong(),"99.0.0",
+            "https://github.com/KiRenk0/yanjing-bible/releases/download/v99.0.0/yanjing-99.0.0.apk",
             1_000_000,"a".repeat(64),"改善搜索体验",26))
         store.status(org.yanjing.app.update.UpdatePhase.AVAILABLE,"等待 Wi-Fi 自动下载")
-        waitForText("发现新版本 1.2.0")
+        waitForText("发现新版本 99.0.0")
         compose.onNodeWithText("改善搜索体验").assertIsDisplayed()
         compose.onNodeWithText("稍后").performClick()
         compose.onNodeWithText("设置",useUnmergedTree=true).performClick()
         compose.onNodeWithText("检查更新").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("下载线路").performScrollTo().assertExists()
-        store.status(org.yanjing.app.update.UpdatePhase.DOWNLOADING,"正在下载 1.2.0…",37)
+        store.status(org.yanjing.app.update.UpdatePhase.DOWNLOADING,"正在下载 99.0.0…",37)
         waitForText("37%")
         compose.onNodeWithText("37%").performScrollTo().assertIsDisplayed()
         screenshot("11-update-settings")
+    }
+
+    @Test fun quranSearchSaveCompareReadAndSwitchBackPreserveTheRightScripture() {
+        waitForText("完全离线 · 无需登录")
+        compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].read(43,4) }
+        compose.onNodeWithText("古兰经").performClick()
+        waitForText("114 章 · 6,236 节 · 中阿文本可对照")
+        compose.onNodeWithText("古兰经 112:1-4").performScrollTo().performClick()
+        waitForText("古兰经 112:1")
+        screenshot("12-quran-search")
+        compose.onNodeWithContentDescription("收藏 古兰经 112:1").performClick()
+        compose.onNodeWithText("收藏",useUnmergedTree=true).performClick()
+        waitForText("1 条收藏")
+        compose.onNodeWithText("上下文与对照").performClick()
+        waitForText("古兰经·阿拉伯文")
+        compose.onNodeWithText("和合本·繁體").assertDoesNotExist()
+        screenshot("13-quran-compare")
+        compose.onNodeWithText("上下文").performClick()
+        waitForText("112:1 · 当前经文")
+        compose.onNodeWithText("阅读整章").performClick()
+        waitForText("第 112 章 · 以赫拉斯")
+        compose.onNodeWithText("第 112 章 · 以赫拉斯").performClick()
+        compose.onNode(hasScrollAction() and hasAnyAncestor(isDialog())).performScrollToNode(hasText("第 114 章 · 拿斯"))
+        compose.onNodeWithText("第 114 章 · 拿斯").performClick()
+        waitForText("古兰经 114")
+        screenshot("14-quran-reader")
+        compose.onNode(hasText("古兰经·马坚译本") and hasClickAction()).performClick()
+        compose.onNodeWithText("古兰经·阿拉伯文").performScrollTo().performClick()
+        waitForText("阿拉伯文：Tanzil Project · Uthmani v1.1 · tanzil.net")
+        screenshot("15-quran-arabic")
+        compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
+        compose.onNodeWithText("圣经").performClick()
+        waitForText("能给我水喝吗")
+        compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
+        waitForText("约翰福音 · 第 4 章")
+        compose.onNodeWithText("收藏",useUnmergedTree=true).performClick()
+        waitForText("古兰经 112:1")
+        compose.onNodeWithText("古兰经·马坚译本").assertExists()
     }
 }

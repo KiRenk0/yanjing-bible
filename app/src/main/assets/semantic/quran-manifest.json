@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "model": "BAAI/bge-small-zh-v1.5",
+  "onnxRepository": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "license": "MIT",
+  "pooling": "CLS",
+  "normalization": "L2",
+  "dimensions": 512,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "sourceVersion": "quran_zh",
+  "verses": 6236,
+  "passages": 15876,
+  "corpusSha256": "b8aad7de5b2b140e02f6ddeee053fc9bd2e4e2ab2e0fa17bce512b2a1f2b0610",
+  "files": {
+    "bge-small-zh-int8.onnx": {
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    "quran.i8": {
+      "bytes": 8255540,
+      "sha256": "545e8ddfd09c14d1a34ea6836daff9176bd19fe012c4cc9ccc81eec899b7f2c5"
+    },
+    "verses.i8": {
+      "bytes": 16137700,
+      "sha256": "54fc99480b7e05d7b9ca216ad5f323663501fd8c085a0811db853e58d04f40de"
+    },
+    "vocab.txt": {
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    }
+  }
+}

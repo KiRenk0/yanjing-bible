@@ -37,8 +37,8 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                 else -> LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     if (tab == 0) {
                         item { Text("同一出处的不同文本。部分版本分节方式可能不同。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
-                        items(BibleVersion.entries.size, key = { BibleVersion.entries[it].id }) { i ->
-                            val version = BibleVersion.entries[i]
+                        items(detail.version.peers.size, key = { detail.version.peers[it].id }) { i ->
+                            val version = detail.version.peers[i]
                             val verse = detail.comparisons[version]
                             OutlinedCard {
                                 Column(Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)) {
@@ -50,7 +50,8 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                                         }
                                     }
                                     if (verse != null && verse.key != detail.key) Text("此版合并于 ${verse.key.reference}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
-                                    SelectionContainer { Text(verse?.text ?: "此版本没有相同节号，请核对上下文。", style = MaterialTheme.typography.bodyLarge.copy(fontSize = state.fontSize.sp, lineHeight = (state.fontSize * 1.65f).sp), modifier = Modifier.padding(end = 8.dp)) }
+                                    SelectionContainer { Text(verse?.text ?: "此版本没有相同节号，请核对上下文。", style = verseTextStyle(version,state.fontSize), modifier = Modifier.fillMaxWidth().padding(end = 8.dp)) }
+                                    CorpusSource(version)
                                     if (verse != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                                         TextButton(onClick = { shareVerse(context, verse, version) }) { Symbol(R.drawable.sym_share); Spacer(Modifier.width(8.dp)); Text("分享") }
                                         TextButton(onClick = { copy(verse, version) }) { Symbol(R.drawable.sym_content_copy); Spacer(Modifier.width(8.dp)); Text("复制") }
@@ -72,7 +73,7 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                             Surface(shape = MaterialTheme.shapes.medium, color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow) {
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Text("${verse.key.chapter}:${verse.key.verse}${if (selected) " · 当前经文" else ""}", style = MaterialTheme.typography.labelLarge)
-                                    SelectionContainer { Text(verse.text, style = MaterialTheme.typography.bodyLarge.copy(fontSize = state.fontSize.sp, lineHeight = (state.fontSize * 1.65f).sp)) }
+                                    SelectionContainer { Text(verse.text, style = verseTextStyle(detail.version,state.fontSize), modifier = Modifier.fillMaxWidth()) }
                                 }
                             }
                         }

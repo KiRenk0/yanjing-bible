@@ -20,7 +20,7 @@ class SemanticIndex(input: InputStream) {
             require(String(header, 0, 8, Charsets.US_ASCII) == "YJSEM001") { "语义索引格式错误" }
             val buffer = ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN).apply { position(8) }
             count = buffer.int; dimensions = buffer.int
-            require(count in 1..40000 && dimensions == 512 && buffer.int == 256)
+            require(count in 1..60000 && dimensions == 512 && buffer.int == 256)
             keys = IntArray(count); inverseNorms = FloatArray(count); vectors = ByteArray(count * dimensions)
             val row = ByteArray(dimensions + 8)
             for (i in 0 until count) {
@@ -36,7 +36,8 @@ class SemanticIndex(input: InputStream) {
     fun nearest(query: FloatArray, limit: Int = 60, accepts: (VerseKey) -> Boolean = { true }, checkpoint: () -> Unit = {}): List<SemanticCandidate> {
         require(query.size == dimensions && query.all { it.isFinite() })
         require(limit > 0)
-        val heap = PriorityQueue<SemanticCandidate>(compareBy { it.cosine })
+        // Multiple passages may point to one long verse. Keep its best score, then rank unique verses.
+        val best = HashMap<VerseKey, Float>()
         for (row in 0 until count) {
             if (row % 128 == 0) checkpoint()
             val encoded = keys[row]
@@ -46,8 +47,12 @@ class SemanticIndex(input: InputStream) {
             val base = row * dimensions
             for (j in 0 until dimensions) dot += vectors[base + j].toInt() * query[j]
             val score = (dot * inverseNorms[row]).coerceIn(-1f, 1f)
-            if (heap.size < limit) heap.add(SemanticCandidate(key, score))
-            else if (score > heap.element().cosine) { heap.poll(); heap.add(SemanticCandidate(key, score)) }
+            if (score > (best[key] ?: Float.NEGATIVE_INFINITY)) best[key] = score
+        }
+        val heap = PriorityQueue<SemanticCandidate>(compareBy { it.cosine })
+        best.forEach { (key, score) ->
+            if (heap.size < limit) heap.add(SemanticCandidate(key,score))
+            else if (score > heap.element().cosine) { heap.poll(); heap.add(SemanticCandidate(key,score)) }
         }
         return heap.sortedByDescending { it.cosine }
     }

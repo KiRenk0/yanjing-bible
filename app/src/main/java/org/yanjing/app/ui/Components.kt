@@ -10,13 +10,17 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.yanjing.app.R
@@ -31,14 +35,23 @@ fun Symbol(@DrawableRes id: Int, description: String?, modifier: Modifier = Modi
 fun Symbol(@DrawableRes id: Int, modifier: Modifier = Modifier) = Symbol(id, null, modifier)
 
 fun copyVerse(context: Context, verse: Verse, version: BibleVersion) {
-    val text = "${verse.text}\n——${verse.key.reference}（${version.title}）"
+    val text = exportedVerse(verse, version)
     (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(verse.key.reference, text))
 }
 fun shareVerse(context: Context, verse: Verse, version: BibleVersion) {
     context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, "${verse.text}\n——${verse.key.reference}（${version.title}）")
+        putExtra(Intent.EXTRA_TEXT, exportedVerse(verse, version))
     }, "分享经文"))
+}
+
+fun exportedVerse(verse: Verse, version: BibleVersion): String {
+    val credit = when (version) {
+        BibleVersion.QURAN_ZH -> "\n穆罕默德·马坚 · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin"
+        BibleVersion.QURAN_AR -> "\nTanzil Project · Uthmani v1.1 · CC BY 3.0 · https://tanzil.net"
+        else -> ""
+    }
+    return "${verse.text}\n——${verse.key.reference}（${version.title}）$credit"
 }
 
 @Composable
@@ -50,7 +63,7 @@ fun VerseCard(verse: Verse, version: BibleVersion, saved: Boolean, fontSize: Flo
                 Text(verse.key.reference, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
                 IconButton(onClick = onSave) { Symbol(if (saved) R.drawable.sym_bookmark_filled else R.drawable.sym_bookmark, if (saved) "取消收藏 ${verse.key.reference}" else "收藏 ${verse.key.reference}") }
             }
-            Text(verse.text, style = MaterialTheme.typography.bodyLarge.copy(fontSize = fontSize.sp, lineHeight = (fontSize * 1.65f).sp), modifier = Modifier.padding(end = 8.dp, bottom = 8.dp))
+            Text(verse.text, style = verseTextStyle(version, fontSize), modifier = Modifier.fillMaxWidth().padding(end = 8.dp, bottom = 8.dp))
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                 Column(Modifier.weight(1f)) {
                     Text(version.title, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -76,13 +89,29 @@ fun EmptyState(@DrawableRes icon: Int, title: String, description: String, modif
 }
 
 @Composable
+fun verseTextStyle(version: BibleVersion, fontSize: Float, lineSpacing: Float = 1.65f) = MaterialTheme.typography.bodyLarge.copy(
+    fontSize = fontSize.sp, lineHeight = (fontSize * if (version.isRtl) maxOf(1.9f,lineSpacing) else lineSpacing).sp,
+    textDirection = if (version.isRtl) TextDirection.Rtl else TextDirection.ContentOrLtr)
+
+@Composable
+fun CorpusSource(version: BibleVersion) {
+    val uri = LocalUriHandler.current
+    if (version.isQuran) TextButton(onClick = { uri.openUri(if (version.isRtl) "https://tanzil.net" else "https://quranenc.com/zh/browse/chinese_makin") }, contentPadding = PaddingValues(0.dp)) { Text(
+        if (version.isRtl) "阿拉伯文：Tanzil Project · Uthmani v1.1 · tanzil.net"
+        else "经义译文：穆罕默德·马坚 · QuranEnc.com v1.0.2",
+        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+}
+
+@Composable
 fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: () -> Unit, onSelect: (BibleVersion) -> Unit) {
     AlertDialog(onDismissRequest = onDismiss,
-        icon = { Symbol(R.drawable.sym_menu_book) }, title = { Text("选择圣经版本") },
+        icon = { Symbol(R.drawable.sym_menu_book) }, title = { Text("选择经典与版本") },
         text = {
-            Column {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
                 Text("所有版本均已内置，可离线使用。", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 12.dp))
-                BibleVersion.entries.forEach { version ->
+                Scripture.entries.forEach { scripture ->
+                Text(scripture.title, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
+                BibleVersion.entries.filter { it.scripture == scripture }.forEach { version ->
                     Surface(shape = MaterialTheme.shapes.medium) {
                         Row(Modifier.fillMaxWidth().selectable(selected = version == current, role = Role.RadioButton, onClick = { onSelect(version); onDismiss() }).padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                             RadioButton(selected = version == current, onClick = null, modifier = Modifier.padding(12.dp))
@@ -93,7 +122,8 @@ fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: ()
                         }
                     }
                 }
-                Text("简体与繁体和合本为同一译本；文理和合本是独立的文言译本。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
+                }
+                Text("圣经：4 套文本、3 种译本。古兰经：中文经义译本与阿拉伯文，分别检索与对照。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
             }
         }, confirmButton = { TextButton(onClick = onDismiss) { Text("完成") } })
 }

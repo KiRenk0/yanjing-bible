@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "versions": [
+    {
+      "id": "quran_zh",
+      "verses": 6236,
+      "chapters": 114,
+      "sha256": "b8aad7de5b2b140e02f6ddeee053fc9bd2e4e2ab2e0fa17bce512b2a1f2b0610"
+    },
+    {
+      "id": "quran_ar",
+      "verses": 6236,
+      "chapters": 114,
+      "sha256": "badc826488dd74045056f5d9e1bb39af3854cbebb524e7592c365ac08620d75e"
+    }
+  ]
+}

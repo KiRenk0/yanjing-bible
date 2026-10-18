@@ -13,7 +13,7 @@ const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
 const metadata={schema:1,applicationId:'org.yanjing.app',versionCode,versionName,minSdk:26,
   apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${apkName}`,
   size:bytes.length,sha256,
-  notes:'新增完全离线的句意搜索；搜索栏旁可多选句意搜索、日常表达和原文搜索，合并去重并标明命中模式。新增 Release 更新检查、自动下载、镜像切换、断点续传及安装包签名验证。修复和合本合并分节占位符。'};
+  notes:'新增古兰经查询：完整 114 章、6,236 节，内置马坚中文经义译本与阿拉伯文。支持离线句意搜索、多模式合并、章号节号定位、中阿对照、整章阅读和收藏。圣经与古兰经分别检索并保存阅读位置；保留镜像自动更新。'};
 fs.writeFileSync(path.join(root,'dist/update.json'),JSON.stringify(metadata,null,2)+'\n');
 fs.writeFileSync(path.join(root,'dist/SHA256SUMS.txt'),`${sha256}  ${apkName}\n`);
 console.log(JSON.stringify({versionName,versionCode,bytes:bytes.length,sha256}));

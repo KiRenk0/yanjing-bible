@@ -3,6 +3,20 @@ package org.yanjing.app.core
 data class ExpressionGroup(val phrases: List<String>, val references: List<VerseKey>)
 
 object ExpressionLexicon {
+    fun forVersion(version: BibleVersion): List<ExpressionGroup> = if (version.isQuran) quranGroups else groups
+
+    private val quranGroups = listOf(
+        ExpressionGroup(listOf("困难之后会有容易", "艰难之后会有容易", "苦尽甘来", "困难总会过去"), listOf(VerseKey(67,94,5), VerseKey(67,94,6))),
+        ExpressionGroup(listOf("不要绝望", "不要因绝望而放弃", "别失去希望"), listOf(VerseKey(67,39,53))),
+        ExpressionGroup(listOf("公平待人", "公正", "不要因为仇恨而不公平"), listOf(VerseKey(67,5,8))),
+        ExpressionGroup(listOf("没有强迫", "信仰不能强迫", "宗教上没有强迫"), listOf(VerseKey(67,2,256))),
+        ExpressionGroup(listOf("不要嘲笑别人", "不要嘲讽", "别取笑别人"), listOf(VerseKey(67,49,11))),
+        ExpressionGroup(listOf("不要背后说人坏话", "不要猜疑", "不要窥探隐私"), listOf(VerseKey(67,49,12))),
+        ExpressionGroup(listOf("孝敬父母", "善待父母", "不要对父母不耐烦"), listOf(VerseKey(67,17,23),VerseKey(67,17,24))),
+        ExpressionGroup(listOf("不要浪费", "别铺张浪费"), listOf(VerseKey(67,7,31))),
+        ExpressionGroup(listOf("行善", "善有善报"), listOf(VerseKey(67,99,7))),
+        ExpressionGroup(listOf("互相认识", "尊重不同民族"), listOf(VerseKey(67,49,13)))
+    )
     private fun group(phrases: String, vararg references: String) = ExpressionGroup(
         phrases.split('|'), references.map { requireNotNull(VerseKey.decode(it)) }
     )
