@@ -47,6 +47,14 @@ def main():
     assert "sdkVersion:'26'" in badging
     manifest_dump = subprocess.check_output([str(tools / "aapt.exe"), "dump", "xmltree", str(apk_path), "AndroidManifest.xml"], text=True, encoding="utf-8")
     assert re.search(r"extractNativeLibs.*0xffffffff",manifest_dump), "Compressed native libraries must be extracted by Android"
+    assert "org.yanjing.app.StartupActivity" in manifest_dump
+    assert "androidx.work.WorkManagerInitializer" not in manifest_dump, "Update scheduler must initialize on demand"
+    assert "org.yanjing.app.updates" in manifest_dump and "android.support.FILE_PROVIDER_PATHS" in manifest_dump
+    resources_dump = subprocess.check_output([str(tools / "aapt.exe"), "dump", "--values", "resources", str(apk_path)], text=True, encoding="utf-8")
+    paths_file = re.search(r"resource 0x[0-9a-f]+ [^\n]*:xml/update_paths:[^\n]*\n[^\n]*\(string8\) \"([^\"]+)\"", resources_dump)
+    assert paths_file, "Release must retain FileProvider path configuration"
+    sharing_paths = subprocess.check_output([str(tools / "aapt.exe"), "dump", "xmltree", str(apk_path), paths_file[1]], text=True, encoding="utf-8")
+    assert 'cache-path' in sharing_paths and 'diagnostics/' in sharing_paths
     mapping_path = DIST / f"yanjing-{info['versionName']}-mapping.txt.gz"
     mapping = gzip.decompress(mapping_path.read_bytes()).decode("utf-8")
     for name in ("ai.onnxruntime.OrtEnvironment","ai.onnxruntime.OrtSession","ai.onnxruntime.OnnxTensor",
@@ -126,6 +134,8 @@ def main():
     assert any(s["name"].endswith("AnalectsSearchTest") and s["tests"] >= 6 for s in suites)
     assert any(s["name"].endswith("RetrievalEvaluationTest") and s["tests"] >= 1 for s in suites)
     assert any(s["name"].endswith("SemanticRankerTest") and s["tests"] >= 4 for s in suites)
+    assert any(s["name"].endswith("Android17StartupTest") and s["tests"] >= 1 for s in suites)
+    assert any(s["name"].endswith("StartupRecoveryTest") and s["tests"] >= 8 for s in suites)
     issues = ET.parse(ROOT / "app/build/reports/lint-results-debug.xml").getroot().findall("issue")
     assert not [i for i in issues if i.attrib["severity"] in ("Error", "Fatal")]
     warnings = [i.attrib["id"] for i in issues if i.attrib["severity"] == "Warning"]
@@ -167,7 +177,10 @@ def main():
         "analects": {"chapters": 20, "verses": 512, "modernRetrievalGlosses": 512, "semanticPassages": semantic["passages"], "revision": manifest["revision"],
                      "paraphraseChecks": "Twelve modern Chinese queries absent from the expression dictionary retrieve the expected original in the top five using the actual ONNX model",
                      "integrity": "All originals match pinned JSON paragraphs; all APK assets and source archive entries match workspace bytes"},
-        "deviceTesting": "Robolectric API 35 and 36 native graphics, phone and tablet; real ONNX inference; no physical Android device verification",
+        "deviceTesting": "Robolectric API 35/36 Compose flows; API 37 direct framework/native-graphics startup; API 36/37 platform recovery and scheduler/palette failure injection; real ONNX inference; no physical Android device verification",
+        "startupCompatibility": {"onDemandWorkManager": True, "platformRecoveryScreen": True,
+                                 "reportedDevice": "Xiaomi 15 Pro; HyperOS 4.0.0.17.XOBCNXM.D01; Android 17",
+                                 "limitation": "No crash stack or physical-device reproduction; changes address verified startup failure paths, not a confirmed diagnosis of this device"},
         "updateValidation": "Metadata, resumable download, package/version/hash/signer rejection and in-app update UI covered by existing regression tests",
     }
     (DIST / "verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

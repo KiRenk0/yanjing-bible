@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="startup-recovery" android:enabled="true"
+        android:icon="@drawable/sym_info" android:shortcutShortLabel="@string/startup_recovery_shortcut">
+        <intent android:action="org.yanjing.app.RECOVERY"
+            android:targetPackage="org.yanjing.app" android:targetClass="org.yanjing.app.StartupActivity" />
+    </shortcut>
+</shortcuts>

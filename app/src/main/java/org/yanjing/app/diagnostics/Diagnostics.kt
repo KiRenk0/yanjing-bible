@@ -20,12 +20,13 @@ object Diagnostics {
         val stack = StringWriter().also { failure.printStackTrace(PrintWriter(it)) }.toString().take(48_000)
         val process = if (thread.name.isBlank()) "unknown" else thread.name.take(100)
         File(directory(context),"crash-${android.os.Process.myPid()}.txt").writeText(
-            "time=${System.currentTimeMillis()}\nthread=$process\n$stack")
+            "version=${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})\ntime=${System.currentTimeMillis()}\nthread=$process\n$stack")
         directory(context).listFiles()?.sortedByDescending { it.lastModified() }?.drop(4)?.forEach { it.delete() }
     }
     internal fun report(context: Context): String = buildString {
         appendLine("言·经 ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
         appendLine("device=${Build.MANUFACTURER} ${Build.MODEL}; Android=${Build.VERSION.RELEASE}; API=${Build.VERSION.SDK_INT}")
+        appendLine("build=${Build.DISPLAY}; fingerprint=${Build.FINGERPRINT}; targetSdk=${context.applicationInfo.targetSdkVersion}")
         appendLine("ABIs=${Build.SUPPORTED_ABIS.joinToString()}; pageSize=${runCatching { Os.sysconf(OsConstants._SC_PAGESIZE) }.getOrDefault(-1)}")
         appendLine("ONNX Runtime=1.25.1; inferenceProcess=:semantic")
         if (Build.VERSION.SDK_INT >= 30) runCatching {

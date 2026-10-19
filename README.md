@@ -2,6 +2,14 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.4.1：启动兼容与恢复
+
+针对 Xiaomi 15 Pro、HyperOS 4.0.0.17.XOBCNXM.D01、Android 17 的启动即闪退反馈，修正启动链中的可确认风险：WorkManager 改为官方的按需初始化，界面与本地文本就绪后才调度自动更新；更新组件初始化或调度失败会报告错误，不再直接中断主界面。动态配色缺少系统色板资源时回退到内置配色。
+
+新入口使用平台原生 View。上次启动未完成时，显示“启动恢复”，可重试、兼容启动（关闭动态配色与自动检查更新）或导出本机诊断；保留收藏、历史与阅读进度。也可长按桌面图标选择“启动恢复与诊断”。诊断补充系统构建指纹及异常发生时的应用版本，不会自动上传。旧 MainActivity 组件继续可供旧桌面入口访问。
+
+补充 Android 17（API 37）框架与原生绘图的 Robolectric 启动测试，以及 Android 16/17 下的恢复流程、调度失败与缺失色板回归。现有 Android 15/16 Compose 全流程仍保留。**尚未获得反馈设备的异常堆栈，也没有该机真机验证，因此不能断言反馈中的闪退根因已确认。** Android 17 的 Espresso 输入注入仍依赖已移除的隐藏 API，37 的启动检查直接布局绘制，不冒充触控全流程测试。WorkManager 配置见 [Android 官方说明](https://developer.android.com/develop/background-work/background-tasks/persistent/configuration/custom-configuration)。
+
 ## v1.4.0：查询排序与安装包优化
 
 三部经典的句意查询加入第二轮排序：先用原有 BGE 模型召回候选，再以通用同义词、原文、论语检索释义和已有表达线索补充召回、细调排序。额外用词加分有上限，仍以句意相似度为主。按绝对下限与相对最佳结果的差距过滤较弱候选；多选搜索模式时，不再让弱表达重叠重新混入已筛掉的结果，保留原文精确命中与明确表达关联。模型服务不可用时仍可独立使用其他模式。
@@ -61,7 +69,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.4.0.apk`。无需登录，内置模型、圣经、古兰经和论语，安装后即可离线搜索。
+Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.4.1.apk`。无需登录，内置模型、圣经、古兰经和论语，安装后即可离线搜索。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 

@@ -48,7 +48,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             readerBook = repository.setting("readerBook", "43").toIntOrNull()?.takeIf(version::acceptsBook) ?: version.defaultBook,
             readerChapter = repository.setting("readerChapter", "1").toIntOrNull()?.coerceAtLeast(1) ?: 1) }
         loadVersion(version)
-        updates.start()
     }
 
     fun loadVersion(version: BibleVersion) {

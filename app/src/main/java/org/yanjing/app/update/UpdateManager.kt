@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
 import java.util.concurrent.TimeUnit
+import org.yanjing.app.diagnostics.Diagnostics
 
-class UpdateManager(context: Context) : AutoCloseable {
+class UpdateManager(context: Context, private val workManager: (Context) -> WorkManager = { WorkManager.getInstance(it) }) : AutoCloseable {
     private val app = context.applicationContext
     private val store = UpdateStore(app)
     private val mutable = MutableStateFlow(store.read())
@@ -20,33 +21,47 @@ class UpdateManager(context: Context) : AutoCloseable {
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> mutable.value = store.read() }
     init { store.preferences.registerOnSharedPreferenceChangeListener(listener) }
 
-    fun start() {
+    private fun safelySchedule(action: () -> Unit) {
+        try { action() }
+        catch (failure: Exception) { schedulingFailed(failure) }
+        catch (failure: LinkageError) { schedulingFailed(failure) }
+    }
+    private fun schedulingFailed(failure: Throwable) {
+        // Background updates are optional; scheduler/ROM errors must not close the reader.
+        runCatching { Diagnostics.record(app, Thread.currentThread(), failure) }
+        store.status(UpdatePhase.ERROR, "更新组件暂时不可用，可稍后重试或前往 GitHub 下载。")
+    }
+    fun start() = safelySchedule {
         if (state.value.autoCheck) {
             val request = PeriodicWorkRequestBuilder<CheckUpdateWorker>(24, TimeUnit.HOURS)
                 .setInitialDelay(24, TimeUnit.HOURS)
                 .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()).build()
-            WorkManager.getInstance(app).enqueueUniquePeriodicWork("update-periodic", ExistingPeriodicWorkPolicy.KEEP, request)
+            workManager(app).enqueueUniquePeriodicWork("update-periodic", ExistingPeriodicWorkPolicy.KEEP, request)
             if (System.currentTimeMillis() - state.value.lastChecked > TimeUnit.HOURS.toMillis(6)) check()
         }
     }
     fun check() {
         if (state.value.phase == UpdatePhase.DOWNLOADING) return
-        store.status(UpdatePhase.CHECKING, "正在检查 GitHub Release…")
-        val request = OneTimeWorkRequestBuilder<CheckUpdateWorker>().setInputData(workDataOf("manual" to true))
-            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()).build()
-        WorkManager.getInstance(app).enqueueUniqueWork("update-check", ExistingWorkPolicy.KEEP, request)
+        safelySchedule {
+            store.status(UpdatePhase.CHECKING, "正在检查 GitHub Release…")
+            val request = OneTimeWorkRequestBuilder<CheckUpdateWorker>().setInputData(workDataOf("manual" to true))
+                .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()).build()
+            workManager(app).enqueueUniqueWork("update-check", ExistingWorkPolicy.KEEP, request)
+        }
     }
-    fun download() { enqueueDownload(app, automatic = false) }
+    fun download() { safelySchedule { enqueueDownload(app, automatic = false) } }
     fun dismiss() { store.dismiss() }
     fun option(key: String, value: Boolean) {
         require(key in setOf("autoCheck", "autoDownload", "wifiOnly"))
         store.preferences.edit().putBoolean(key, value).apply()
-        if (key == "autoCheck") {
-            if (value) start() else WorkManager.getInstance(app).cancelUniqueWork("update-periodic")
-        }
-        if (key == "autoDownload" || key == "wifiOnly") {
-            WorkManager.getInstance(app).cancelAllWorkByTag("update-automatic-download")
-            if (state.value.autoDownload && state.value.release != null && state.value.phase != UpdatePhase.READY) enqueueDownload(app, true)
+        safelySchedule {
+            if (key == "autoCheck") {
+                if (value) start() else workManager(app).cancelUniqueWork("update-periodic")
+            }
+            if (key == "autoDownload" || key == "wifiOnly") {
+                workManager(app).cancelAllWorkByTag("update-automatic-download")
+                if (state.value.autoDownload && state.value.release != null && state.value.phase != UpdatePhase.READY) enqueueDownload(app, true)
+            }
         }
     }
     fun route(value: DownloadRoute) { store.preferences.edit().putString("route", value.name).apply() }

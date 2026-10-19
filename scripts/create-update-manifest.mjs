@@ -14,7 +14,7 @@ const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
 const metadata={schema:1,applicationId:'org.yanjing.app',versionCode,versionName,minSdk:26,
   apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${apkName}`,
   size:bytes.length,sha256,
-  notes:'优化三部经典的离线句意查询：增加同义词线索召回、有限权重的二次排序与低相关候选过滤；多模式搜索保留语义强弱，避免弱用词匹配重新混入结果。索引按与手机相同的 ONNX Runtime 1.25.1 逐句重建。启用 R8 代码／资源裁剪与模型、索引、原生库压缩，显著缩小通用安装包；保留四种架构、全部文本及离线模型。'};
+  notes:'启动兼容更新：自动更新改为按需初始化并延后至界面就绪，调度异常不再直接导致主界面退出；系统动态色板缺失时使用内置配色。新增独立启动恢复页，可兼容启动、保留本机数据并导出诊断。补充 Android 17 启动与恢复测试。尚无 Xiaomi 15 Pro／HyperOS 4 的真机堆栈，具体设备问题仍需覆盖安装后验证。'};
 fs.writeFileSync(path.join(root,'dist/update.json'),JSON.stringify(metadata,null,2)+'\n');
 fs.writeFileSync(path.join(root,'dist/SHA256SUMS.txt'),`${sha256}  ${apkName}\n`);
 const mapping=fs.readFileSync(path.join(root,'app/build/outputs/mapping/release/mapping.txt'));

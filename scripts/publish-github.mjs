@@ -57,11 +57,10 @@ await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
 await git(['push','origin',tag]);
 const size=verified.apkSizeComparison;
-const evaluation=verified.semanticEvaluation;
-const body=`${metadata.notes}\n\n通用 APK：${(size.previousBytes/1e6).toFixed(1)} MB → ${(size.currentBytes/1e6).toFixed(1)} MB，减少 ${size.reductionPercent}%。仍包含 ARM64、ARMv7、x86、x86_64、全部经典、模型和索引；安装后可完整离线搜索。原生库在安装时解压当前架构，安装后占用不会与下载体积同比例缩小。\n\n实际 ONNX 模型及应用排序代码验证：${evaluation.positiveQueries} 条有预期出处的人工编写样例，前五位命中由 ${evaluation.top5Before} 条提升到 ${evaluation.top5After} 条，首位由 ${evaluation.top1Before} 条提升到 ${evaluation.top1After} 条。另验证 ${evaluation.outOfScopeQueries} 条范围外查询；有限样例也用于参数选择，不代表所有查询的准确率。详见源码中的 docs/semantic-evaluation.tsv、评估说明及 verification.json。\n\nAndroid 8.0 及以上。继续使用原签名，可覆盖旧版并保留本机数据。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络，安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和、验证摘要与 R8 映射。${verified.tests} 项自动测试通过；尚无物理 Android 设备验证。`;
+const body=`${metadata.notes}\n\n此次先处理 Xiaomi 15 Pro／HyperOS 4／Android 17 的启动反馈。没有该设备的异常堆栈，也没有真机复现；本版修正已验证的启动失败路径，仍需在反馈设备上覆盖安装确认。\n\n如果仍在打开时退出，请再次打开，进入“启动恢复”后尝试“兼容启动”，或点击“导出本机诊断”。也可长按桌面图标选择“启动恢复与诊断”。兼容启动关闭动态配色与自动检查更新，保留收藏、历史及阅读进度。诊断由用户选择分享，不会自动上传。\n\n${verified.tests} 项自动测试通过，lint 无错误。包含 Android 17 框架／原生绘图启动检查，Android 16/17 恢复与调度异常测试，以及原有搜索、阅读、收藏、真实 ONNX 检索、更新与签名校验回归。Android 17 尚未进行 Espresso 触控全流程或物理设备验证。\n\n通用 APK：${(size.currentBytes/1e6).toFixed(1)} MB，保留四种架构、全部文本和离线模型。Android 8.0 及以上；原签名，可直接覆盖旧版并保留本机数据。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和、验证摘要与 R8 映射。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 更精准的离线检索与更小的安装包`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 启动兼容与恢复`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}

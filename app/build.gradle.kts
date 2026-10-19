@@ -12,8 +12,8 @@ android {
         applicationId = "org.yanjing.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 6
-        versionName = "1.4.0"
+        versionCode = 7
+        versionName = "1.4.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true; buildConfig = true; aidl = true }
@@ -38,7 +38,8 @@ android {
             it.systemProperty("robolectric.dependency.repo.url", "https://repo.maven.apache.org/maven2")
             val cachedSdk = rootProject.file(".tools/robolectric/android-all-instrumented-15-robolectric-13954326-i7.jar")
             val cachedAndroid16 = rootProject.file(".tools/robolectric/android-all-instrumented-16-robolectric-13921718-i7.jar")
-            if (cachedSdk.isFile && cachedSdk.length() == 200643142L && cachedAndroid16.isFile) {
+            val cachedAndroid17 = rootProject.file(".tools/robolectric/android-all-instrumented-17-robolectric-15733970-i7.jar")
+            if (cachedSdk.isFile && cachedSdk.length() == 200643142L && cachedAndroid16.isFile && cachedAndroid17.isFile) {
                 it.systemProperty("robolectric.offline", "true")
                 it.systemProperty("robolectric.dependency.dir", cachedSdk.parentFile.absolutePath)
             }
