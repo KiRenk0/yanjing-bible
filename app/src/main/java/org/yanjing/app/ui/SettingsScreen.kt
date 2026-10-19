@@ -15,6 +15,7 @@ import org.yanjing.app.*
 import org.yanjing.app.R
 import org.yanjing.app.core.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.*
 import org.yanjing.app.diagnostics.Diagnostics
 
@@ -32,7 +33,7 @@ fun SettingsScreen(state: AppState, model: AppViewModel, onVersions: () -> Unit,
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
                 Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Symbol(R.drawable.sym_menu_book)
-                    Text("言·经", style = MaterialTheme.typography.headlineMedium)
+                    Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
                     Text("日常表达 × 经文探索", style = MaterialTheme.typography.titleMedium)
                     Text("${BuildConfig.VERSION_NAME} · 离线检索 · 无广告", style = MaterialTheme.typography.bodyMedium)
                 }

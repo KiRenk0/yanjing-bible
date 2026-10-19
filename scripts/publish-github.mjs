@@ -53,19 +53,31 @@ async function api(method,route,body){
 const user=await api('GET','/user');
 if(user.login!=='KiRenk0')throw Error('Authenticated account is not the intended repository owner');
 let repo=await api('GET',`/repos/${repository}`);
-if(!repo)repo=await api('POST','/user/repos',{name:'yanjing-bible',description:'言·经：Material 3 Expressive 中文圣经 Android 应用，离线句意检索、多模式搜索与安全更新。',private:false,has_wiki:false,auto_init:false});
+if(!repo)repo=await api('POST','/user/repos',{name:'yanjing-bible',description:'盐筋：Material 3 Expressive 中文圣经 Android 应用，离线句意检索、多模式搜索与安全更新。',private:false,has_wiki:false,auto_init:false});
 console.log('Repository ready: '+repo.html_url);
-await api('PATCH',`/repos/${repository}`,{description:'言·经：离线查询圣经（中英拉丁文）、古兰经及儒释道经典，用现代汉语查找文言原文；原生 Android、Material 3、多模式检索与安全更新。'});
+await api('PATCH',`/repos/${repository}`,{description:'盐筋：离线查询圣经（中英拉丁文）、古兰经及儒释道经典，用现代汉语查找文言原文；原生 Android、Material 3、多模式检索与安全更新。'});
 if(!(await git(['remote'])).split(/\r?\n/).includes('origin'))await git(['remote','add','origin',repo.clone_url]);
 if((await git(['remote','get-url','origin'])).trim()!==repo.clone_url)throw Error('Unexpected git remote');
 await git(['push','-u','origin','main']);
-if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
+if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`盐筋 ${tag}`]);
 await git(['push','origin',tag]);
 const size=verified.apkSizeComparison;
-const body=`${metadata.notes}\n\n**法华经**：完整内置 CBETA T0262《妙法莲华经》，支持二十八品选择、上下文与独立语义索引。可以输入“法华经 25:1”“《妙法蓮華經》第二十五品第一段”“如来寿量品”“普门品1”，或用白话描述“尊重每一个人不轻视别人”。段号按所附正文／偈颂区块顺序。白话提示单独标注，仅辅助查找，不是完整翻译或权威注疏。\n\n**代码审查修复**：经典键和对照查询改由目录识别，避免新增经典漏掉收藏或被归入圣经；出处解析支持品／分与完整经名，并拒绝溢出的段号／范围；源码 ZIP 只收录 Git 已跟踪文件，避免夹带本地未审查文件。\n\n**来源**：[CBETA XML P5 固定版本](https://github.com/cbeta-org/xml-p5/blob/dbdea41071e1e260ad84b72faefd4587333cf76d/T/T09/T09n0262.xml)，CC BY-NC-SA 3.0 TW 及所附非营利使用条件。原始 XML、完整来源 header、授权和版本说明均随源码／应用保存，正文和对应索引与应用自有 MIT 代码分别授权。\n\n**升级方法**：沿用原签名，直接覆盖安装，无需卸载，保留收藏、历史、阅读进度和设置。ARM64 手机可用 ARM64 包；其他架构或不确定时使用通用包。\n\n[ARM64 安装包](${metadata.arm64.apkUrl}) · [通用安装包](${metadata.apkUrl})\n\n**验证**：${verified.tests} 项自动测试通过，lint 无错误。检查全部经典出处往返、真实模型白话检索、独立索引切换，以及 Android 15/16 Compose 中的法华经搜索、收藏、复制、阅读和位置恢复。原有搜索、启动和更新回归继续通过。逐包核对版本、原签名、SHA-256、16 KB 对齐、全部资源及压缩 DEX 中的更新数据库反射入口，并从固定 XML 重新提取、逐段核对法华经全文。未进行物理设备测试。详细检查见附件 verification.json。\n\nARM64 ${(verified.arm64.apkBytes/1e6).toFixed(1)} MB；通用版 ${(size.currentBytes/1e6).toFixed(1)} MB。Android 8.0 及以上。\n\nARM64 SHA-256：\`${metadata.arm64.sha256}\`\n\n通用包 SHA-256：\`${metadata.sha256}\`\n\n附件包含两种安装包、完整源码与数据、更新清单、校验和、验证记录及 R8 映射。`;
+const body=`${metadata.notes}
+
+**名称变更**：桌面标签、首页、设置页、启动恢复及诊断报告统一显示“盐筋”。继续保留原 logo、包名 org.yanjing.app 和原签名。
+
+**升级方法**：直接覆盖安装，无需卸载，保留收藏、历史、阅读进度与设置。安装包文件名继续使用 yanjing- 前缀，兼容旧版本应用内更新。
+
+[ARM64 安装包](${metadata.arm64.apkUrl}) · [通用安装包](${metadata.apkUrl})
+
+**验证**：${verified.tests} 项自动测试通过，lint 无错误。逐包核对名称、原签名、原图标、版本、SHA-256、16 KB 对齐、全部资源及压缩 DEX 中的更新数据库反射入口。未进行物理设备测试；详细记录见附件 verification.json。
+
+ARM64 ${(verified.arm64.apkBytes/1e6).toFixed(1)} MB；通用版 ${(size.currentBytes/1e6).toFixed(1)} MB。Android 8.0 及以上。
+
+附件包含两种安装包、完整源码与数据、更新清单、校验和、验证记录及 R8 映射。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 完整法华经与代码审查修复`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`盐筋 ${tag} · 软件更名，保留原图标与签名`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}

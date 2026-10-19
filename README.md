@@ -1,6 +1,10 @@
-# 言·经 · 经文查询匹配器
+# 盐筋 · 经文查询匹配器
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
+
+## v1.6.1：软件更名为“盐筋”
+
+桌面标签、首页、设置页、启动恢复和诊断报告统一使用“盐筋”。保留原 logo、包名 `org.yanjing.app` 和原签名，可覆盖安装并保留收藏、历史、阅读进度与设置。安装包仍使用既有 `yanjing-` 文件名前缀，兼容旧版本的应用内更新。
 
 ## v1.6.0：加入完整《法华经》并修复出处与发布打包
 
@@ -103,7 +107,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.6.0-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.6.0.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
+Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.6.1-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.6.1.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 

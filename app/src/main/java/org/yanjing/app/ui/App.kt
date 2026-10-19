@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.contentDescription
@@ -60,7 +61,7 @@ fun YanJingApp(state: AppState, model: AppViewModel) {
             }
             Scaffold(modifier = Modifier.weight(1f),
                 topBar = {
-                    TopAppBar(title = { Text(when (destination) { 0 -> "言·经"; 1 -> "${state.version.scripture.title}阅读"; 2 -> "我的收藏"; else -> "设置" }) },
+                    TopAppBar(title = { Text(when (destination) { 0 -> stringResource(R.string.app_name); 1 -> "${state.version.scripture.title}阅读"; 2 -> "我的收藏"; else -> "设置" }) },
                         subtitle = { Text(when (destination) { 0 -> "让日常的话，遇见经文"; 1 -> "读一句，也读它的上下文"; 2 -> "留住触动你的字句"; else -> "按你的习惯阅读" }) },
                         actions = {
                             if (destination <= 1) TextButton(onClick = { versions = true },modifier=Modifier.semantics { contentDescription="选择经典与版本" }) {

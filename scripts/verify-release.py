@@ -21,6 +21,8 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "app/src/main/assets"
 DIST = ROOT / "dist"
 SIGNER = "35af01bb53bbbce5fcc462a8a9f2fd58e39bda2c27f94a7cf723ddb83c5473b2"
+LAUNCHER_ICON = "655030278d43e8a092d989751266c248bdde5e863c888764c292be6b293f2a11"
+LAUNCHER_SOURCE = "b2f9d6b396cf4baf78a54c2871ad33a352a1d93deadd77b2deac730ada431def"
 
 def sha(data):
     return hashlib.sha256(data).hexdigest()
@@ -53,6 +55,12 @@ def main():
     assert "application-debuggable" not in badging
     assert f"name='{info['applicationId']}' versionCode='{info['versionCode']}' versionName='{info['versionName']}'" in badging
     assert "sdkVersion:'26'" in badging
+    app_label = ET.parse(ROOT / 'app/src/main/res/values/strings.xml').getroot().find("string[@name='app_name']").text
+    assert f"application-label:'{app_label}'" in badging
+    icon_path = re.search(r"^application:.* icon='([^']+)'", badging, re.M)[1]
+    assert sha((ROOT / 'app/src/main/res/drawable/ic_launcher.xml').read_bytes()) == LAUNCHER_SOURCE
+    with zipfile.ZipFile(apk_path) as apk:
+        assert sha(apk.read(icon_path)) == LAUNCHER_ICON, 'Launcher logo changed'
     arm_signature = subprocess.check_output([str(tools / "apksigner.bat"), "verify", "--verbose", "--print-certs", str(arm_path)], text=True)
     assert f"certificate SHA-256 digest: {SIGNER}" in arm_signature
     subprocess.run([str(tools / "zipalign.exe"), "-c", "-P", "16", "4", str(arm_path)], check=True, capture_output=True)
@@ -60,6 +68,10 @@ def main():
     assert "application-debuggable" not in arm_badging
     assert f"name='{info['applicationId']}' versionCode='{info['versionCode']}' versionName='{info['versionName']}'" in arm_badging
     assert "native-code: 'arm64-v8a'" in arm_badging and "sdkVersion:'26'" in arm_badging
+    assert f"application-label:'{app_label}'" in arm_badging
+    arm_icon_path = re.search(r"^application:.* icon='([^']+)'", arm_badging, re.M)[1]
+    with zipfile.ZipFile(arm_path) as apk:
+        assert sha(apk.read(arm_icon_path)) == LAUNCHER_ICON, 'ARM64 launcher logo changed'
     assert arm_path.stat().st_size < apk_path.stat().st_size
     manifest_dump = subprocess.check_output([str(tools / "aapt.exe"), "dump", "xmltree", str(apk_path), "AndroidManifest.xml"], text=True, encoding="utf-8")
     assert re.search(r"extractNativeLibs.*0xffffffff",manifest_dump), "Compressed native libraries must be extracted by Android"
@@ -240,6 +252,7 @@ def main():
     previous_bytes = 181334116
     report = {
         "date": "2026-10-19", "applicationId": info["applicationId"], "version": info["versionName"], "versionCode": info["versionCode"],
+        "applicationLabel": app_label, "launcherIconSha256": LAUNCHER_ICON, "launcherIconSourceSha256": LAUNCHER_SOURCE,
         "minimumAndroid": "8.0 (API 26)", "targetSdk": 37,
         "tests": sum(s["tests"] for s in suites), "failures": 0, "suites": suites,
         "lint": {"errors": 0, "warnings": len(warnings), "warningIds": sorted(set(warnings))},

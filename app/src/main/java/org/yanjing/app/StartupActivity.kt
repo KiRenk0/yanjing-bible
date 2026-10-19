@@ -37,7 +37,7 @@ class StartupActivity : Activity() {
         fun button(label: String, action: () -> Unit) {
             content.addView(Button(this).apply { text=label; setOnClickListener { action() } })
         }
-        text("言·经 · 启动恢复",24f)
+        text("${getString(R.string.app_name)} · 启动恢复",24f)
         text("上次启动未完成。可以重试，或关闭动态配色和自动检查更新后进入。收藏、历史和阅读进度会保留。",17f)
         button("重试启动") { openReader() }
         button("兼容启动") { recovery.enableCompatibility(); openReader() }

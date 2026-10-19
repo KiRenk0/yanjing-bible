@@ -1,3 +1,4 @@
 <resources>
+    <string name="app_name" translatable="false">盐筋</string>
     <string name="startup_recovery_shortcut">启动恢复与诊断</string>
 </resources>

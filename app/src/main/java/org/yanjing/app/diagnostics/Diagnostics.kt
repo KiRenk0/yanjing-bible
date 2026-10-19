@@ -9,6 +9,7 @@ import android.system.Os
 import android.system.OsConstants
 import androidx.core.content.FileProvider
 import org.yanjing.app.BuildConfig
+import org.yanjing.app.R
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -24,7 +25,7 @@ object Diagnostics {
         directory(context).listFiles()?.sortedByDescending { it.lastModified() }?.drop(4)?.forEach { it.delete() }
     }
     internal fun report(context: Context): String = buildString {
-        appendLine("言·经 ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+        appendLine("${context.getString(R.string.app_name)} ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
         appendLine("device=${Build.MANUFACTURER} ${Build.MODEL}; Android=${Build.VERSION.RELEASE}; API=${Build.VERSION.SDK_INT}")
         appendLine("build=${Build.DISPLAY}; fingerprint=${Build.FINGERPRINT}; targetSdk=${context.applicationInfo.targetSdkVersion}")
         appendLine("ABIs=${Build.SUPPORTED_ABIS.joinToString()}; pageSize=${runCatching { Os.sysconf(OsConstants._SC_PAGESIZE) }.getOrDefault(-1)}")
