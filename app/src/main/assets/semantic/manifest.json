@@ -15,7 +15,7 @@
   "sourceVersion": "cuvs",
   "verses": 31034,
   "passages": 31034,
-  "corpusSha256": "8cda388978b271c848875199d0a684c7917d4f13359c5e4cc5c7cc5358bff23f",
+  "corpusSha256": "deac1469b97b0932358f5498f414e1a704b85177e12b63f234f1b06aecc4c598",
   "files": {
     "bge-small-zh-int8.onnx": {
       "bytes": 24010842,

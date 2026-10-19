@@ -15,7 +15,7 @@
   "sourceVersion": "analects",
   "verses": 512,
   "passages": 2815,
-  "corpusSha256": "e6039327f69b3c7b2a5c37c416fa31f16093c9f087a225913ccf34461bbcf22f",
+  "corpusSha256": "5a7f9376c084d899545624051442a55ccd68c6201a71215c2e7948907b635afb",
   "files": {
     "analects.i8": {
       "bytes": 1463820,

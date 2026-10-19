@@ -27,9 +27,12 @@ async function git(args,input){
   process.stdin.end(input);
  });
 }
-if((await git(['status','--porcelain'])).trim()) throw Error('Commit reviewed source before publishing');
+// Source packaging/verification includes exactly Git-tracked files. Untracked
+// personal work stays local and does not prevent publishing the reviewed commit.
+if((await git(['status','--porcelain','--untracked-files=no'])).trim()) throw Error('Commit reviewed source before publishing');
 if((await git(['branch','--show-current'])).trim()!=='main') throw Error('Publish from the verified main branch');
 const sourceHead=(await git(['rev-parse','HEAD'])).trim();
+if(verified.sourceCommit!==sourceHead)throw Error('Verified source does not match the release commit');
 if((await git(['tag','--list',tag])).trim() && (await git(['rev-parse',`${tag}^{commit}`])).trim()!==sourceHead) throw Error('Existing release tag does not match verified source');
 const tracked=(await git(['ls-files','-z'])).split('\0').filter(Boolean);
 if(tracked.some(n=>/(^|\/)(\.tools|local.properties|signing.properties|dist)(\/|$)|\.(jks|keystore|p12)$/i.test(n))) throw Error('Private/build files must not be tracked');
@@ -59,10 +62,10 @@ await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
 await git(['push','origin',tag]);
 const size=verified.apkSizeComparison;
-const body=`${metadata.notes}\n\n**搜索体验**：完成搜索后切换圣经、古兰经、儒释道经典、同类书目或译本，搜索栏保留原输入，新文本加载完成后自动显示新的匹配结果。保留已选搜索模式，自动搜索不会重复写入历史；跨经典切换时重置不适用的新旧约筛选。点击清空按钮仍可主动结束搜索。\n\n**升级方法**：沿用原签名，直接覆盖安装，无需卸载，保留收藏、历史、阅读进度和设置。小米 15 Pro 可使用 ARM64 包；其他架构或不确定时使用通用包。1.5.0 应用内更新不可用时，可从此页面下载覆盖安装。\n\n[ARM64 安装包](${metadata.arm64.apkUrl}) · [通用安装包](${metadata.apkUrl})\n\n**验证**：${verified.tests} 项自动测试通过，lint 无错误。新增 Android 15/16 Compose 回归：输入并提交“天”，依次切换圣经、古兰经、论语、大学和繁体圣经，核对保留的输入、搜索模式、新文本结果及历史；另检查主动清空后再切换的行为。原有搜索、阅读、收藏、启动与更新检查继续通过。逐包核对版本、原签名、SHA-256、16 KB 对齐、全部内置资源及压缩 DEX 中的更新数据库反射入口。未进行物理设备测试。详细检查见附件 verification.json。\n\nARM64 ${(verified.arm64.apkBytes/1e6).toFixed(1)} MB；通用版 ${(size.currentBytes/1e6).toFixed(1)} MB。Android 8.0 及以上。\n\nARM64 SHA-256：\`${metadata.arm64.sha256}\`\n\n通用包 SHA-256：\`${metadata.sha256}\`\n\n附件包含两种安装包、完整源码与数据、更新清单、校验和、验证记录及 R8 映射。`;
+const body=`${metadata.notes}\n\n**法华经**：完整内置 CBETA T0262《妙法莲华经》，支持二十八品选择、上下文与独立语义索引。可以输入“法华经 25:1”“《妙法蓮華經》第二十五品第一段”“如来寿量品”“普门品1”，或用白话描述“尊重每一个人不轻视别人”。段号按所附正文／偈颂区块顺序。白话提示单独标注，仅辅助查找，不是完整翻译或权威注疏。\n\n**代码审查修复**：经典键和对照查询改由目录识别，避免新增经典漏掉收藏或被归入圣经；出处解析支持品／分与完整经名，并拒绝溢出的段号／范围；源码 ZIP 只收录 Git 已跟踪文件，避免夹带本地未审查文件。\n\n**来源**：[CBETA XML P5 固定版本](https://github.com/cbeta-org/xml-p5/blob/dbdea41071e1e260ad84b72faefd4587333cf76d/T/T09/T09n0262.xml)，CC BY-NC-SA 3.0 TW 及所附非营利使用条件。原始 XML、完整来源 header、授权和版本说明均随源码／应用保存，正文和对应索引与应用自有 MIT 代码分别授权。\n\n**升级方法**：沿用原签名，直接覆盖安装，无需卸载，保留收藏、历史、阅读进度和设置。ARM64 手机可用 ARM64 包；其他架构或不确定时使用通用包。\n\n[ARM64 安装包](${metadata.arm64.apkUrl}) · [通用安装包](${metadata.apkUrl})\n\n**验证**：${verified.tests} 项自动测试通过，lint 无错误。检查全部经典出处往返、真实模型白话检索、独立索引切换，以及 Android 15/16 Compose 中的法华经搜索、收藏、复制、阅读和位置恢复。原有搜索、启动和更新回归继续通过。逐包核对版本、原签名、SHA-256、16 KB 对齐、全部资源及压缩 DEX 中的更新数据库反射入口，并从固定 XML 重新提取、逐段核对法华经全文。未进行物理设备测试。详细检查见附件 verification.json。\n\nARM64 ${(verified.arm64.apkBytes/1e6).toFixed(1)} MB；通用版 ${(size.currentBytes/1e6).toFixed(1)} MB。Android 8.0 及以上。\n\nARM64 SHA-256：\`${metadata.arm64.sha256}\`\n\n通用包 SHA-256：\`${metadata.sha256}\`\n\n附件包含两种安装包、完整源码与数据、更新清单、校验和、验证记录及 R8 映射。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 切换经文后自动继续搜索`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 完整法华经与代码审查修复`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}

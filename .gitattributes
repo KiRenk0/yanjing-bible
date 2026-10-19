@@ -14,3 +14,6 @@ app/src/main/assets/quran/*.xml -text -whitespace
 app/src/main/assets/bibles/quran_ar.tsv -whitespace
 app/src/main/assets/Tanzil-NOTICE.txt -text -whitespace
 third_party/Tanzil-NOTICE.txt -text -whitespace
+# Empty TSV hint fields and the verbatim CBETA header are intentional.
+app/src/main/assets/bibles/lotus_sutra.tsv -whitespace
+app/src/main/assets/classics/lotus-source-header.xml -text -whitespace

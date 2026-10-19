@@ -15,6 +15,7 @@ import subprocess
 import zipfile
 import xml.etree.ElementTree as ET
 from verify_update_artifact import verify_update_database
+from prepare_lotus import extract as extract_lotus
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "app/src/main/assets"
@@ -149,6 +150,15 @@ def main():
         elif work['id'] == 'zhuangzi':
             original = [c for part in ('内篇_json','外篇','杂篇') for chapters in read_json(raw_dir / f'banghuazhao-庄子{part}.json').values() for c in chapters]
             assert squash(''.join(r[3] for r in rows)) == squash(''.join(c['章节内容'] for c in original))
+        elif work['id'] == 'lotus_sutra':
+            source_xml = (raw_dir / 'cbeta-T09n0262.xml').read_bytes()
+            original = extract_lotus(source_xml)
+            assert len(original) == 28 and len(rows) == 504
+            assert [r[3] for r in rows] == [p for chapter in original for p in chapter['paragraphs']]
+            bundled_header = (ASSETS / 'classics/lotus-source-header.xml').read_bytes()
+            assert re.search(rb'<teiHeader>[\s\S]*?</teiHeader>', bundled_header)[0] == re.search(rb'<teiHeader>[\s\S]*?</teiHeader>', source_xml)[0]
+            ET.fromstring(bundled_header)
+            assert (ASSETS / 'CBETA-NOTICE.txt').read_bytes() == (ROOT / 'third_party/CBETA-NOTICE.txt').read_bytes()
         else:
             filename = 'hooosberg-zh-Hant.md' if work['id']=='heart_sutra' else 'hooosberg-zh-Hant_kumarajiva.md'
             body = (raw_dir / filename).read_text(encoding='utf-8').split('---',2)[2]
@@ -179,6 +189,8 @@ def main():
     semantic = read_json(ASSETS / "semantic/analects-manifest.json")
     with zipfile.ZipFile(source_path) as source:
         names = source.namelist()
+        tracked = subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode('utf-8').rstrip('\0').split('\0')
+        assert len(names) == len(set(names)) and set(names) == set(tracked), 'Source archive must contain exactly reviewed Git-tracked files'
         assert not any(part in {".tools", ".git", ".gradle", "build", "dist", "node_modules", "__pycache__"} for name in names for part in name.split("/"))
         assert not any(name.endswith((".jks", ".keystore", ".p12", "local.properties", "signing.properties")) for name in names)
         for name in names:
@@ -243,6 +255,7 @@ def main():
                  'reductionFromPreviousUniversalPercent':round(100*(1-arm_path.stat().st_size/91014763),2),
                  'verification':'Same signer, version and assets/dex as universal; only arm64 native libraries; zipalign 16 KB check passed'},
         "sourceBytes": source_path.stat().st_size, "sourceSha256": sha(source_path.read_bytes()), "sourceFiles": len(names),
+        "sourceCommit": subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         "signerSha256": SIGNER, "signing": "apksigner verified; same certificate as previous releases; release is non-debuggable",
         "alignment": "zipalign -c -P 16 4 passed; all ELF LOAD segments align to at least 16 KB", "nativeLibraries": native,
         "analects": {"chapters": 20, "verses": 512, "modernRetrievalGlosses": 512, "semanticPassages": semantic["passages"], "revision": manifest["revision"],

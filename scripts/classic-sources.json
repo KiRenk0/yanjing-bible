@@ -70,5 +70,14 @@
     "revision": "bda9d95a2876aec4dc4d8b60b2594d9de79a1062",
     "license": "CC0-1.0",
     "sha256": "e2db33872e302820026426fe1eef79595f4eb8def1e81c84fd4999c53c5523d1"
+  },
+  {
+    "file": "cbeta-T09n0262.xml",
+    "url": "https://raw.githubusercontent.com/cbeta-org/xml-p5/dbdea41071e1e260ad84b72faefd4587333cf76d/T/T09/T09n0262.xml",
+    "repository": "https://github.com/cbeta-org/xml-p5",
+    "revision": "dbdea41071e1e260ad84b72faefd4587333cf76d",
+    "edition": "T09n0262; XML date 2026-02-09",
+    "license": "CC-BY-NC-SA-3.0-TW",
+    "sha256": "c8975bef9da3bbe0faec9d47ab3f2efb8147fb530d5c17f130045a336c5df017"
   }
 ]

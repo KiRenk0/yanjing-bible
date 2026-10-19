@@ -15,7 +15,7 @@
   "sourceVersion": "quran_zh",
   "verses": 6236,
   "passages": 15876,
-  "corpusSha256": "b8aad7de5b2b140e02f6ddeee053fc9bd2e4e2ab2e0fa17bce512b2a1f2b0610",
+  "corpusSha256": "9d19d8a0f73c784e061653a26028effdbd375f8cc19aa06396ae6af588ac5c2c",
   "files": {
     "bge-small-zh-int8.onnx": {
       "bytes": 24010842,

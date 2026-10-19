@@ -27,6 +27,10 @@ class ClassicsRepositoryTest {
             val heart=repository.load(BibleVersion.HEART_SUTRA)
             val peace=semantic.search("心中没有牵挂障碍便不再害怕",heart,Testament.ALL,5)
             assertTrue(peace.hits.isNotEmpty());assertTrue(peace.hits.all { it.verse.key.book==72 })
+            val lotus=repository.load(BibleVersion.LOTUS_SUTRA)
+            val respect=semantic.search("不要看低任何人，每个人都有成佛的可能",lotus,Testament.ALL,5)
+            assertTrue(respect.hits.toString(),respect.hits.any { it.verse.key.chapter==20 })
+            assertTrue(respect.hits.all { it.verse.key.book==76 })
             val latin=repository.load(BibleVersion.VULGATE)
             val psalm=semantic.search("耶和华像牧人照顾我，我什么都不缺",latin,Testament.ALL,5)
             assertTrue(psalm.hits.toString(),psalm.hits.any { it.verse.key==VerseKey(121,22,1)&&it.verse.text.contains("Dominus regit me") })
@@ -38,7 +42,7 @@ class ClassicsRepositoryTest {
 
     @Test fun favoritesComparisonsAndExportsKeepTheRightWorkAndLatinNumbering() = runBlocking {
         val context=ApplicationProvider.getApplicationContext<Context>();val repository=BibleRepository(context)
-        val selected=listOf(BibleVersion.GREAT_LEARNING,BibleVersion.MENCIUS,BibleVersion.HEART_SUTRA,BibleVersion.DIAMOND_SUTRA,BibleVersion.TAO_TE_CHING,BibleVersion.ZHUANGZI)
+        val selected=listOf(BibleVersion.GREAT_LEARNING,BibleVersion.MENCIUS,BibleVersion.HEART_SUTRA,BibleVersion.DIAMOND_SUTRA,BibleVersion.LOTUS_SUTRA,BibleVersion.TAO_TE_CHING,BibleVersion.ZHUANGZI)
             .map { version -> SavedVerse(version,repository.load(version).verses.first()) }
         val latin=repository.load(BibleVersion.VULGATE).verse(VerseKey(19,23,1))!!
         repository.save(selected+SavedVerse(BibleVersion.VULGATE,latin))

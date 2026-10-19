@@ -9,7 +9,7 @@
       "books": 66,
       "sourceFile": "sources/zh-hant/ChiUn/ChiUn.json",
       "rawSha256": "c1428e50fdb92eca958ff33ddaf4947c38bb21af1803b3f10a76f7b6ae488fbf",
-      "assetSha256": "8cda388978b271c848875199d0a684c7917d4f13359c5e4cc5c7cc5358bff23f"
+      "assetSha256": "deac1469b97b0932358f5498f414e1a704b85177e12b63f234f1b06aecc4c598"
     },
     {
       "id": "cuvt",
@@ -18,7 +18,7 @@
       "books": 66,
       "sourceFile": "sources/zh-hant/ChiUn/ChiUn.json",
       "rawSha256": "c1428e50fdb92eca958ff33ddaf4947c38bb21af1803b3f10a76f7b6ae488fbf",
-      "assetSha256": "b0faa3cc32b4495c9894eb94e92c78e9b375be0566a9180e183dd513be0d4e7f"
+      "assetSha256": "c0f8cb675e939cbda5c75df3028c310111bf9e118705d8325503aecbc14a8c87"
     },
     {
       "id": "wenli",
@@ -27,7 +27,7 @@
       "books": 66,
       "sourceFile": "sources/lzh/ChiUnL/ChiUnL.json",
       "rawSha256": "6b48e8441b3cb6e943ac97363f979ce304af7ec360bc42e6ba8cde36628d7e4a",
-      "assetSha256": "e323f3079ba6e690c62ff63fd0a30357b582e1c4d97aff29fb5e93810fb0be67"
+      "assetSha256": "eb23921ab118e52fec4733f1a2a534bbbfcc81993df202aa48dcf9fca6b94ef5"
     },
     {
       "id": "kjv",

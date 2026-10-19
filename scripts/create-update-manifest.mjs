@@ -14,7 +14,7 @@ const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
 const metadata={schema:1,applicationId:'org.yanjing.app',versionCode,versionName,minSdk:26,
   apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${apkName}`,
   size:bytes.length,sha256,
-  notes:'切换经典、同类书目或译本时保留搜索词，并自动在新文本中重新搜索、更新结果，无需再次输入或提交。保留搜索模式，仍可主动清空搜索。沿用原签名，可直接覆盖安装，保留收藏、历史、阅读进度和设置。继续保留更新组件修复、Android 17 启动保护、全部经典与离线检索。'};
+  notes:'新增《妙法莲华经》鸠摩罗什译本：七卷、二十八品、504 段完整原文，支持离线白话与原文检索、出处定位、阅读、收藏、复制和分享。修复经典键识别、“品／分”出处解析及超大段号误定位；源码包仅收录已跟踪文件。保留切换经典后自动搜索；沿用原签名，可覆盖安装并保留本机数据。'};
 const armName=`yanjing-${versionName}-arm64-v8a.apk`;
 const armBytes=fs.readFileSync(path.join(root,'dist',armName));
 metadata.arm64={apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${armName}`,size:armBytes.length,

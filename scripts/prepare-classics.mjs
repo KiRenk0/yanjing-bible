@@ -39,8 +39,11 @@ const works=[
  {id:'diamond_sutra',enum:'DIAMOND_SUTRA',book:73,title:'金刚经',group:'BUDDHISM',chapters:diamond,source:'hooosberg'},
  {id:'tao_te_ching',enum:'TAO_TE_CHING',book:74,title:'道德经',group:'TAOISM',chapters:dao,source:'banghuazhao'},
  {id:'zhuangzi',enum:'ZHUANGZI',book:75,title:'庄子',group:'TAOISM',chapters:zhuangzi,source:'banghuazhao'},
+ {id:'lotus_sutra',enum:'LOTUS_SUTRA',book:76,title:'法华经',group:'BUDDHISM',chapters:JSON.parse(fs.readFileSync(path.join(root,'data/classics/lotus-sutra.json'),'utf8')).map(c=>({...c,title:simplify(c.title)})),source:'cbeta'},
 ];
-const expected={daxue:1,zhongyong:1,mengzi:14,heart_sutra:1,diamond_sutra:32,tao_te_ching:81,zhuangzi:33};
+// Verify the pinned XML even when the intermediate extraction already exists.
+read('cbeta-T09n0262.xml');
+const expected={daxue:1,zhongyong:1,mengzi:14,heart_sutra:1,diamond_sutra:32,tao_te_ching:81,zhuangzi:33,lotus_sutra:28};
 const hints=JSON.parse(fs.readFileSync(path.join(assets,'classics/search-hints.json'),'utf8'));
 const expressionGroups=[];
 const t2s=new Map(fs.readFileSync(path.join(assets,'t2s.tsv'),'utf8').split('\n').filter(Boolean).map(l=>l.split('\t')));
@@ -78,3 +81,41 @@ fs.writeFileSync(path.join(root,'app/src/main/java/org/yanjing/app/core/ClassicC
 fs.writeFileSync(path.join(root,'app/src/main/java/org/yanjing/app/core/ClassicExpressions.kt'),
  '// Generated from the separately authored classic search hints.\npackage org.yanjing.app.core\n\ninternal val classicExpressions = mapOf(\n'+
  metadata.map(w=>`    BibleVersion.${w.version} to listOf(\n`+expressionGroups.filter(g=>g.version===w.version).map(g=>`        ExpressionGroup(listOf(${g.phrases.map(string)}),listOf(${g.key}))`).join(',\n')+'\n    )').join(',\n')+'\n)\n');
+
+// A shared normalization table also affects previously shipped corpora. Refresh
+// their search-only columns so adding a text cannot break old keyword searches.
+// Use UTF-16 map entries exactly as Android's Map<Char, Char> loader does.
+const androidMap=new Map([...t2s].map(([a,b])=>[a[0],b[0]]));
+const androidNormalize=t=>t.normalize('NFKC').split('').map(ch=>androidMap.get(ch)||ch).join('').toLowerCase().split('').filter(ch=>/[\p{L}\p{N}]/u.test(ch)).join('');
+const normalizationChanges=new Map();
+for(const name of fs.readdirSync(path.join(assets,'bibles'))){
+ if(!name.endsWith('.tsv')||['quran_ar.tsv','vulgate.tsv'].includes(name))continue;
+ const file=path.join(assets,'bibles',name),before=fs.readFileSync(file,'utf8');
+ const after=before.split('\n').map(line=>{
+  if(!line||line.startsWith('#'))return line;
+  const fields=line.split('\t');fields[4]=androidNormalize(fields[3]);return fields.join('\t');
+ }).join('\n');
+ if(after!==before){
+  normalizationChanges.set(name.slice(0,-4),{before:hash(before),after:hash(after),bytes:Buffer.byteLength(after)});
+  fs.writeFileSync(file,after);console.log('Refreshed search normalization:',name);
+ }
+}
+const updateJson=(name,edit)=>{
+ const file=path.join(assets,name),before=fs.readFileSync(file,'utf8'),value=JSON.parse(before);
+ edit(value);if(JSON.stringify(JSON.parse(before))!==JSON.stringify(value))fs.writeFileSync(file,JSON.stringify(value,null,2)+'\n');
+};
+const refreshHash=(metadata,field,id)=>{
+ const change=normalizationChanges.get(id);if(!change)return;
+ if(metadata[field]!==change.before)throw Error('Rebuild changed source before refreshing normalization: '+id);
+ metadata[field]=change.after;
+};
+updateJson('data-manifest.json',m=>m.versions.forEach(v=>refreshHash(v,'assetSha256',v.id)));
+updateJson('quran/manifest.json',m=>m.versions.forEach(v=>refreshHash(v,'sha256',v.id)));
+updateJson('analects/manifest.json',m=>{
+ refreshHash(m.files['analects.tsv'],'sha256','analects');
+ if(normalizationChanges.has('analects'))m.files['analects.tsv'].bytes=normalizationChanges.get('analects').bytes;
+});
+// Embedding input uses original text and separate hints, never the normalized
+// search column. Updating its hash does not require changing existing vectors.
+for(const name of fs.readdirSync(path.join(assets,'semantic')).filter(n=>n.endsWith('manifest.json')))
+ updateJson('semantic/'+name,m=>refreshHash(m,'corpusSha256',m.sourceVersion));

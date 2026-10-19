@@ -42,6 +42,7 @@ v1.4 的句意查询另使用本项目维护的通用同义词与常用表达作
 
 
 儒释道新增经典（完整原文，编号依所附版本）：
+- 法华经（鸠摩罗什译《妙法莲华经》，七卷、二十八品、504 段）：CBETA T09n0262，XML P5 @ dbdea41071e1e260ad84b72faefd4587333cf76d，XML 日期 2026-02-09。采用 CC BY-NC-SA 3.0 TW 及 CBETA 非营利使用条件；版权和版本说明见 CBETA-NOTICE.txt，原始 XML 随源码保存，完整 teiHeader 随 APK 保存于 classics/lotus-source-header.xml。逐品提取正文 p/lg 区块，整理排版空白，排除序言、校勘、音注和卷尾题记，不改写经文。正文、衍生检索字段及对应索引依相同条款分发；应用自有代码另按 MIT。https://github.com/cbeta-org/xml-p5/blob/dbdea41071e1e260ad84b72faefd4587333cf76d/T/T09/T09n0262.xml
 - 大学（16 段）、中庸（39 段）、孟子（14 篇、690 段）：chinese-poetry/chinese-poetry @ fa1814a8044db4fb0c7a9e0a0449974e8c3463b7，MIT，© 2016 JackeyGao；见 chinese-poetry-LICENSE.txt。
 - 心经（玄奘，7 段）、金刚经（鸠摩罗什，32 分、127 段）：hooosberg/Rushi @ bda9d95a2876aec4dc4d8b60b2594d9de79a1062，scriptures/**/*.md 的 CC0 1.0 dedication；见 hooosberg-LICENSE.txt。仅提取正文，不将译者说明、分目现代简述或来源元数据混入原文。
 - 道德经（81 章）、庄子（内、外、杂共 33 篇、480 段）：banghuazhao/Chinese-Classical-Literature-Android @ f2c40b864c00c97d2d148a82857884fe8ba527d4，MIT，© 2024 Banghua Zhao；见 banghuazhao-LICENSE.txt。

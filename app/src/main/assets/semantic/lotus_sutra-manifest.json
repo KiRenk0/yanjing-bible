@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "model": "BAAI/bge-small-zh-v1.5",
+  "onnxRepository": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "license": "MIT",
+  "pooling": "CLS",
+  "normalization": "L2",
+  "corpusLicense": "CC-BY-NC-SA-3.0-TW",
+  "corpusNotice": "CBETA-NOTICE.txt",
+  "dimensions": 512,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "embeddingBatchSize": 1,
+  "intraOpThreads": 2,
+  "onnxRuntime": "1.25.1",
+  "sourceVersion": "lotus_sutra",
+  "verses": 504,
+  "passages": 3621,
+  "corpusSha256": "4b0fc6d32384a9143bb6fd8812d2d2f804bd4ecd6797eaebb2ca740b380b7857",
+  "files": {
+    "bge-small-zh-int8.onnx": {
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    "lotus_sutra.i8": {
+      "bytes": 1882940,
+      "sha256": "aafa11e2bbe45e0a2dfb1c7cb5ee5f7bbce361dd6fb50203fc63a1a4e8974e46"
+    },
+    "vocab.txt": {
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    }
+  }
+}

@@ -135,7 +135,7 @@ fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: ()
                     }
                 }
                 }
-                Text("圣经：5 套文本，含拉丁文。古兰经：中阿双语。儒家四书、佛教心经与金刚经、道家道德经与庄子均含完整原文，可用现代汉语检索。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
+                Text("圣经：5 套文本，含拉丁文。古兰经：中阿双语。儒家四书、佛教心经、金刚经与法华经、道家道德经与庄子均含完整原文，可用现代汉语检索。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
             }
         }, confirmButton = { TextButton(onClick = onDismiss) { Text("完成") } })
 }

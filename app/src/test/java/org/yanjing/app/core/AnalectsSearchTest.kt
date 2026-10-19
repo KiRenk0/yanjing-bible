@@ -47,7 +47,7 @@ class AnalectsSearchTest {
             assertTrue(query,response.hits.isEmpty()); assertNotNull(query,response.message)
         }
         assertEquals(VerseKey(68,20,3),VerseKey.decode("68:20:3"))
-        listOf("68:0:1","68:21:1","68:20:4","76:1:1").forEach { assertNull(it,VerseKey.decode(it)) }
+        listOf("68:0:1","68:21:1","68:20:4","77:1:1").forEach { assertNull(it,VerseKey.decode(it)) }
         assertEquals(Scripture.ANALECTS,VerseKey(68,1,1).scripture)
     }
 

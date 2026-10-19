@@ -19,6 +19,7 @@ enum class BibleVersion(val id: String, val title: String, val description: Stri
     MENCIUS("mengzi", "孟子·文言原文", "十四篇 · 现代汉语检索", Scripture.ANALECTS),
     HEART_SUTRA("heart_sutra", "心经·玄奘译本", "文言原文 · 全文", Scripture.BUDDHISM),
     DIAMOND_SUTRA("diamond_sutra", "金刚经·鸠摩罗什译本", "文言原文 · 三十二分", Scripture.BUDDHISM),
+    LOTUS_SUTRA("lotus_sutra", "法华经·鸠摩罗什译本", "妙法莲华经 · 全二十八品", Scripture.BUDDHISM),
     TAO_TE_CHING("tao_te_ching", "道德经·文言原文", "八十一章 · 现代汉语检索", Scripture.TAOISM),
     ZHUANGZI("zhuangzi", "庄子·文言原文", "内外杂篇 · 全三十三篇", Scripture.TAOISM);
 
@@ -34,22 +35,26 @@ enum class BibleVersion(val id: String, val title: String, val description: Stri
 
 data class VerseKey(val book: Int, val chapter: Int, val verse: Int) {
     val encoded: String get() = "$book:$chapter:$verse"
-    val scripture: Scripture get() = when (book) { Quran.BOOK -> Scripture.QURAN; in 68..71 -> Scripture.ANALECTS; in 72..73 -> Scripture.BUDDHISM; in 74..75 -> Scripture.TAOISM; else -> Scripture.BIBLE }
-    val reference: String get() = when (book) {
-        Quran.BOOK -> "古兰经 $chapter:$verse"
-        Analects.BOOK -> "论语·${Analects.chapterName(chapter)} $chapter:$verse"
-        in 69..75 -> "${Classics.forBook(book)!!.title}·${Classics.forBook(book)!!.names.getOrNull(chapter-1).orEmpty()} $chapter:$verse"
-        in 101..173 -> "${Vulgate.bookName(book)}〔拉丁文〕 $chapter:$verse"
+    val scripture: Scripture get() = if (book == Quran.BOOK) Scripture.QURAN else Classics.forBook(book)?.version?.scripture ?: Scripture.BIBLE
+    val reference: String get() = when {
+        book == Quran.BOOK -> "古兰经 $chapter:$verse"
+        book == Analects.BOOK -> "论语·${Analects.chapterName(chapter)} $chapter:$verse"
+        Classics.forBook(book) != null -> Classics.forBook(book)!!.let { "${it.title}·${it.names.getOrNull(chapter-1).orEmpty()} $chapter:$verse" }
+        book in 101..173 -> "${Vulgate.bookName(book)}〔拉丁文〕 $chapter:$verse"
         else -> "${Books.names[book - 1]} $chapter:$verse"
     }
     companion object {
         fun decode(raw: String): VerseKey? {
             val values = raw.split(':').map { it.toIntOrNull() ?: return null }
-            return if (values.size == 3 && (values[0] in 1..75 || values[0] in 101..173) && values[1] > 0 && values[2] > 0 &&
-                (values[0] != Quran.BOOK || (values[1] in 1..114 && values[2] <= Quran.verseCounts[values[1] - 1])) &&
-                (values[0] !in 68..75 || Classics.forBook(values[0])!!.verseCounts.getOrNull(values[1]-1)?.let { values[2]<=it } == true) &&
-                (values[0] !in 101..173 || Vulgate.verseCounts[values[0]]?.getOrNull(values[1]-1)?.let { values[2]<=it } == true))
-                VerseKey(values[0], values[1], values[2]) else null
+            if (values.size != 3 || values[1] <= 0 || values[2] <= 0) return null
+            val (book, chapter, verse) = values
+            val counts = when {
+                book == Quran.BOOK -> Quran.verseCounts
+                book in 101..173 -> Vulgate.verseCounts[book]
+                else -> Classics.forBook(book)?.verseCounts
+            }
+            if (counts != null) return if (counts.getOrNull(chapter-1)?.let { verse <= it } == true) VerseKey(book, chapter, verse) else null
+            return if (book in 1..66) VerseKey(book, chapter, verse) else null
         }
     }
 }

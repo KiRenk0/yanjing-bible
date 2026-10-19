@@ -28,6 +28,44 @@ import java.io.File
 @Config(sdk = [35,36], qualifiers = "zh-rCN-w412dp-h915dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AppFlowTest {
+    @Test fun lotusSutraCanSearchSaveCopyReadAndRestoreItsChapter() {
+        waitForText("完全离线 · 无需登录")
+        val model = ViewModelProvider(compose.activity)[AppViewModel::class.java]
+        compose.onNodeWithContentDescription("选择经典与版本").performClick()
+        compose.onNodeWithText("法华经·鸠摩罗什译本").performScrollTo().performClick()
+        waitForText("28 品 · 504 段 · 现代汉语搜索文言原文")
+        compose.onNodeWithText("尊重每一个人不轻视别人").performScrollTo().performClick()
+        waitForText("法华经·常不轻菩萨品 20:4")
+        screenshot("23-lotus-search")
+        compose.onNodeWithContentDescription("收藏 法华经·常不轻菩萨品 20:4").performClick()
+        compose.runOnIdle { model.query("《妙法蓮華經》第二十五品第一段") }
+        waitForText("法华经·观世音菩萨普门品 25:1")
+        compose.onNodeWithText("上下文与对照").performClick()
+        waitForText("原文与检索释义")
+        compose.onAllNodesWithText("無盡意菩薩",substring=true).onLast().assertIsDisplayed()
+        compose.onNodeWithText("复制").performClick()
+        compose.runOnIdle {
+            val clipboard=compose.activity.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val copied=clipboard.primaryClip!!.getItemAt(0).text.toString()
+            org.junit.Assert.assertTrue(copied.contains("無盡意菩薩"))
+            org.junit.Assert.assertTrue(copied.contains("CBETA"))
+            org.junit.Assert.assertFalse(copied.contains("现代汉语检索释义"))
+        }
+        compose.onNodeWithText("上下文").performClick()
+        waitForText("25:1 · 当前经文")
+        compose.onNodeWithText("阅读整篇").performClick()
+        waitForText("第 25 品 · 观世音菩萨普门品")
+        screenshot("24-lotus-reader")
+        compose.runOnIdle { model.loadVersion(BibleVersion.HEART_SUTRA) }
+        waitForText("般若波罗蜜多心经")
+        compose.runOnIdle { model.loadVersion(BibleVersion.LOTUS_SUTRA) }
+        waitForText("第 25 品 · 观世音菩萨普门品")
+        compose.runOnIdle {
+            org.junit.Assert.assertEquals(25,model.state.value.readerChapter)
+            org.junit.Assert.assertTrue(model.state.value.saved.any { it.version==BibleVersion.LOTUS_SUTRA && it.verse.key.chapter==20 })
+        }
+    }
+
     @Test fun newClassicsAndLatinCanSearchReadSaveAndCompare() {
         waitForText("完全离线 · 无需登录")
         compose.onNodeWithText("佛教").performScrollTo().performClick()
@@ -91,7 +129,8 @@ class AppFlowTest {
         val directory = File("build/screenshots").apply { mkdirs() }
         val target = if (name.endsWith("-compare")) compose.onNode(isDialog()) else compose.onRoot()
         target.captureToImage().asAndroidBitmap().let { bitmap ->
-            File(directory, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+            try { File(directory, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+            finally { bitmap.recycle() }
         }
     }
 

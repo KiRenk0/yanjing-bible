@@ -30,7 +30,7 @@ def sha(path):
 def main():
     global OUT
     parser = argparse.ArgumentParser()
-    classic_ids = ['daxue','zhongyong','mengzi','heart_sutra','diamond_sutra','tao_te_ching','zhuangzi']
+    classic_ids = ['daxue','zhongyong','mengzi','heart_sutra','diamond_sutra','tao_te_ching','zhuangzi','lotus_sutra']
     parser.add_argument('--corpus', choices=['bible','quran','analects']+classic_ids, default='bible')
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--output', type=Path, default=OUT)
@@ -112,6 +112,7 @@ def main():
     manifest = {
         "schema": 1, "model": "BAAI/bge-small-zh-v1.5", "onnxRepository": "Xenova/bge-small-zh-v1.5",
         "revision": REVISION, "license": "MIT", "pooling": "CLS", "normalization": "L2",
+        **({"corpusLicense": "CC-BY-NC-SA-3.0-TW", "corpusNotice": "CBETA-NOTICE.txt"} if corpus_kind == 'lotus_sutra' else {}),
         "dimensions": DIMENSION, "maxTokens": MAX_LENGTH, "queryPrefix": PREFIX,
         "embeddingBatchSize": args.batch_size, "intraOpThreads": 2,
         "onnxRuntime": ort.__version__,

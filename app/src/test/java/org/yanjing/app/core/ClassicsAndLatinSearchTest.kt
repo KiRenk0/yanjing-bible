@@ -18,8 +18,8 @@ class ClassicsAndLatinSearchTest {
     },normalizer,version)
 
     @Test fun completeWorksKeepDistinctContinuousOriginalParagraphsAndRoundTripReferences() {
-        assertEquals(8,Classics.works.size)
-        assertEquals(1952,Classics.works.sumOf { it.verseCounts.sum() })
+        assertEquals(9,Classics.works.size)
+        assertEquals(2456,Classics.works.sumOf { it.verseCounts.sum() })
         Classics.works.forEach { work ->
             val corpus=engine(work.version)
             val expected=work.verseCounts.flatMapIndexed { i,n->(1..n).map { VerseKey(work.book,i+1,it) } }
@@ -33,7 +33,7 @@ class ClassicsAndLatinSearchTest {
         }
         assertEquals(ReferenceQuery(74,8,null,null),Classics.parse("《道德經》第八章",normalizer,BibleVersion.TAO_TE_CHING))
         assertEquals(ReferenceQuery(75,1,1,2),Classics.parse("逍遥游1-2",normalizer,BibleVersion.ZHUANGZI))
-        assertNull(VerseKey.decode("69:2:1"));assertNull(VerseKey.decode("74:82:1"));assertNull(VerseKey.decode("76:1:1"))
+        assertNull(VerseKey.decode("69:2:1"));assertNull(VerseKey.decode("74:82:1"));assertNull(VerseKey.decode("77:1:1"))
     }
 
     @Test fun expressionHintsFindOriginalsWhileKeywordSearchRemainsOriginalOnly() {
@@ -44,6 +44,41 @@ class ClassicsAndLatinSearchTest {
         assertTrue(tao.search("上善若水",SearchMode.KEYWORD).hits.any { it.verse.key==VerseKey(74,8,1) })
     }
 
+    @Test fun lotusReferencesSupportFullTitleTraditionalNamesAndChapterUnits() {
+        val version = BibleVersion.LOTUS_SUTRA
+        val corpus = engine(version)
+        listOf("法华经 25:1", "《妙法蓮華經》第二十五品第一段", "法華經２５：１", "普门品1", "观世音菩萨普门品 25:1").forEach { query ->
+            assertEquals(query, ReferenceQuery(76,25,1,1), Classics.parse(query,normalizer,version))
+            assertEquals(query, VerseKey(76,25,1), corpus.search(query,SearchMode.KEYWORD).hits.single().verse.key)
+        }
+        listOf("法华经第十六品", "如來壽量品", "妙法莲华经·如来寿量品第十六").forEach { query ->
+            assertEquals(query, ReferenceQuery(76,16,null,null), Classics.parse(query,normalizer,version))
+        }
+        assertEquals(ReferenceQuery(73,32,1,1),Classics.parse("金刚经第三十二分第一段",normalizer,BibleVersion.DIAMOND_SUTRA))
+        assertEquals(Scripture.BUDDHISM,VerseKey(76,25,1).scripture)
+        assertEquals("第 25 品 · 观世音菩萨普门品",Classics.forVersion(version)!!.chapterTitle(25))
+        listOf("法华经 29:1","法华经 25:0","法华经 25:2-1","法华经 25:999").forEach { query ->
+            assertTrue(query,corpus.search(query,SearchMode.KEYWORD).hits.isEmpty())
+        }
+        assertNull(Classics.parse("法华经 25:99999999999999999999",normalizer,version))
+        assertNull(Classics.parse("法华经 25:1-99999999999999999999",normalizer,version))
+        assertNull(VerseKey.decode("76:29:1"))
+        assertNull(VerseKey.decode("76:25:999"))
+    }
+
+    @Test fun lotusOriginalSearchKeepsHintsSeparateAndIncludesFinalChapter() {
+        val corpus=engine(BibleVersion.LOTUS_SUTRA)
+        val hit=corpus.search("我不敢轻于汝等",SearchMode.KEYWORD).hits.first()
+        assertEquals(20,hit.verse.key.chapter)
+        assertTrue(hit.verse.text.contains("我不敢輕於汝等"))
+        assertTrue(hit.verse.searchGloss.contains("尊重每一个人"))
+        assertTrue(corpus.search("尊重每一个人不轻视别人",SearchMode.KEYWORD).hits.isEmpty())
+        assertTrue(corpus.search("尊重每一个人不轻视别人",SearchMode.EXPRESSION).hits.any { it.verse.key.chapter==20 })
+        assertEquals(504,corpus.verses.size)
+        assertTrue(corpus.verses.first().text.startsWith("如是我聞"))
+        assertTrue(corpus.verses.last().text.contains("皆大歡喜，受持佛語，作禮而去"))
+    }
+
     @Test fun modernParaphrasesRetrieveOriginalsWithActualModelAndProductionRanking() = runBlocking {
         val cases=listOf(
             Triple(BibleVersion.GREAT_LEARNING,"不在人前的时候也不要欺骗自己","所謂誠其意者"),
@@ -52,7 +87,9 @@ class ClassicsAndLatinSearchTest {
             Triple(BibleVersion.HEART_SUTRA,"心中没有牵挂障碍便不再害怕","心無罣礙"),
             Triple(BibleVersion.DIAMOND_SUTRA,"眼前的一切变化很快就像露珠和闪光","如夢幻泡影"),
             Triple(BibleVersion.TAO_TE_CHING,"水让万物得到好处却不与它们争斗","上善若水"),
-            Triple(BibleVersion.ZHUANGZI,"人的寿命有尽头但可以学的知识没有尽头","吾生也有涯")
+            Triple(BibleVersion.ZHUANGZI,"人的寿命有尽头但可以学的知识没有尽头","吾生也有涯"),
+            Triple(BibleVersion.LOTUS_SUTRA,"不要看低任何人，每个人都有成佛的可能","我不敢輕於汝等"),
+            Triple(BibleVersion.LOTUS_SUTRA,"面对不同根性的人需要采取合适的方法来教导","無數方便，引導眾生令離諸著")
         )
         SentenceEmbedder(File(assets,"semantic/bge-small-zh-int8.onnx").absolutePath,WordPieceTokenizer(File(assets,"semantic/vocab.txt").readLines())).use { model ->
             val concepts=File(assets,"semantic/concepts.txt").readLines().filter { it.isNotBlank()&&!it.startsWith('#') }.map { it.split('|') }

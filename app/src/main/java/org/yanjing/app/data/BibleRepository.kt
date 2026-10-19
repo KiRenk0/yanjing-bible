@@ -40,7 +40,7 @@ class BibleRepository(context: Context) {
         SearchEngine(verses, normalizer, version)
     }
     suspend fun comparisons(key: VerseKey): Map<BibleVersion, Verse?> = withContext(Dispatchers.IO) {
-        BibleVersion.entries.filter { if(key.book in 68..75) it.acceptsBook(key.book) else it.scripture == key.scripture }.associateWith { version ->
+        BibleVersion.entries.filter { if(Classics.forBook(key.book) != null) it.acceptsBook(key.book) else it.scripture == key.scripture }.associateWith { version ->
             val canonical = if(key.book in 101..173) latinMappings[key]?.firstOrNull() else key
             val requested = if(version==BibleVersion.VULGATE) {
                 if(key.book in 101..173) key else latinMappings.entries.firstOrNull { key in it.value }?.key
@@ -85,7 +85,7 @@ class BibleRepository(context: Context) {
     fun setting(key: String, default: String) = preferences.getString(key, default) ?: default
     fun setting(key: String, value: String, persist: Boolean = true) { if (persist) preferences.edit { putString(key, value) } }
     fun notices(): String = assets.open("NOTICE.md").bufferedReader().use { it.readText() }
-    fun licenses(): String = listOf("scrollmapper-LICENSE.txt", "opencc-js-LICENSE.txt", "Apache-2.0.txt", "bge-LICENSE.txt", "onnxruntime-LICENSE.txt", "onnxruntime-ThirdPartyNotices.txt", "Tanzil-NOTICE.txt", "QuranEnc-TERMS.txt", "chinese-poetry-LICENSE.txt", "banghuazhao-LICENSE.txt", "hooosberg-LICENSE.txt", "GPL-2.0.txt").joinToString("\n\n") { name ->
+    fun licenses(): String = listOf("scrollmapper-LICENSE.txt", "opencc-js-LICENSE.txt", "Apache-2.0.txt", "bge-LICENSE.txt", "onnxruntime-LICENSE.txt", "onnxruntime-ThirdPartyNotices.txt", "Tanzil-NOTICE.txt", "QuranEnc-TERMS.txt", "chinese-poetry-LICENSE.txt", "banghuazhao-LICENSE.txt", "hooosberg-LICENSE.txt", "GPL-2.0.txt", "CBETA-NOTICE.txt").joinToString("\n\n") { name ->
         assets.open(name).bufferedReader().use { it.readText() }
     }
     fun counts(): Map<String, Int> {

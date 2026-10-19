@@ -58,5 +58,17 @@ internal val classicExpressions = mapOf(
         ExpressionGroup(listOf("相濡以沫","在困境中互相用微薄力量扶持","不如在宽广自然的环境中自由生活"),listOf(VerseKey(75,14,7))),
         ExpressionGroup(listOf("井蛙不可以语于海","井里的青蛙不了解大海","眼界会受到生活环境和经验限制","不应以狭小见识判断世界"),listOf(VerseKey(75,17,1))),
         ExpressionGroup(listOf("子非鱼","你不是鱼","怎么知道鱼的快乐？讨论理解别人感受和认识的边界"),listOf(VerseKey(75,17,12)))
+    ),
+    BibleVersion.LOTUS_SUTRA to listOf(
+        ExpressionGroup(listOf("無數方便，引導眾生令離諸著","用不同方法引导众生","根据对方的情况循循善诱","帮助人放下执着"),listOf(VerseKey(76,2,1))),
+        ExpressionGroup(listOf("欲令眾生開佛知見","佛出世为使众生开启、认识、领悟并进入佛的知见"),listOf(VerseKey(76,2,22))),
+        ExpressionGroup(listOf("唯有一乘法","以一佛乘为究竟目标","不同教导是引导众生的方便"),listOf(VerseKey(76,2,32))),
+        ExpressionGroup(listOf("於火宅內樂著嬉戲","火宅比喻众生身处危险仍贪着嬉戏","长者设法引导孩子离开火灾"),listOf(VerseKey(76,3,16))),
+        ExpressionGroup(listOf("一雨所潤","同一场雨滋润不同草木","各按自己的根性生长","比喻教法平等而众生领受不同"),listOf(VerseKey(76,5,2))),
+        ExpressionGroup(listOf("為止息耳","化城是让疲惫的人暂时休息的方便","休息后还要向真正的目标前进"),listOf(VerseKey(76,7,48))),
+        ExpressionGroup(listOf("以無價寶珠繫其衣裏","衣里藏着无价宝珠却不自知","仍为衣食劳苦","比喻忘失自身已有的珍贵因缘"),listOf(VerseKey(76,8,11))),
+        ExpressionGroup(listOf("壽命無量阿僧祇劫，常住不滅","如来寿量品说明佛成道久远","示现入灭是教化众生的方便"),listOf(VerseKey(76,16,9))),
+        ExpressionGroup(listOf("我不敢輕於汝等","尊重每一个人不轻视别人","相信众生皆有成佛的可能","即使被辱骂也不以怨恨回应"),listOf(VerseKey(76,20,4))),
+        ExpressionGroup(listOf("一心稱名","普门品讲述众生遭遇苦难","一心称念观世音菩萨名号而得救护"),listOf(VerseKey(76,25,2)))
     )
 )

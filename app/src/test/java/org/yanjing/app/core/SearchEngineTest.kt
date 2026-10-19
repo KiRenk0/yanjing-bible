@@ -43,6 +43,22 @@ class SearchEngineTest {
         }
     }
 
+    @Test fun everyBundledSearchFieldMatchesTheSharedRuntimeNormalizer() {
+        BibleVersion.entries.forEach { version ->
+            File(assets,"bibles/${version.id}.tsv").useLines { lines ->
+                lines.filter { it.isNotBlank() && !it.startsWith('#') }.forEach { line ->
+                    val fields=line.split('\t')
+                    val expected=when {
+                        version.isRtl -> normalizer.normalizeArabic(fields[3])
+                        version==BibleVersion.VULGATE -> normalizer.normalizeLatin(fields[3])
+                        else -> normalizer.normalize(fields[3])
+                    }
+                    assertEquals("${version.id} ${fields.take(3)}",expected,fields[4])
+                }
+            }
+        }
+    }
+
     @Test fun everyExpressionReferenceExistsInAllCorpora() {
         val keys = ExpressionLexicon.groups.flatMap { it.references }.toSet()
         BibleVersion.entries.filter { it.scripture == Scripture.BIBLE && it != BibleVersion.VULGATE }.forEach { version ->
@@ -137,7 +153,7 @@ class SearchEngineTest {
         assertEquals(21, cuvs.chapters(43))
         assertEquals(51, cuvs.chapter(43, 1).size)
         assertEquals(VerseKey(43,3,16), VerseKey.decode("43:3:16"))
-        assertNull(VerseKey.decode("76:1:1"))
+        assertNull(VerseKey.decode("77:1:1"))
         assertNull(VerseKey.decode("43:0:1"))
         assertNull(VerseKey.decode("not-a-reference"))
     }

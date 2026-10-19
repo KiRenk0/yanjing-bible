@@ -2,6 +2,16 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.6.0：加入完整《法华经》并修复出处与发布打包
+
+佛教经典新增 **《妙法莲华经》鸠摩罗什译本，七卷、二十八品、504 段**，从 CBETA T0262 固定版本提取完整正文。支持离线阅读、原文与现代汉语检索、上下文、收藏、复制和分享；单独内置语义索引与项目编写的检索提示。可输入 `法华经 25:1`、`《妙法蓮華經》第二十五品第一段`、`如来寿量品`、`普门品1`。段号依所附版本的正文／偈颂区块顺序，不冒充其他版本的标准节号。
+
+代码审查修复：经典键与对照查询改由目录识别，避免新增经典漏掉收藏或被归入圣经；出处解析补充“品／分”、完整经名及繁体别名，并拒绝溢出的段号／范围，避免误返回整篇。源码 ZIP 只收录 Git 已跟踪文件，避免夹带本地未审查文件。继续保留切换经典后自动搜索、原签名覆盖升级、更新组件修复与 Android 17 启动保护。
+
+来源为 [CBETA XML P5 固定修订](https://github.com/cbeta-org/xml-p5/blob/dbdea41071e1e260ad84b72faefd4587333cf76d/T/T09/T09n0262.xml)，采用 **CC BY-NC-SA 3.0 TW** 及所附非营利使用条件；正文、衍生检索字段及对应索引按此条款分发，与应用自有 MIT 代码分别授权。完整原始 XML 随源码提供，APK 保留完整来源 header 和 [版权／版本说明](third_party/CBETA-NOTICE.txt)。白话提示是查找辅助，不是完整翻译或权威注疏。
+
+重建流程：先运行 `python scripts/prepare_lotus.py`，再运行 `node scripts/prepare-classics.mjs`；语义环境执行 `scripts/prepare-semantic.py --corpus lotus_sutra`。普通 Android 构建直接使用提交的全文和索引。新增检查覆盖全部段落出处往返、真实模型白话检索、索引切换及 Android 15/16 的搜索、收藏、复制、阅读和位置恢复；发布校验逐段比对 XML 提取结果。[代码审查与修复记录](docs/lotus-sutra-review.md)。未进行物理设备测试。
+
 ## v1.5.2：切换经文后自动继续搜索
 
 完成搜索后，切换经典、同类书目或译本会保留搜索词，并在新文本加载完成后自动重新搜索、更新结果，无需再次输入或提交。保留已选搜索模式；跨经典切换时重置不适用的圣经新旧约筛选。仍可使用搜索栏的清空按钮主动结束搜索。
@@ -93,7 +103,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.5.2-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.5.2.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
+Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.6.0-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.6.0.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 
@@ -192,3 +202,7 @@ npm run data
 <img src="docs/screenshots/analects-search.png" alt="用现代汉语搜索论语原文" width="240"> <img src="docs/screenshots/analects-gloss.png" alt="论语原文与检索释义" width="240"> <img src="docs/screenshots/analects-reader.png" alt="论语整篇阅读" width="240">
 
 [平板阅读界面](docs/screenshots/tablet-reader.png)
+
+法华经白话查找与普门品阅读：
+
+<img src="docs/screenshots/lotus-search.png" alt="法华经白话检索" width="240"> <img src="docs/screenshots/lotus-reader.png" alt="法华经普门品阅读" width="240">
