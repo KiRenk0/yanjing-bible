@@ -28,7 +28,7 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                 IconButton(onClick = model::closeDetail) { Symbol(R.drawable.sym_close, "关闭经文详情") }
             }
             PrimaryTabRow(selectedTabIndex = tab) {
-                Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text("版本对照") })
+                Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text(if (detail.version.isAnalects) "原文与检索释义" else "版本对照") })
                 Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text("上下文") })
             }
             when {
@@ -36,7 +36,7 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                 detail.error != null -> EmptyState(R.drawable.sym_info, "加载失败", detail.error)
                 else -> LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     if (tab == 0) {
-                        item { Text("同一出处的不同文本。部分版本分节方式可能不同。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                        item { Text(if (detail.version.isAnalects) "检索释义为本项目编写的白话查找提示，不是完整翻译或权威注疏。章句编号依所附版本。" else "同一出处的不同文本。部分版本分节方式可能不同。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                         items(detail.version.peers.size, key = { detail.version.peers[it].id }) { i ->
                             val version = detail.version.peers[i]
                             val verse = detail.comparisons[version]
@@ -51,6 +51,10 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                                     }
                                     if (verse != null && verse.key != detail.key) Text("此版合并于 ${verse.key.reference}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
                                     SelectionContainer { Text(verse?.text ?: "此版本没有相同节号，请核对上下文。", style = verseTextStyle(version,state.fontSize), modifier = Modifier.fillMaxWidth().padding(end = 8.dp)) }
+                                    if (!verse?.searchGloss.isNullOrEmpty()) {
+                                        Text("现代汉语检索释义", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+                                        Text(verse.searchGloss, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(end = 8.dp))
+                                    }
                                     CorpusSource(version)
                                     if (verse != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                                         TextButton(onClick = { shareVerse(context, verse, version) }) { Symbol(R.drawable.sym_share); Spacer(Modifier.width(8.dp)); Text("分享") }
@@ -63,7 +67,7 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                         item {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(detail.version.title, style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
-                                TextButton(onClick = onRead) { Text("阅读整章"); Symbol(R.drawable.sym_arrow_forward) }
+                                TextButton(onClick = onRead) { Text(if (detail.version.isAnalects) "阅读整篇" else "阅读整章"); Symbol(R.drawable.sym_arrow_forward) }
                             }
                         }
                         val verses = detail.context.filter { it.key.verse in (detail.key.verse - 3)..(detail.key.verse + 3) }

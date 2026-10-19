@@ -49,6 +49,7 @@ fun exportedVerse(verse: Verse, version: BibleVersion): String {
     val credit = when (version) {
         BibleVersion.QURAN_ZH -> "\n穆罕默德·马坚 · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin"
         BibleVersion.QURAN_AR -> "\nTanzil Project · Uthmani v1.1 · CC BY 3.0 · https://tanzil.net"
+        BibleVersion.ANALECTS -> "\n原文数据：chinese-poetry/chinese-poetry · MIT"
         else -> ""
     }
     return "${verse.text}\n——${verse.key.reference}（${version.title}）$credit"
@@ -96,6 +97,9 @@ fun verseTextStyle(version: BibleVersion, fontSize: Float, lineSpacing: Float = 
 @Composable
 fun CorpusSource(version: BibleVersion) {
     val uri = LocalUriHandler.current
+    if (version.isAnalects) TextButton(onClick = { uri.openUri("https://github.com/chinese-poetry/chinese-poetry/blob/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/论语/lunyu.json") }, contentPadding = PaddingValues(0.dp)) {
+        Text("论语原文：chinese-poetry · MIT · 章句依所附版本", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
     if (version.isQuran) TextButton(onClick = { uri.openUri(if (version.isRtl) "https://tanzil.net" else "https://quranenc.com/zh/browse/chinese_makin") }, contentPadding = PaddingValues(0.dp)) { Text(
         if (version.isRtl) "阿拉伯文：Tanzil Project · Uthmani v1.1 · tanzil.net"
         else "经义译文：穆罕默德·马坚 · QuranEnc.com v1.0.2",
@@ -117,13 +121,13 @@ fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: ()
                             RadioButton(selected = version == current, onClick = null, modifier = Modifier.padding(12.dp))
                             Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
                                 Text(version.title, style = MaterialTheme.typography.titleSmall)
-                                Text("${version.description} · ${counts[version.id] ?: "—"} 节", style = MaterialTheme.typography.bodySmall)
+                                Text("${version.description} · ${counts[version.id] ?: "—"} ${if (version.isAnalects) "章句" else "节"}", style = MaterialTheme.typography.bodySmall)
                             }
                         }
                     }
                 }
                 }
-                Text("圣经：4 套文本、3 种译本。古兰经：中文经义译本与阿拉伯文，分别检索与对照。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
+                Text("圣经：4 套文本、3 种译本。古兰经：中阿双语。论语：二十篇文言原文，可用现代汉语查找。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
             }
         }, confirmButton = { TextButton(onClick = onDismiss) { Text("完成") } })
 }

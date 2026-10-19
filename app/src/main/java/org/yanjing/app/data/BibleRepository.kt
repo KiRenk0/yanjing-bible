@@ -22,9 +22,9 @@ class BibleRepository(context: Context) {
         TextNormalizer(mapping)
     }
     private fun parse(line: String): Verse {
-        val fields = line.split('\t', limit = 5)
-        require(fields.size == 5) { "经文数据格式有误" }
-        return Verse(VerseKey(fields[0].toInt(), fields[1].toInt(), fields[2].toInt()), fields[3], fields[4])
+        val fields = line.split('\t', limit = 6)
+        require(fields.size in 5..6) { "经文数据格式有误" }
+        return Verse(VerseKey(fields[0].toInt(), fields[1].toInt(), fields[2].toInt()), fields[3], fields[4], searchGloss = fields.getOrElse(5) { "" })
     }
     suspend fun load(version: BibleVersion): SearchEngine = withContext(Dispatchers.IO) {
         val verses = assets.open("bibles/${version.id}.tsv").bufferedReader().useLines { lines ->
@@ -33,7 +33,7 @@ class BibleRepository(context: Context) {
         SearchEngine(verses, normalizer, version)
     }
     suspend fun comparisons(key: VerseKey): Map<BibleVersion, Verse?> = withContext(Dispatchers.IO) {
-        BibleVersion.entries.filter { it.isQuran == (key.book == Quran.BOOK) }.associateWith { version ->
+        BibleVersion.entries.filter { it.scripture == key.scripture }.associateWith { version ->
             val actual = VerseMappings.resolve(version, key)
             val prefix = "${actual.book}\t${actual.chapter}\t${actual.verse}\t"
             assets.open("bibles/${version.id}.tsv").bufferedReader().useLines { lines ->
@@ -73,12 +73,12 @@ class BibleRepository(context: Context) {
     fun setting(key: String, default: String) = preferences.getString(key, default) ?: default
     fun setting(key: String, value: String, persist: Boolean = true) { if (persist) preferences.edit { putString(key, value) } }
     fun notices(): String = assets.open("NOTICE.md").bufferedReader().use { it.readText() }
-    fun licenses(): String = listOf("scrollmapper-LICENSE.txt", "opencc-js-LICENSE.txt", "Apache-2.0.txt", "bge-LICENSE.txt", "onnxruntime-LICENSE.txt", "onnxruntime-ThirdPartyNotices.txt", "Tanzil-NOTICE.txt", "QuranEnc-TERMS.txt").joinToString("\n\n") { name ->
+    fun licenses(): String = listOf("scrollmapper-LICENSE.txt", "opencc-js-LICENSE.txt", "Apache-2.0.txt", "bge-LICENSE.txt", "onnxruntime-LICENSE.txt", "onnxruntime-ThirdPartyNotices.txt", "Tanzil-NOTICE.txt", "QuranEnc-TERMS.txt", "chinese-poetry-LICENSE.txt").joinToString("\n\n") { name ->
         assets.open(name).bufferedReader().use { it.readText() }
     }
     fun counts(): Map<String, Int> {
         val json = JSONObject(assets.open("data-manifest.json").bufferedReader().use { it.readText() }).getJSONArray("versions")
         return (0 until json.length()).associate { json.getJSONObject(it).let { o -> o.getString("id") to o.getInt("verses") } } +
-            mapOf(BibleVersion.QURAN_ZH.id to 6236, BibleVersion.QURAN_AR.id to 6236)
+            mapOf(BibleVersion.QURAN_ZH.id to 6236, BibleVersion.QURAN_AR.id to 6236, BibleVersion.ANALECTS.id to Analects.verseCounts.sum())
     }
 }

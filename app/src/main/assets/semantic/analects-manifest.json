@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "model": "BAAI/bge-small-zh-v1.5",
+  "onnxRepository": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "license": "MIT",
+  "pooling": "CLS",
+  "normalization": "L2",
+  "dimensions": 512,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "sourceVersion": "analects",
+  "verses": 512,
+  "passages": 2815,
+  "corpusSha256": "e6039327f69b3c7b2a5c37c416fa31f16093c9f087a225913ccf34461bbcf22f",
+  "files": {
+    "analects.i8": {
+      "bytes": 1463820,
+      "sha256": "9bc67d476100acadf182e3b41cebf7ccda40c65d41eca5d49384ff42590f61de"
+    },
+    "bge-small-zh-int8.onnx": {
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    "vocab.txt": {
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    }
+  }
+}

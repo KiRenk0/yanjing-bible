@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "source": "chinese-poetry/chinese-poetry",
+  "revision": "fa1814a8044db4fb0c7a9e0a0449974e8c3463b7",
+  "url": "https://github.com/chinese-poetry/chinese-poetry/blob/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/论语/lunyu.json",
+  "license": "MIT",
+  "chapters": 20,
+  "verses": 512,
+  "verseCounts": [
+    16,
+    24,
+    26,
+    26,
+    28,
+    30,
+    38,
+    21,
+    31,
+    27,
+    26,
+    24,
+    30,
+    44,
+    42,
+    14,
+    26,
+    11,
+    25,
+    3
+  ],
+  "numbering": "One source paragraph per chapter/verse key; other editions may divide paragraphs differently.",
+  "retrievalGlosses": "Project-authored modern Chinese search aids; not original text or an authoritative translation.",
+  "files": {
+    "lunyu.json": {
+      "bytes": 74799,
+      "sha256": "bc336a3839706377892719db44c48a09794a493190535a42bf1c7d4c4233e96c"
+    },
+    "search-glosses.txt": {
+      "bytes": 41766,
+      "sha256": "75c1876c96f4f7cfc8f98b6864d72aeab5586a9045d99a79fe0e820795e9a089"
+    },
+    "analects.tsv": {
+      "bytes": 158866,
+      "sha256": "e6039327f69b3c7b2a5c37c416fa31f16093c9f087a225913ccf34461bbcf22f"
+    }
+  }
+}

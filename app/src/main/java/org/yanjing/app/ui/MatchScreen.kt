@@ -29,7 +29,7 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
     val textFieldState = rememberTextFieldState(state.query)
     val scope = rememberCoroutineScope()
     var searchSettings by remember { mutableStateOf(false) }
-    val suggestions = if (state.version.isQuran) Quran.suggestions else ExpressionLexicon.suggestions
+    val suggestions = when (state.version.scripture) { Scripture.BIBLE -> ExpressionLexicon.suggestions; Scripture.QURAN -> Quran.suggestions; Scripture.ANALECTS -> Analects.suggestions }
     LaunchedEffect(state.query) {
         if (textFieldState.text.toString() != state.query) textFieldState.edit { replace(0, length, state.query); selection = androidx.compose.ui.text.TextRange(length) }
     }
@@ -42,7 +42,7 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
     val inputField: @Composable () -> Unit = {
         SearchBarDefaults.InputField(textFieldState = textFieldState, searchBarState = searchBarState,
             onSearch = { model.query(it); submit() },
-            placeholder = { Text(if (state.version.isQuran) "描述意思，或输入 2:255" else if (SearchMode.SEMANTIC in state.modes) "用中文描述意思，或输入出处" else "输入想说的话、关键词或出处") },
+            placeholder = { Text(if (state.version.isAnalects) "用白话描述，或输入 学而1" else if (state.version.isQuran) "描述意思，或输入 2:255" else if (SearchMode.SEMANTIC in state.modes) "用中文描述意思，或输入出处" else "输入想说的话、关键词或出处") },
             leadingIcon = {
                 if (searchBarState.currentValue == SearchBarValue.Expanded) IconButton(onClick = collapse) { Symbol(R.drawable.sym_arrow_back, "收起搜索") }
                 else Symbol(R.drawable.sym_search)
@@ -96,16 +96,16 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
             }
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)) {
                 Scripture.entries.forEachIndexed { i, scripture ->
-                    SegmentedButton(selected = state.version.scripture == scripture, onClick = { model.scripture(scripture) }, shape = SegmentedButtonDefaults.itemShape(i,2)) { Text(scripture.title) }
+                    SegmentedButton(selected = state.version.scripture == scripture, onClick = { model.scripture(scripture) }, shape = SegmentedButtonDefaults.itemShape(i,Scripture.entries.size)) { Text(scripture.title) }
                 }
             }
-            if (!state.version.isQuran) Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (state.version.scripture == Scripture.BIBLE) Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Testament.entries.forEach { testament ->
                     FilterChip(selected = state.testament == testament, onClick = { model.testament(testament) }, label = { Text(testament.title) },
                         leadingIcon = if (state.testament == testament) ({ Symbol(R.drawable.sym_check) }) else null)
                 }
             }
-            else Text("114 章 · 6,236 节 · 中阿文本可对照", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            else Text(if (state.version.isAnalects) "20 篇 · 512 章句 · 白话搜索文言原文" else "114 章 · 6,236 节 · 中阿文本可对照", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
             when {
                 state.loading -> Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) { Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) { CircularProgressIndicator(); Text("正在打开离线经文库…") } }
                 state.error != null -> EmptyState(R.drawable.sym_info, "经文库暂时无法打开", state.error, action = { Button(onClick = { model.loadVersion(state.version) }) { Text("重试") } })
@@ -116,14 +116,18 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
                         if (SearchMode.SEMANTIC in state.modes) Text("正在按句意查找，首次使用需加载本地模型…", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-                state.response.hits.isEmpty() -> EmptyState(R.drawable.sym_search, "暂时没有找到", state.response.message ?: "试试缩短句子、换个关键词，或切换“日常表达”。也可以输入“约 3:16”。", Modifier.padding(top = 32.dp))
+                state.response.hits.isEmpty() -> EmptyState(R.drawable.sym_search, "暂时没有找到", state.response.message ?: if (state.version.isAnalects) "试试更具体的白话描述，并启用“句意搜索”或“日常表达”。也可以输入“论语 1:1”或“学而篇”。" else "试试缩短句子、换个关键词，或切换“日常表达”。也可以输入“约 3:16”。", Modifier.padding(top = 32.dp))
                 else -> {
                     LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         item {
                             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 Text(if (SearchMode.SEMANTIC in state.modes) "相关经文 · ${state.response.hits.size} 处候选" else "找到 ${state.response.total} 处经文", style = MaterialTheme.typography.titleMedium)
                                 Text(when {
-                                    SearchMode.SEMANTIC in state.modes -> if (state.version.isQuran) "按所选模式合并排序；句意基于马坚中文经义译本，展示所选文本。" else "按所选模式合并排序；句意基于和合本检索，展示当前版本原文。"
+                                    SearchMode.SEMANTIC in state.modes -> when (state.version.scripture) {
+                                        Scripture.ANALECTS -> "结合原文与现代汉语检索释义查找，结果展示文言原文。"
+                                        Scripture.QURAN -> "按所选模式合并排序；句意基于马坚中文经义译本，展示所选文本。"
+                                        Scripture.BIBLE -> "按所选模式合并排序；句意基于和合本检索，展示当前版本原文。"
+                                    }
                                     state.modes.size > 1 -> "已合并去重，卡片标明命中模式。请结合上下文理解。"
                                     SearchMode.EXPRESSION in state.modes -> "按表达与用词的相关程度排序，请结合上下文理解。"
                                     else -> "精确匹配原文，简繁体通用。"
@@ -172,8 +176,8 @@ private fun ColumnScope.WelcomeContent(state: AppState, pick: (String) -> Unit) 
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
                 Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Symbol(R.drawable.sym_auto_awesome)
-                    Text("你想说的话，\n经文里也许有。", style = MaterialTheme.typography.headlineMedium)
-                    Text(if (state.version.isQuran) "在古兰经中查找经义，读中文译文与阿拉伯文。" else "把一句日常表达，换成一次经文探索。", style = MaterialTheme.typography.bodyLarge)
+                    Text(if (state.version.isAnalects) "用今天的话，\n找到论语原句。" else "你想说的话，\n经文里也许有。", style = MaterialTheme.typography.headlineMedium)
+                    Text(if (state.version.isAnalects) "用现代汉语描述意思，读孔子与弟子的文言原文。" else if (state.version.isQuran) "在古兰经中查找经义，读中文译文与阿拉伯文。" else "把一句日常表达，换成一次经文探索。", style = MaterialTheme.typography.bodyLarge)
                     Text("完全离线 · 无需登录", style = MaterialTheme.typography.labelLarge)
                 }
             }
@@ -182,7 +186,7 @@ private fun ColumnScope.WelcomeContent(state: AppState, pick: (String) -> Unit) 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("从一句话开始", style = MaterialTheme.typography.titleMedium)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    (if (state.version.isQuran) Quran.suggestions else ExpressionLexicon.suggestions).forEach { phrase -> AssistChip(onClick = { pick(phrase) }, label = { Text(phrase) }) }
+                    (when (state.version.scripture) { Scripture.BIBLE -> ExpressionLexicon.suggestions; Scripture.QURAN -> Quran.suggestions; Scripture.ANALECTS -> Analects.suggestions }).forEach { phrase -> AssistChip(onClick = { pick(phrase) }, label = { Text(phrase) }) }
                 }
             }
         }
@@ -197,7 +201,7 @@ private fun ColumnScope.WelcomeContent(state: AppState, pick: (String) -> Unit) 
             }
         }
         item {
-            Text(if (state.version.isQuran) "可输入 2:255、古兰经 94:5-6 或开端章。中文内容是经义译文，句意相近不代表经文原意。" else "也支持出处定位，例如：约 3:16、诗篇 23、John 4:7。表达关联仅辅助查找，点击结果可读上下文和版本对照。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(if (state.version.isAnalects) "可输入“学习要结合思考”“论语 2:15”或“学而篇”。现代检索释义只辅助查找；章句编号依所附版本，其他版本分章可能不同。" else if (state.version.isQuran) "可输入 2:255、古兰经 94:5-6 或开端章。中文内容是经义译文，句意相近不代表经文原意。" else "也支持出处定位，例如：约 3:16、诗篇 23、John 4:7。表达关联仅辅助查找，点击结果可读上下文和版本对照。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             CorpusSource(state.version)
         }
     }

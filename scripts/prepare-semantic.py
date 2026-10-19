@@ -29,19 +29,22 @@ def sha(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--corpus', choices=['bible','quran'], default='bible')
+    parser.add_argument('--corpus', choices=['bible','quran','analects'], default='bible')
     corpus_kind = parser.parse_args().corpus
     OUT.mkdir(parents=True, exist_ok=True)
-    corpus = ROOT / ("app/src/main/assets/bibles/quran_zh.tsv" if corpus_kind == 'quran' else "app/src/main/assets/bibles/cuvs.tsv")
-    prefix = "quran-" if corpus_kind == 'quran' else ""
-    rows = [line.rstrip("\n").split("\t", 4) for line in corpus.open(encoding="utf-8") if line.strip() and not line.startswith('#')]
+    version = {'bible': 'cuvs', 'quran': 'quran_zh', 'analects': 'analects'}[corpus_kind]
+    corpus = ROOT / f"app/src/main/assets/bibles/{version}.tsv"
+    prefix = "" if corpus_kind == 'bible' else f"{corpus_kind}-"
+    rows = [line.rstrip("\n").split("\t", 5) for line in corpus.open(encoding="utf-8") if line.strip() and not line.startswith('#')]
     source_verses = len(rows)
-    if corpus_kind == 'quran':
+    if corpus_kind in ('quran', 'analects'):
         passages = []
         for row in rows:
-            text = row[3]
-            candidates = [text] if len(text) <= 220 else [text[i:i+200] for i in range(0,len(text),160)]
-            candidates += [part.strip() for part in re.split('[。；！？]',text) if len(part.strip()) >= 8]
+            texts = [row[3]] + ([row[5]] if corpus_kind == 'analects' else [])
+            candidates = []
+            for text in texts:
+                candidates += [text] if len(text) <= 220 else [text[i:i+200] for i in range(0,len(text),160)]
+                candidates += [part.strip() for part in re.split('[。；！？]',text) if len(part.strip()) >= 8]
             for part in dict.fromkeys(candidates):
                 passages.append(row[:3] + [part] + row[4:])
         rows = passages
@@ -53,7 +56,7 @@ def main():
     options.intra_op_num_threads = 6
     options.inter_op_num_threads = 1
     session = ort.InferenceSession(str(CACHE / "model.onnx"), sess_options=options, providers=["CPUExecutionProvider"])
-    cache_key = sha(corpus) + sha(CACHE / "model.onnx") + ('quran-passages-v1' if corpus_kind == 'quran' else '')
+    cache_key = sha(corpus) + sha(CACHE / "model.onnx") + (f'{corpus_kind}-passages-v1' if corpus_kind != 'bible' else '')
     cache_file = CACHE / (prefix + "embedding-cache-key.txt")
     shape = (len(rows), DIMENSION)
     reusable = cache_file.exists() and cache_file.read_text() == cache_key
@@ -80,7 +83,7 @@ def main():
             vectors.flush(); done.flush()
             print(f"Embedded {int(done.sum())}/{len(rows)} verses ({time.monotonic() - started:.1f}s)", flush=True)
     vectors.flush(); done.flush()
-    index_name = "quran.i8" if corpus_kind == 'quran' else "verses.i8"
+    index_name = "verses.i8" if corpus_kind == 'bible' else f"{corpus_kind}.i8"
     with (OUT / index_name).open("wb") as output:
         output.write(b"YJSEM001")
         output.write(struct.pack("<III", len(rows), DIMENSION, MAX_LENGTH))
@@ -98,10 +101,10 @@ def main():
         "schema": 1, "model": "BAAI/bge-small-zh-v1.5", "onnxRepository": "Xenova/bge-small-zh-v1.5",
         "revision": REVISION, "license": "MIT", "pooling": "CLS", "normalization": "L2",
         "dimensions": DIMENSION, "maxTokens": MAX_LENGTH, "queryPrefix": PREFIX,
-        "sourceVersion": "quran_zh" if corpus_kind == 'quran' else "cuvs", "verses": source_verses, "passages": len(rows), "corpusSha256": sha(corpus),
-        "files": {p.name: {"bytes": p.stat().st_size, "sha256": sha(p)} for p in sorted(OUT.iterdir()) if p.suffix in (".onnx", ".i8", ".txt")},
+        "sourceVersion": version, "verses": source_verses, "passages": len(rows), "corpusSha256": sha(corpus),
+        "files": {p.name: {"bytes": p.stat().st_size, "sha256": sha(p)} for p in sorted(OUT.iterdir()) if p.name in (index_name, "bge-small-zh-int8.onnx", "vocab.txt")},
     }
-    manifest_name = "quran-manifest.json" if corpus_kind == 'quran' else "manifest.json"
+    manifest_name = "manifest.json" if corpus_kind == 'bible' else f"{corpus_kind}-manifest.json"
     (OUT / manifest_name).write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     tokenizer.no_padding()
     samples = ["为这个句子生成表示以用于检索相关文章：我忙得喘不过气，想歇一会儿", "我想要喝水", "ＡＢＣ  Café\t你好，世界！", "[CLS]中文[SEP]", "help me 123🙂𠮷"]

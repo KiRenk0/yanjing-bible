@@ -91,7 +91,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun scripture(value: Scripture) {
         if (value == mutable.value.version.scripture) return
-        val fallback = if (value == Scripture.QURAN) BibleVersion.QURAN_ZH else BibleVersion.CUVS
+        val fallback = when (value) { Scripture.BIBLE -> BibleVersion.CUVS; Scripture.QURAN -> BibleVersion.QURAN_ZH; Scripture.ANALECTS -> BibleVersion.ANALECTS }
         val remembered = repository.setting("version-${value.name}", fallback.id)
         loadVersion(BibleVersion.entries.firstOrNull { it.id == remembered && it.scripture == value } ?: fallback)
     }

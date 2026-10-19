@@ -6,8 +6,9 @@ import kotlin.math.min
 /** Offline character n-gram retrieval, with explicit, reviewable expression expansions. */
 class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormalizer, val version: BibleVersion = BibleVersion.CUVS) {
     private val byKey = verses.associateBy { it.key }
+    private val retrievalText = verses.associate { it.key to (it.normalized + normalizer.normalize(it.searchGloss)) }
     private val charFrequency: Map<Char, Int> = buildMap {
-        verses.forEach { v -> v.normalized.toSet().forEach { put(it, (get(it) ?: 0) + 1) } }
+        retrievalText.values.forEach { text -> text.toSet().forEach { put(it, (get(it) ?: 0) + 1) } }
     }
     private val stop = "的了是我你他她它们在有和与及就也都这那吗呢吧啊呀不着把被个地得为以而其之乎者也".toSet()
 
@@ -64,9 +65,9 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
         val weights = chars.associateWith { ln(1.0 + verses.size.toDouble() / (1 + (charFrequency[it] ?: 0))) }
         val totalWeight = weights.values.sum().coerceAtLeast(1.0)
         val results = verses.asSequence().filter { testament.accepts(it.key.book) }.mapNotNull { verse ->
-            val text = verse.normalized
+            val text = retrievalText.getValue(verse.key)
             val expansion = expanded[verse.key] ?: 0.0
-            val exact = text.contains(query)
+            val exact = verse.normalized.contains(query)
             val matching = chars.filter { text.contains(it) }
             val coverage = matching.sumOf { weights[it] ?: 0.0 } / totalWeight
             val gramCoverage = if (grams.isEmpty()) 0.0 else grams.count { text.contains(it) }.toDouble() / grams.size
@@ -76,6 +77,7 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
             SearchHit(verse, score, when {
                 expansion > 0 -> "常用表达关联"
                 exact -> "原文包含关键词"
+                verse.searchGloss.isNotEmpty() -> "原文与检索释义用词相近"
                 else -> "用词相近"
             })
         }.sortedWith(compareByDescending<SearchHit> { it.score }.thenBy { it.verse.key.book }.thenBy { it.verse.key.chapter }.thenBy { it.verse.key.verse }).toList()

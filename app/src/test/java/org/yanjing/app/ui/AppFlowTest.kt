@@ -46,7 +46,14 @@ class AppFlowTest {
     }
 
     private fun waitForText(text: String) {
-        try { compose.waitUntil(30000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() } }
+        try { compose.waitUntil(30000) {
+            // Scripture headers change before the asynchronous corpus load finishes.
+            // Wait for usable content before clicking suggestions or chapter controls.
+            // Fetch first so Compose/Robolectric advances the main looper while loading.
+            val nodes = compose.onAllNodesWithText(text).fetchSemanticsNodes()
+            val state = ViewModelProvider(compose.activity)[AppViewModel::class.java].state.value
+            !state.loading && !state.searching && nodes.isNotEmpty()
+        } }
         catch (failure: Throwable) {
             val state=ViewModelProvider(compose.activity)[AppViewModel::class.java].state.value
             println("UI wait failed for $text: query=${state.query}, modes=${state.modes}, loading=${state.loading}, searching=${state.searching}, message=${state.response.message}, hits=${state.response.hits.take(5)}")
@@ -144,11 +151,65 @@ class AppFlowTest {
         screenshot("11-update-settings")
     }
 
+    @Test fun analectsModernSearchSaveGlossReadAndSwitchPreserveEachScripture() {
+        waitForText("完全离线 · 无需登录")
+        compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].read(43,4) }
+        compose.onNodeWithText("论语").performClick()
+        waitForText("20 篇 · 512 章句 · 白话搜索文言原文")
+        compose.onNodeWithText("全本圣经").assertDoesNotExist()
+        compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].modes(setOf(org.yanjing.app.core.SearchMode.SEMANTIC)) }
+        waitForText("学习要结合思考")
+        compose.onNodeWithText("学习要结合思考").performScrollTo().performClick()
+        waitForText("论语·为政 2:15")
+        screenshot("16-analects-search")
+        compose.onNodeWithContentDescription("复制 论语·为政 2:15").performClick()
+        compose.runOnIdle {
+            val clipboard=compose.activity.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val copied=clipboard.primaryClip!!.getItemAt(0).text.toString()
+            org.junit.Assert.assertTrue(copied.contains("学而不思则罔"))
+            org.junit.Assert.assertFalse(copied.contains("只学习不思考"))
+        }
+        compose.onNodeWithContentDescription("收藏 论语·为政 2:15").performClick()
+        compose.onNodeWithText("收藏",useUnmergedTree=true).performClick()
+        waitForText("1 条收藏")
+        compose.onNodeWithText("上下文与对照").performClick()
+        waitForText("现代汉语检索释义")
+        compose.onNodeWithText("和合本·繁體").assertDoesNotExist()
+        screenshot("17-analects-compare")
+        compose.onNodeWithText("上下文").performClick()
+        waitForText("2:15 · 当前经文")
+        compose.onNodeWithText("阅读整篇").performClick()
+        waitForText("第 2 篇 · 为政")
+        compose.onNodeWithText("第 2 篇 · 为政").performClick()
+        compose.onNode(hasScrollAction() and hasAnyAncestor(isDialog())).performScrollToNode(hasText("第 20 篇 · 尧曰"))
+        compose.onNodeWithText("第 20 篇 · 尧曰").performClick()
+        waitForText("论语·尧曰")
+        screenshot("18-analects-reader")
+        compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
+        compose.onNodeWithText("古兰经").performClick()
+        waitForText("114 章 · 6,236 节 · 中阿文本可对照")
+        compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
+        waitForText("第 1 章 · 法谛海")
+        compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
+        compose.onNodeWithText("圣经").performClick()
+        waitForText("能给我水喝吗")
+        compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
+        waitForText("约翰福音 · 第 4 章")
+        compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
+        compose.onNodeWithText("论语").performClick()
+        waitForText("20 篇 · 512 章句 · 白话搜索文言原文")
+        compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
+        waitForText("第 20 篇 · 尧曰")
+        compose.onNodeWithText("收藏",useUnmergedTree=true).performClick()
+        waitForText("论语·为政 2:15")
+    }
+
     @Test fun quranSearchSaveCompareReadAndSwitchBackPreserveTheRightScripture() {
         waitForText("完全离线 · 无需登录")
         compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].read(43,4) }
         compose.onNodeWithText("古兰经").performClick()
         waitForText("114 章 · 6,236 节 · 中阿文本可对照")
+        waitForText("古兰经 112:1-4")
         compose.onNodeWithText("古兰经 112:1-4").performScrollTo().performClick()
         waitForText("古兰经 112:1")
         screenshot("12-quran-search")

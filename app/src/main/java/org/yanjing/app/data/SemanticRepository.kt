@@ -16,7 +16,12 @@ class SemanticRepository(context: Context, private val normalizer: TextNormalize
 
     suspend fun search(raw: String, engine: SearchEngine, testament: Testament, limit: Int): SearchResponse = mutex.withLock {
         val index = indexes[engine.version.scripture] ?: withContext(Dispatchers.IO) {
-            SemanticIndex(app.assets.open(if (engine.version.isQuran) "semantic/quran.i8" else "semantic/verses.i8"))
+            val asset = when (engine.version.scripture) {
+                Scripture.BIBLE -> "semantic/verses.i8"
+                Scripture.QURAN -> "semantic/quran.i8"
+                Scripture.ANALECTS -> "semantic/analects.i8"
+            }
+            SemanticIndex(app.assets.open(asset))
                 .also { indexes[engine.version.scripture] = it }
         }
         withContext(Dispatchers.Default) {

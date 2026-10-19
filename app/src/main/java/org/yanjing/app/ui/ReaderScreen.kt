@@ -22,19 +22,19 @@ fun ReaderScreen(state: AppState, model: AppViewModel) {
     LaunchedEffect(state.readerBook, state.readerChapter, state.version) { scroll.scrollToItem(0) }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { model.read(state.readerBook, state.readerChapter - 1) }, enabled = !state.loading && state.readerChapter > 1) { Symbol(R.drawable.sym_arrow_back, "上一章") }
+            IconButton(onClick = { model.read(state.readerBook, state.readerChapter - 1) }, enabled = !state.loading && state.readerChapter > 1) { Symbol(R.drawable.sym_arrow_back, if (state.version.isAnalects) "上一篇" else "上一章") }
             FilledTonalButton(onClick = { picker = true }, modifier = Modifier.weight(1f), enabled = !state.loading) {
-                Text(if (state.version.isQuran) Quran.chapterTitle(state.readerChapter) else "${Books.names[state.readerBook - 1]} · 第 ${state.readerChapter} 章")
+                Text(when (state.version.scripture) { Scripture.ANALECTS -> Analects.chapterTitle(state.readerChapter); Scripture.QURAN -> Quran.chapterTitle(state.readerChapter); Scripture.BIBLE -> "${Books.names[state.readerBook - 1]} · 第 ${state.readerChapter} 章" })
                 Spacer(Modifier.width(8.dp)); Symbol(R.drawable.sym_expand_more)
             }
-            IconButton(onClick = { model.read(state.readerBook, state.readerChapter + 1) }, enabled = !state.loading && state.readerChapter < state.chapterCount) { Symbol(R.drawable.sym_arrow_forward, "下一章") }
+            IconButton(onClick = { model.read(state.readerBook, state.readerChapter + 1) }, enabled = !state.loading && state.readerChapter < state.chapterCount) { Symbol(R.drawable.sym_arrow_forward, if (state.version.isAnalects) "下一篇" else "下一章") }
         }
         if (state.loading) Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         else if (state.error != null) EmptyState(R.drawable.sym_info, "无法加载经文", state.error, action = { Button(onClick = { model.loadVersion(state.version) }) { Text("重试") } })
         else LazyColumn(state = scroll, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             item {
                 Text(state.version.title, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
-                Text(if (state.version.isQuran) "古兰经 ${state.readerChapter}" else "${Books.names[state.readerBook - 1]} ${state.readerChapter}", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
+                Text(when (state.version.scripture) { Scripture.ANALECTS -> "论语·${Analects.chapterName(state.readerChapter)}"; Scripture.QURAN -> "古兰经 ${state.readerChapter}"; Scripture.BIBLE -> "${Books.names[state.readerBook - 1]} ${state.readerChapter}" }, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
                 CorpusSource(state.version)
                 if (state.version.isRtl) Quran.chapterPrelude(state.readerChapter)?.let { prelude ->
                     Text(prelude, style = verseTextStyle(state.version,state.fontSize), textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp))
@@ -51,13 +51,27 @@ fun ReaderScreen(state: AppState, model: AppViewModel) {
                     }
                 }
             }
-            item { Text("点击任意一节，可收藏、复制并对照其他版本。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(8.dp)) }
+            item { Text(if (state.version.isAnalects) "点击章句，可收藏、复制并查看检索释义与上下文。" else "点击任意一节，可收藏、复制并对照其他版本。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(8.dp)) }
         }
     }
     if (picker) {
-        if (state.version.isQuran) QuranChapterPicker(state.readerChapter, { picker = false }) { model.read(Quran.BOOK,it) }
+        if (state.version.isAnalects) AnalectsChapterPicker(state.readerChapter, { picker = false }) { model.read(Analects.BOOK,it) }
+        else if (state.version.isQuran) QuranChapterPicker(state.readerChapter, { picker = false }) { model.read(Quran.BOOK,it) }
         else ChapterPicker(state, { picker = false }, model::read)
     }
+}
+
+@Composable
+private fun AnalectsChapterPicker(current: Int, dismiss: () -> Unit, select: (Int) -> Unit) {
+    AlertDialog(onDismissRequest = dismiss, title = { Text("选择论语篇章") }, text = {
+        LazyColumn(Modifier.heightIn(max = 440.dp)) {
+            items(Analects.names.size, key = { it }) { i ->
+                ListItem(onClick = { select(i + 1); dismiss() },
+                    content = { Text(Analects.chapterTitle(i + 1)) }, supportingContent = { Text("${Analects.verseCounts[i]} 章句") },
+                    trailingContent = { if (current == i + 1) Symbol(R.drawable.sym_check) })
+            }
+        }
+    }, confirmButton = { TextButton(onClick = dismiss) { Text("取消") } })
 }
 
 @Composable

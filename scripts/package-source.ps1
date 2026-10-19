@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$output = Join-Path $root 'dist\yanjing-1.2.1-source.zip'
+$output = Join-Path $root 'dist\yanjing-1.3.0-source.zip'
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 New-Item -ItemType Directory -Force -Path (Join-Path $root 'dist') | Out-Null
@@ -12,6 +12,7 @@ try {
         $item = Get-Item -LiteralPath (Join-Path $root $relative)
         $files = if ($item.PSIsContainer) { Get-ChildItem -LiteralPath $item.FullName -Recurse -File } else { @($item) }
         foreach ($file in $files) {
+            if ($file.Extension -in @('.pyc','.pyo') -or $file.FullName -match '[\\/]__pycache__[\\/]') { continue }
             $entry = [IO.Path]::GetRelativePath($root, $file.FullName).Replace('\','/')
             [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $file.FullName, $entry, [IO.Compression.CompressionLevel]::Optimal) | Out-Null
         }

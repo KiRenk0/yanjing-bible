@@ -12,6 +12,6 @@ try {
     & .\gradlew.bat @tasks --console plain
     if ($LASTEXITCODE -ne 0) { throw 'Build failed.' }
     New-Item -ItemType Directory -Force -Path dist | Out-Null
-    Copy-Item -LiteralPath app\build\outputs\apk\release\app-release.apk -Destination dist\yanjing-1.2.1.apk
-    Get-FileHash -LiteralPath dist\yanjing-1.2.1.apk -Algorithm SHA256
+    Copy-Item -LiteralPath app\build\outputs\apk\release\app-release.apk -Destination dist\yanjing-1.3.0.apk
+    Get-FileHash -LiteralPath dist\yanjing-1.3.0.apk -Algorithm SHA256
 } finally { Pop-Location }

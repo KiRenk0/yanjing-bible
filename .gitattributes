@@ -6,6 +6,7 @@
 *.png -text
 *.zip -text
 # Preserve original source files and the mandatory verbatim copyright blocks.
+app/src/main/assets/analects/lunyu.json -text -whitespace
 app/src/main/assets/quran/*.csv -text -whitespace
 app/src/main/assets/quran/*.xml -text -whitespace
 app/src/main/assets/bibles/quran_ar.tsv -whitespace

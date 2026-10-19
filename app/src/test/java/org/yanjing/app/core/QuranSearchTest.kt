@@ -62,7 +62,7 @@ class QuranSearchTest {
         assertEquals("古兰经 2:255",VerseKey(67,2,255).reference)
         assertEquals("约翰福音 3:16",VerseKey(43,3,16).reference)
         assertEquals(listOf(BibleVersion.QURAN_ZH,BibleVersion.QURAN_AR),BibleVersion.QURAN_ZH.peers)
-        assertTrue(BibleVersion.CUVS.peers.none { it.isQuran })
+        assertTrue(BibleVersion.CUVS.peers.all { it.scripture == Scripture.BIBLE })
     }
     @Test fun realQuranIndexUsesChineseMeaningAndReturnsOnlyQuranOriginals() {
         val index=SemanticIndex(File(assets,"semantic/quran.i8").inputStream())

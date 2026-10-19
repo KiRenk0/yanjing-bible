@@ -2,6 +2,27 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.3.0：用现代汉语搜索《论语》原文
+
+搜索页新增“论语”，完整内置 **二十篇、512 章句** 文言原文。可以直接用白话描述意思，例如：
+
+- “读书时要动脑筋，不能光背下来” → “学而不思则罔，思而不学则殆。”
+- “不能把自己讨厌的待遇加到别人身上” → “己所不欲，勿施于人。”
+- “地位比我低的人也值得我去求教” → “敏而好学，不耻下问。”
+
+每个章句都有本项目编写的现代汉语检索释义，与原文分别编码到离线 BGE 索引；句意搜索支持词典以外的白话改述。“日常表达”结合常用说法及检索释义用词匹配；“原文搜索”只检索文言原文。结果保留原始章句，详情单列“现代汉语检索释义”，可阅读整篇、查上下文、收藏、复制和分享。复制、分享保留文言原文。三部经典分别保存阅读位置，旧收藏继续可用。
+
+支持 `论语 2:15`、`論語２：１５`、`为政15`、`学而1-3`、`学而篇`、`论语第十五篇第二十四章`。编号按所附版本的篇序和段落序；与其他版本的分章可能不同，不应只凭章号核对。
+
+原文来自 [chinese-poetry 固定版本](https://github.com/chinese-poetry/chinese-poetry/blob/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/论语/lunyu.json)，保留原始 JSON、MIT 许可和完整性哈希。白话检索释义是辅助查找的简短说明，不是完整翻译或权威注疏。句意相近不等于解释准确，仍需结合原文与历史语境阅读。
+
+```powershell
+.tools\semantic\venv\Scripts\python.exe scripts/prepare-analects.py
+.tools\semantic\venv\Scripts\python.exe scripts/prepare-semantic.py --corpus analects
+```
+
+普通 Android 构建直接使用已提交的文本和索引，不需要 Python 或重新生成。新增测试覆盖十二个未写入表达词典的白话改述、全部512条出处往返定位、篇章范围拒绝、三部经典索引切换，以及原生 Compose 的搜索、收藏、释义、复制、整篇阅读和位置恢复。
+
 ## v1.2.1：Android 16 崩溃修复
 
 针对 Xiaomi 17 Pro（SM8850）／Android 16 的无日志闪退反馈，将 ONNX Runtime 从 1.23.2 升级到 **1.25.1**。上游 [#27884](https://github.com/microsoft/onnxruntime/issues/27884) 记录了相同芯片／系统上的 SME CPU 指令检测问题，并确认原生 1.24.4 已修复；Maven 未发布 1.24.4，因此采用后续的 1.25.1。没有该设备日志，尚未在此小米真机复现，不能断言反馈中的崩溃只有这个原因。
@@ -30,7 +51,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.2.1.apk`。无需登录，内置模型与全部经文，安装后即可离线搜索。
+Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.3.0.apk`。无需登录，内置模型、圣经、古兰经和论语，安装后即可离线搜索。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 
@@ -48,7 +69,7 @@ Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包�
 
 采用 MIT 授权的 [BAAI/bge-small-zh-v1.5](https://huggingface.co/BAAI/bge-small-zh-v1.5)，通过 [Xenova ONNX 转换](https://huggingface.co/Xenova/bge-small-zh-v1.5) 固定修订 `75c43b069aac4d136ba6bc1122f995fedcfd2781`。模型约 24 MB、512 维，使用 ONNX Runtime 1.25.1 在手机 CPU 的独立进程推理；CLS 池化、L2 归一化，查询添加模型建议的检索前缀。首次使用会将模型放入私有目录。
 
-全部简体和合本正文预先生成量化索引，约 16 MB。检索后按出处展示所选版本的原文，简繁体查询归一化。其他译本的独有措辞可配合“原文搜索”；英文句意查询不在此中文模型的主要能力范围内。
+全部简体和合本正文预先生成量化索引，约 16 MB。古兰经和论语使用独立索引，论语另编码项目自编现代汉语检索释义，支持白话到文言的查找。检索后按出处展示所选版本的原文，简繁体查询归一化。其他译本的独有措辞可配合“原文搜索”；英文句意查询不在此中文模型的主要能力范围内。
 
 不生成、不改写经文；余弦相似度与融合分数均不是概率。采用经验相似度下限减少明显无关结果，复杂否定、隐喻和不同领域的句子仍可能误匹配。请结合上下文阅读。切换查询会取消旧任务，模型推理与索引扫描在后台执行。
 
@@ -109,6 +130,8 @@ npm run data
 
 `scripts/create-update-manifest.mjs` 根据已签名 APK 生成 `update.json` 和 SHA-256 文件。新版本同时递增 `versionCode` 和 `versionName`，更新构建脚本的文件名，使用原签名构建，再将 APK、`update.json`、校验文件及源码 ZIP 上传到同一正式 Release；tag 与文件名必须为 `vX.Y.Z`、`yanjing-X.Y.Z.apk`，将该 Release 标为 latest。草稿与预发布不作为正常更新渠道。
 
+完整测试与打包后，可用 `scripts/verify-release.py --build-tools .tools/android-sdk/build-tools/36.0.0` 检查 APK 签名、16 KB 对齐、全部内置资源和来源哈希、源码 ZIP、JUnit 与 lint 报告，并生成 `dist/verification.json`。发布脚本会核对验证摘要与各附件哈希，拒绝覆盖已发布版本。验证时应让 `JAVA_HOME` 指向用于构建的 JDK。
+
 不含账号、广告、统计、云端搜索或远程模型 API。经文、查询、历史、收藏和模型计算都在本机；联网仅用于更新检查与安装包下载，服务提供者会收到常规网络连接信息。应用禁用云备份。自有代码 MIT，第三方许可证在 `third_party` 与应用内保留。
 
 
@@ -121,5 +144,9 @@ npm run data
 古兰经章号检索、中阿对照与阿拉伯文阅读：
 
 <img src="docs/screenshots/quran-search.png" alt="古兰经检索" width="240"> <img src="docs/screenshots/quran-compare.png" alt="古兰经中阿对照" width="240"> <img src="docs/screenshots/quran-arabic.png" alt="古兰经阿拉伯文阅读" width="240">
+
+论语白话搜索、现代汉语检索释义与整篇阅读：
+
+<img src="docs/screenshots/analects-search.png" alt="用现代汉语搜索论语原文" width="240"> <img src="docs/screenshots/analects-gloss.png" alt="论语原文与检索释义" width="240"> <img src="docs/screenshots/analects-reader.png" alt="论语整篇阅读" width="240">
 
 [平板阅读界面](docs/screenshots/tablet-reader.png)

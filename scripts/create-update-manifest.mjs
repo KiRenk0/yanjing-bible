@@ -13,7 +13,7 @@ const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
 const metadata={schema:1,applicationId:'org.yanjing.app',versionCode,versionName,minSdk:26,
   apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${apkName}`,
   size:bytes.length,sha256,
-  notes:'修复 Android 16／新款骁龙设备的兼容性：升级 ONNX Runtime 至 1.25.1，规避已知 SME 指令检测问题；句意推理移至独立进程，异常时保留主界面和其他搜索模式。增加模型缓存完整性校验、损坏字号保护与本机诊断导出。保留全部圣经、古兰经和镜像更新功能。'};
+  notes:'新增《论语》完整二十篇、512 章句。支持用现代汉语描述搜索对应文言原文，结合离线句意模型与自编白话检索释义；支持篇名、篇章号、简繁体定位。可阅读整篇、查看上下文与检索释义、收藏、复制和分享，三部经典分别保存阅读位置。保留圣经、古兰经、Android 16 崩溃修复与镜像更新功能。'};
 fs.writeFileSync(path.join(root,'dist/update.json'),JSON.stringify(metadata,null,2)+'\n');
 fs.writeFileSync(path.join(root,'dist/SHA256SUMS.txt'),`${sha256}  ${apkName}\n`);
 console.log(JSON.stringify({versionName,versionCode,bytes:bytes.length,sha256}));

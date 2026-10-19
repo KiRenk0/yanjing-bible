@@ -11,6 +11,10 @@ const tag=`v${metadata.versionName}`;
 const names=[`yanjing-${metadata.versionName}.apk`,'update.json','SHA256SUMS.txt',`yanjing-${metadata.versionName}-source.zip`,'verification.json'];
 const hashes=new Map(names.map(name=>[name,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'dist',name))).digest('hex')]));
 if(hashes.get(names[0])!==metadata.sha256) throw Error('APK does not match update.json');
+const verified=JSON.parse(fs.readFileSync(path.join(root,'dist/verification.json'),'utf8'));
+if(verified.version!==metadata.versionName || verified.versionCode!==metadata.versionCode || verified.apkSha256!==metadata.sha256 || verified.sourceSha256!==hashes.get(names[3]) || verified.tests<1 || verified.failures!==0 || verified.lint?.errors!==0) throw Error('Release artifacts do not match successful verification');
+const gradle=fs.readFileSync(path.join(root,'app/build.gradle.kts'),'utf8');
+if(gradle.match(/versionName\s*=\s*"([0-9.]+)"/)[1]!==metadata.versionName || Number(gradle.match(/versionCode\s*=\s*(\d+)/)[1])!==metadata.versionCode) throw Error('Release metadata does not match source version');
 
 async function git(args,input){
  return await new Promise((resolve,reject)=>{
@@ -21,6 +25,9 @@ async function git(args,input){
  });
 }
 if((await git(['status','--porcelain'])).trim()) throw Error('Commit reviewed source before publishing');
+if((await git(['branch','--show-current'])).trim()!=='main') throw Error('Publish from the verified main branch');
+const sourceHead=(await git(['rev-parse','HEAD'])).trim();
+if((await git(['tag','--list',tag])).trim() && (await git(['rev-parse',`${tag}^{commit}`])).trim()!==sourceHead) throw Error('Existing release tag does not match verified source');
 const tracked=(await git(['ls-files','-z'])).split('\0').filter(Boolean);
 if(tracked.some(n=>/(^|\/)(\.tools|local.properties|signing.properties|dist)(\/|$)|\.(jks|keystore|p12)$/i.test(n))) throw Error('Private/build files must not be tracked');
 let token=process.env.GITHUB_TOKEN;
@@ -42,16 +49,16 @@ if(user.login!=='KiRenk0')throw Error('Authenticated account is not the intended
 let repo=await api('GET',`/repos/${repository}`);
 if(!repo)repo=await api('POST','/user/repos',{name:'yanjing-bible',description:'言·经：Material 3 Expressive 中文圣经 Android 应用，离线句意检索、多模式搜索与安全更新。',private:false,has_wiki:false,auto_init:false});
 console.log('Repository ready: '+repo.html_url);
-await api('PATCH',`/repos/${repository}`,{description:'言·经：Material 3 Expressive Android 经文查询，内置圣经与古兰经中阿双语，支持离线句意检索、多模式搜索与安全更新。'});
+await api('PATCH',`/repos/${repository}`,{description:'言·经：Material 3 Expressive Android 经典查询，内置圣经、古兰经与论语，支持用现代汉语离线搜索文言原文、多模式检索与安全更新。'});
 if(!(await git(['remote'])).split(/\r?\n/).includes('origin'))await git(['remote','add','origin',repo.clone_url]);
 if((await git(['remote','get-url','origin'])).trim()!==repo.clone_url)throw Error('Unexpected git remote');
 await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
 await git(['push','origin',tag]);
-const body=`${metadata.notes}\n\nAndroid 8.0 及以上，通用 APK。内置圣经四套文本、古兰经中阿双语与 BGE 模型。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络。安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和及验证摘要。测试记录见 verification.json；尚无物理 Android 设备验证。`;
+const body=`${metadata.notes}\n\n例如：“读书时要动脑筋，不能光背下来” → “学而不思则罔，思而不学则殆”；“不能把自己讨厌的待遇加到别人身上” → “己所不欲，勿施于人”。也可输入“论语 2:15”“学而篇”“论语第十五篇第二十四章”。\n\n论语原文来自 MIT 授权的 chinese-poetry 固定版本，二十篇、512 章句；章句划分可能与其他版本不同。现代汉语检索释义由本项目编写，仅辅助查找，原文、复制与分享均保留文言文本。\n\nAndroid 8.0 及以上，通用 APK。内置圣经四套文本、古兰经中阿双语、论语与 BGE 模型，安装后可离线使用。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络。安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和及验证摘要。测试记录见 verification.json；尚无物理 Android 设备验证。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:'main',name:`言·经 ${tag} · Android 16 兼容与崩溃修复`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 用现代汉语搜索论语原文`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}
@@ -66,6 +73,6 @@ for(const name of names){
 const refreshed=await api('GET',`/repos/${repository}/releases/${release.id}`);
 if(!names.every(name=>refreshed.assets.some(a=>a.name===name && a.digest===`sha256:${hashes.get(name)}`)))throw Error('Incomplete draft release');
 release=await api('PATCH',`/repos/${repository}/releases/${release.id}`,{draft:false,prerelease:false,make_latest:'true',body});
-await api('PUT',`/repos/${repository}/topics`,{names:['android','bible','quran','chinese','arabic','jetpack-compose','material3','offline','semantic-search']});
+await api('PUT',`/repos/${repository}/topics`,{names:['android','bible','quran','analects','chinese','arabic','jetpack-compose','material3','offline','semantic-search']});
 fs.writeFileSync(path.join(root,'dist/publication.json'),JSON.stringify({repository:repo.html_url,release:release.html_url,tag,assets:release.assets.map(a=>({name:a.name,size:a.size,digest:a.digest,url:a.browser_download_url}))},null,2));
 console.log('Published: '+release.html_url);
