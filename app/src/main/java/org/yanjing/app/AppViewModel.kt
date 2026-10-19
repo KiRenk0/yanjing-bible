@@ -63,7 +63,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             else previous.readerBook.takeIf(version::acceptsBook) ?: version.defaultBook
         val chapter = if (changingScripture) repository.setting("readerChapter-${version.corpusId}", "1").toIntOrNull()?.coerceAtLeast(1) ?: 1 else previous.readerChapter
         mutable.update { it.copy(version = version, readerBook = book, readerChapter = chapter, testament = if (changingSearchScope) Testament.ALL else it.testament,
-            query = if (changingSearchScope) "" else it.query, loading = true, searching = false, error = null, response = SearchResponse(emptyList(),0), chapter = emptyList()) }
+            loading = true, searching = false, error = null, response = SearchResponse(emptyList(),0), chapter = emptyList()) }
         repository.setting("version", version.id, true)
         repository.setting("version-${version.scripture.name}", version.id, true)
         loadJob = viewModelScope.launch {

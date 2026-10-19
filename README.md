@@ -2,6 +2,12 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.5.2：切换经文后自动继续搜索
+
+完成搜索后，切换经典、同类书目或译本会保留搜索词，并在新文本加载完成后自动重新搜索、更新结果，无需再次输入或提交。保留已选搜索模式；跨经典切换时重置不适用的圣经新旧约筛选。仍可使用搜索栏的清空按钮主动结束搜索。
+
+新增 Android 15/16 Compose 回归检查：输入并提交“天”，依次切换圣经、古兰经、论语、大学和繁体圣经，核对搜索栏、搜索模式、对应文本的结果及历史记录；另检查主动清空后切换仍为空。安装包沿用原签名，可覆盖安装并保留本机数据。
+
 ## v1.5.1：修复更新组件不可用
 
 修复发布包中更新数据库缺少反射构造函数的问题，恢复更新检查与下载；同时保留已下载更新的安装入口。发布校验现在直接检查压缩 APK 的 DEX，防止只通过 Debug 测试却漏掉 R8 反射入口。详情见 [原因、修复与复查](docs/update-component-review.md)。
@@ -87,7 +93,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.5.1-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.5.1.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
+Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.5.2-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.5.2.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 

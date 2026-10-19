@@ -3,8 +3,10 @@ package org.yanjing.app.ui
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.text.AnnotatedString
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Rule
 import org.junit.Test
@@ -16,6 +18,8 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import org.yanjing.app.MainActivity
 import org.yanjing.app.AppViewModel
+import org.yanjing.app.core.BibleVersion
+import org.yanjing.app.core.SearchMode
 import androidx.lifecycle.ViewModelProvider
 import java.io.File
 
@@ -32,13 +36,13 @@ class AppFlowTest {
         waitForText("心经·般若波罗蜜多心经 1:4")
         compose.onNodeWithContentDescription("收藏 心经·般若波罗蜜多心经 1:4").performClick()
         compose.onNodeWithText("道家").performScrollTo().performClick()
+        compose.onNodeWithContentDescription("清空搜索").performClick()
         waitForText("81 章 · 81 段 · 现代汉语搜索文言原文")
         compose.onNodeWithText("像水一样帮助别人而不争").performScrollTo().performClick()
         waitForText("道德经·第8章 8:1")
         screenshot("20-tao-search")
         compose.onNodeWithContentDescription("选择经典与版本").performClick()
         compose.onNodeWithText("Vulgata Clementina").performScrollTo().performClick()
-        waitForText("能给我水喝吗")
         compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].query("诗篇 22:1") }
         waitForText("诗篇〔拉丁文〕 22:1")
         screenshot("21-latin-search")
@@ -115,6 +119,46 @@ class AppFlowTest {
         compose.onNodeWithText("深色").performClick()
         screenshot("06-dark-settings")
         compose.onNodeWithText("跟随系统").performClick()
+    }
+
+    @Test fun switchingScripturesClassicsAndTranslationsSearchesTheRetainedQuery() {
+        waitForText("完全离线 · 无需登录")
+        val model = ViewModelProvider(compose.activity)[AppViewModel::class.java]
+        compose.runOnIdle { model.modes(setOf(SearchMode.KEYWORD)) }
+        compose.onAllNodes(hasSetTextAction()).onLast().performTextInput("天")
+        compose.onAllNodes(hasSetTextAction()).onLast().performImeAction()
+
+        fun assertMatches(version: BibleVersion, reference: String) {
+            compose.onAllNodes(hasSetTextAction()).onLast().assertTextEquals("天")
+            waitForText(reference)
+            compose.runOnIdle {
+                val state = model.state.value
+                org.junit.Assert.assertEquals(version, state.version)
+                org.junit.Assert.assertEquals("天", state.query)
+                org.junit.Assert.assertEquals(setOf(SearchMode.KEYWORD), state.modes)
+                org.junit.Assert.assertTrue(state.response.hits.isNotEmpty())
+                org.junit.Assert.assertTrue(state.response.hits.all { version.acceptsBook(it.verse.key.book) && it.verse.text.contains("天") })
+                org.junit.Assert.assertEquals(listOf("天"), state.history)
+            }
+        }
+
+        assertMatches(BibleVersion.CUVS, "创世记 1:1")
+        compose.onNodeWithText("古兰经").performClick()
+        assertMatches(BibleVersion.QURAN_ZH, "古兰经 2:22")
+        compose.onNodeWithText("儒家").performScrollTo().performClick()
+        assertMatches(BibleVersion.ANALECTS, "论语·为政 2:4")
+        compose.onNodeWithText("大学").performScrollTo().performClick()
+        assertMatches(BibleVersion.GREAT_LEARNING, "大学·大学 1:2")
+        compose.onNodeWithContentDescription("选择经典与版本").performClick()
+        compose.onNodeWithText("和合本·繁體").performScrollTo().performClick()
+        assertMatches(BibleVersion.CUVT, "创世记 1:1")
+
+        compose.onNodeWithContentDescription("清空搜索").performClick()
+        waitForText("完全离线 · 无需登录")
+        compose.onNodeWithText("古兰经").performClick()
+        waitForText("114 章 · 6,236 节 · 中阿文本可对照")
+        compose.onAllNodes(hasSetTextAction()).onLast().assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText, AnnotatedString("")))
+        compose.runOnIdle { org.junit.Assert.assertTrue(model.state.value.response.hits.isEmpty()) }
     }
 
     @Test
@@ -215,6 +259,7 @@ class AppFlowTest {
         waitForText("第 1 章 · 法谛海")
         compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
         compose.onNodeWithText("圣经").performClick()
+        compose.onNodeWithContentDescription("清空搜索").performClick()
         waitForText("能给我水喝吗")
         compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
         waitForText("约翰福音 · 第 4 章")
@@ -258,6 +303,7 @@ class AppFlowTest {
         screenshot("15-quran-arabic")
         compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
         compose.onNodeWithText("圣经").performClick()
+        compose.onNodeWithContentDescription("清空搜索").performClick()
         waitForText("能给我水喝吗")
         compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
         waitForText("约翰福音 · 第 4 章")

@@ -12,8 +12,8 @@ android {
         applicationId = "org.yanjing.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 9
-        versionName = "1.5.1"
+        versionCode = 10
+        versionName = "1.5.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true; buildConfig = true; aidl = true }
