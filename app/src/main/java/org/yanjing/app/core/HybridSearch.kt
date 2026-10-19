@@ -12,7 +12,7 @@ class HybridSearch(
         if (raw.length > 200) return SearchResponse(emptyList(), 0, "请输入 200 字以内的内容。")
         if (normalizer.normalize(raw).isEmpty()) return SearchResponse(emptyList(), 0, "请输入文字、关键词或经文出处。")
         if (modes.isEmpty()) return SearchResponse(emptyList(), 0, "请至少选择一种搜索模式。")
-        if (ReferenceParser.parse(raw, normalizer, engine.version.scripture) != null) return engine.search(raw, SearchMode.KEYWORD, testament, limit)
+        if (ReferenceParser.parse(raw, normalizer, engine.version.scripture, engine.version) != null) return engine.search(raw, SearchMode.KEYWORD, testament, limit)
         val responses = mutableListOf<Pair<SearchMode, SearchResponse>>()
         val failures = mutableListOf<String>()
         // Run lighter searches first; the CPU model is shared and serialized by its repository.

@@ -24,6 +24,29 @@ import java.io.File
 @Config(sdk = [35,36], qualifiers = "zh-rCN-w412dp-h915dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AppFlowTest {
+    @Test fun newClassicsAndLatinCanSearchReadSaveAndCompare() {
+        waitForText("完全离线 · 无需登录")
+        compose.onNodeWithText("佛教").performScrollTo().performClick()
+        waitForText("1 篇 · 7 段 · 现代汉语搜索文言原文")
+        compose.onNodeWithText("放下执着和恐惧").performScrollTo().performClick()
+        waitForText("心经·般若波罗蜜多心经 1:4")
+        compose.onNodeWithContentDescription("收藏 心经·般若波罗蜜多心经 1:4").performClick()
+        compose.onNodeWithText("道家").performScrollTo().performClick()
+        waitForText("81 章 · 81 段 · 现代汉语搜索文言原文")
+        compose.onNodeWithText("像水一样帮助别人而不争").performScrollTo().performClick()
+        waitForText("道德经·第8章 8:1")
+        screenshot("20-tao-search")
+        compose.onNodeWithContentDescription("选择经典与版本").performClick()
+        compose.onNodeWithText("Vulgata Clementina").performScrollTo().performClick()
+        waitForText("能给我水喝吗")
+        compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].query("诗篇 22:1") }
+        waitForText("诗篇〔拉丁文〕 22:1")
+        screenshot("21-latin-search")
+        compose.onNodeWithText("上下文与对照").performClick()
+        waitForText("同一出处的不同文本。部分版本分节方式可能不同。")
+        compose.onNodeWithText("耶和华是我的牧者",substring=true).assertExists()
+        screenshot("22-latin-comparison")
+    }
     @get:Rule(order = 0) val reset = object : ExternalResource() {
         override fun before() {
             // AndroidX's singleton otherwise keeps the previous Robolectric Application.
@@ -154,7 +177,7 @@ class AppFlowTest {
     @Test fun analectsModernSearchSaveGlossReadAndSwitchPreserveEachScripture() {
         waitForText("完全离线 · 无需登录")
         compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].read(43,4) }
-        compose.onNodeWithText("论语").performClick()
+        compose.onNodeWithText("儒家").performClick()
         waitForText("20 篇 · 512 章句 · 白话搜索文言原文")
         compose.onNodeWithText("全本圣经").assertDoesNotExist()
         compose.runOnIdle { ViewModelProvider(compose.activity)[AppViewModel::class.java].modes(setOf(org.yanjing.app.core.SearchMode.SEMANTIC)) }
@@ -196,7 +219,7 @@ class AppFlowTest {
         compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
         waitForText("约翰福音 · 第 4 章")
         compose.onNodeWithText("匹配",useUnmergedTree=true).performClick()
-        compose.onNodeWithText("论语").performClick()
+        compose.onNodeWithText("儒家").performClick()
         waitForText("20 篇 · 512 章句 · 白话搜索文言原文")
         compose.onNodeWithText("阅读",useUnmergedTree=true).performClick()
         waitForText("第 20 篇 · 尧曰")

@@ -39,3 +39,16 @@
 - 论语句意索引分别编码原文与现代检索释义，长段另按句段编码，最终合并到原始章句。索引、原文、释义与许可均离线内置；来源、数量和 SHA-256 见 assets/analects/manifest.json 与 assets/semantic/analects-manifest.json。
 
 v1.4 的句意查询另使用本项目维护的通用同义词与常用表达作为检索线索，并结合原文用词辅助排序。线索仅辅助查找，不生成或改写原文；匹配值不是概率。查询、推理与排序仍全部在本机进行。
+
+
+儒释道新增经典（完整原文，编号依所附版本）：
+- 大学（16 段）、中庸（39 段）、孟子（14 篇、690 段）：chinese-poetry/chinese-poetry @ fa1814a8044db4fb0c7a9e0a0449974e8c3463b7，MIT，© 2016 JackeyGao；见 chinese-poetry-LICENSE.txt。
+- 心经（玄奘，7 段）、金刚经（鸠摩罗什，32 分、127 段）：hooosberg/Rushi @ bda9d95a2876aec4dc4d8b60b2594d9de79a1062，scriptures/**/*.md 的 CC0 1.0 dedication；见 hooosberg-LICENSE.txt。仅提取正文，不将译者说明、分目现代简述或来源元数据混入原文。
+- 道德经（81 章）、庄子（内、外、杂共 33 篇、480 段）：banghuazhao/Chinese-Classical-Literature-Android @ f2c40b864c00c97d2d148a82857884fe8ba527d4，MIT，© 2024 Banghua Zhao；见 banghuazhao-LICENSE.txt。
+- 原始文件与固定版本哈希保留在源码 data/classics/sources、scripts/classic-sources.json；APK 内只放完整正文、必要元数据及检索字段，避免重复携带原始 JSON。空白分隔按显示段落整理，原文字符不改写，检索归一化另存字段。
+- 额外现代汉语检索提示由本项目独立编写，见 classics/search-hints.json；用于辅助查找，不是完整翻译或权威注疏。原文和提示分开显示，复制分享保留原文。
+
+拉丁文圣经与分节数据：
+- Vulgata Clementina：公有领域古典拉丁文文本，来自 Scrollmapper/bible_databases @ e1b254cef86d0e65b1a5d1a94b8b112d0f296a2c 的 sources/la/VulgClementine，数据仓库 MIT（scrollmapper-LICENSE.txt）。完整 73 卷、35,809 非空节；源数据库另外五个全空附录占位不计为书卷。原始 JSON、SHA-256 随源码 data/latin 保存，正文保留原版章号与节号。
+- CrossWire Vulg 分节数据 © 2009–2013 CrossWire Bible Society，GNU GPL version 2；固定镜像提交 0a18221125bba6bc7f594e36074b42cf779555b5，完整原始 canon_vulg.h 与来源信息随源码 data/latin 保存。派生的独立非代码分节表 latin/mapping.tsv 同依 GPL-2.0-only 分发，见 GPL-2.0.txt；该表与应用自有 MIT 代码分别授权，未链接或打包 SWORD 运行库。
+- 拉丁文采用独立书卷键，只有映射指明的共有出处参加中文句意关联；无对应的增补内容仍可完整阅读、按原文或出处搜索，不猜测中文对照。映射处理诗篇移章、但以理书等增补／移节及部分合节。不同版本存在读法与分节差异，应继续核对原文及上下文。

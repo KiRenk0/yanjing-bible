@@ -8,12 +8,13 @@ const root=path.resolve(import.meta.dirname,'..');
 const repository='KiRenk0/yanjing-bible';
 const metadata=JSON.parse(fs.readFileSync(path.join(root,'dist/update.json'),'utf8'));
 const tag=`v${metadata.versionName}`;
-const names=[`yanjing-${metadata.versionName}.apk`,'update.json','SHA256SUMS.txt',`yanjing-${metadata.versionName}-source.zip`,'verification.json',`yanjing-${metadata.versionName}-mapping.txt.gz`];
+const names=[`yanjing-${metadata.versionName}.apk`,'update.json','SHA256SUMS.txt',`yanjing-${metadata.versionName}-source.zip`,'verification.json',`yanjing-${metadata.versionName}-mapping.txt.gz`,`yanjing-${metadata.versionName}-arm64-v8a.apk`];
 const hashes=new Map(names.map(name=>[name,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'dist',name))).digest('hex')]));
 if(hashes.get(names[0])!==metadata.sha256) throw Error('APK does not match update.json');
 const verified=JSON.parse(fs.readFileSync(path.join(root,'dist/verification.json'),'utf8'));
 if(verified.version!==metadata.versionName || verified.versionCode!==metadata.versionCode || verified.apkSha256!==metadata.sha256 || verified.sourceSha256!==hashes.get(names[3]) || verified.tests<1 || verified.failures!==0 || verified.lint?.errors!==0) throw Error('Release artifacts do not match successful verification');
 if(verified.mappingSha256!==hashes.get(names[5])) throw Error('R8 mapping does not match verified build');
+if(verified.arm64?.apkSha256!==hashes.get(names[6]) || verified.arm64.apkSha256!==metadata.arm64?.sha256)throw Error('ARM64 artifact does not match successful verification');
 const gradle=fs.readFileSync(path.join(root,'app/build.gradle.kts'),'utf8');
 if(gradle.match(/versionName\s*=\s*"([0-9.]+)"/)[1]!==metadata.versionName || Number(gradle.match(/versionCode\s*=\s*(\d+)/)[1])!==metadata.versionCode) throw Error('Release metadata does not match source version');
 
@@ -50,17 +51,17 @@ if(user.login!=='KiRenk0')throw Error('Authenticated account is not the intended
 let repo=await api('GET',`/repos/${repository}`);
 if(!repo)repo=await api('POST','/user/repos',{name:'yanjing-bible',description:'言·经：Material 3 Expressive 中文圣经 Android 应用，离线句意检索、多模式搜索与安全更新。',private:false,has_wiki:false,auto_init:false});
 console.log('Repository ready: '+repo.html_url);
-await api('PATCH',`/repos/${repository}`,{description:'言·经：Material 3 Expressive Android 经典查询，内置圣经、古兰经与论语，支持用现代汉语离线搜索文言原文、多模式检索与安全更新。'});
+await api('PATCH',`/repos/${repository}`,{description:'言·经：离线查询圣经（中英拉丁文）、古兰经及儒释道经典，用现代汉语查找文言原文；原生 Android、Material 3、多模式检索与安全更新。'});
 if(!(await git(['remote'])).split(/\r?\n/).includes('origin'))await git(['remote','add','origin',repo.clone_url]);
 if((await git(['remote','get-url','origin'])).trim()!==repo.clone_url)throw Error('Unexpected git remote');
 await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
 await git(['push','origin',tag]);
 const size=verified.apkSizeComparison;
-const body=`${metadata.notes}\n\n此次先处理 Xiaomi 15 Pro／HyperOS 4／Android 17 的启动反馈。没有该设备的异常堆栈，也没有真机复现；本版修正已验证的启动失败路径，仍需在反馈设备上覆盖安装确认。\n\n如果仍在打开时退出，请再次打开，进入“启动恢复”后尝试“兼容启动”，或点击“导出本机诊断”。也可长按桌面图标选择“启动恢复与诊断”。兼容启动关闭动态配色与自动检查更新，保留收藏、历史及阅读进度。诊断由用户选择分享，不会自动上传。\n\n${verified.tests} 项自动测试通过，lint 无错误。包含 Android 17 框架／原生绘图启动检查，Android 16/17 恢复与调度异常测试，以及原有搜索、阅读、收藏、真实 ONNX 检索、更新与签名校验回归。Android 17 尚未进行 Espresso 触控全流程或物理设备验证。\n\n通用 APK：${(size.currentBytes/1e6).toFixed(1)} MB，保留四种架构、全部文本和离线模型。Android 8.0 及以上；原签名，可直接覆盖旧版并保留本机数据。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和、验证摘要与 R8 映射。`;
+const body=`${metadata.notes}\n\n新增拉丁文圣经 **Vulgata Clementina：73 卷、35,809 节**。保留原文与编号；中文句意通过所附 CrossWire 分节映射定位拉丁原文，处理诗篇等移章、合节。无中文对应的材料仍可阅读、搜索拉丁原文；不会猜测对照。\n\n儒家：论语、大学、中庸、孟子；佛教：心经、金刚经；道家：道德经、庄子。共八部完整经典、1,952 段原文。支持现代汉语离线检索、篇章定位、阅读、上下文、收藏与分享。检索提示单列，属于辅助查找，不能代替完整翻译或权威注疏；编号依所附数据版本。\n\n**安装包**：ARM64 ${(verified.arm64.apkBytes/1e6).toFixed(1)} MB，较 1.4.1 通用包减少 ${verified.arm64.reductionFromPreviousUniversalPercent}%；通用版 ${(size.currentBytes/1e6).toFixed(1)} MB，保留四种架构。两种包均包含全部文本、离线模型和索引。新版本更新器按架构选择；旧更新器继续使用通用包。原始数据随源码归档，APK 不重复携带新增原始 JSON。\n\nAndroid 8.0 及以上，继续使用原签名，可直接覆盖安装并保留数据。继承 1.4.1 的启动修正；用户已确认 1.4.1 在所反馈 Xiaomi 15 Pro／HyperOS 4／Android 17 上能够正常进入，1.5.0 本身仍需设备验证。\n\n${verified.tests} 项自动测试通过，lint 无错误；包括真实 ONNX 改述检索、经典隔离、中拉映射、收藏恢复、原有搜索流程、Android 17 启动及恢复、ARM64 更新选择与包签名／内容一致性。复查记录和限制见源码 docs 与 verification.json。\n\n[ARM64 安装包](${metadata.arm64.apkUrl}) · [通用安装包](${metadata.apkUrl})\n\nARM64 SHA-256：\`${metadata.arm64.sha256}\`\n\n通用包 SHA-256：\`${metadata.sha256}\`\n\n附件包含两种安装包、完整源码与数据、更新清单、校验和、验证记录及 R8 映射。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 启动兼容与恢复`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 拉丁文圣经与儒释道经典`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}

@@ -1,4 +1,6 @@
 * text=auto eol=lf
+data/classics/sources/** -text -whitespace
+data/latin/VulgClementine.json -text -whitespace
 *.bat text eol=crlf
 *.onnx -text
 *.i8 -text

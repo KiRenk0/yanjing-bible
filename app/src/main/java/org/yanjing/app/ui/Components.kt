@@ -50,7 +50,7 @@ fun exportedVerse(verse: Verse, version: BibleVersion): String {
         BibleVersion.QURAN_ZH -> "\n穆罕默德·马坚 · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin"
         BibleVersion.QURAN_AR -> "\nTanzil Project · Uthmani v1.1 · CC BY 3.0 · https://tanzil.net"
         BibleVersion.ANALECTS -> "\n原文数据：chinese-poetry/chinese-poetry · MIT"
-        else -> ""
+        else -> Classics.forVersion(version)?.let { "\n原文数据：${it.credit}" } ?: if(version==BibleVersion.VULGATE) "\nVulgata Clementina · Scrollmapper · 公有领域原文；分节对应依所附映射" else ""
     }
     return "${verse.text}\n——${verse.key.reference}（${version.title}）$credit"
 }
@@ -97,6 +97,14 @@ fun verseTextStyle(version: BibleVersion, fontSize: Float, lineSpacing: Float = 
 @Composable
 fun CorpusSource(version: BibleVersion) {
     val uri = LocalUriHandler.current
+    if(version.isClassical && !version.isAnalects) Classics.forVersion(version)?.let { work ->
+        TextButton(onClick={uri.openUri(work.sourceUrl)},contentPadding=PaddingValues(0.dp)) {
+            Text("原文：${work.credit} · 编号依所附版本",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+    if(version==BibleVersion.VULGATE) TextButton(onClick={uri.openUri("https://github.com/scrollmapper/bible_databases/tree/e1b254cef86d0e65b1a5d1a94b8b112d0f296a2c/sources/la/VulgClementine")},contentPadding=PaddingValues(0.dp)) {
+        Text("拉丁文：Clementina · 73 卷 · 保留原版章号；中拉分节可能不同",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+    }
     if (version.isAnalects) TextButton(onClick = { uri.openUri("https://github.com/chinese-poetry/chinese-poetry/blob/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/论语/lunyu.json") }, contentPadding = PaddingValues(0.dp)) {
         Text("论语原文：chinese-poetry · MIT · 章句依所附版本", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
@@ -121,13 +129,13 @@ fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: ()
                             RadioButton(selected = version == current, onClick = null, modifier = Modifier.padding(12.dp))
                             Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
                                 Text(version.title, style = MaterialTheme.typography.titleSmall)
-                                Text("${version.description} · ${counts[version.id] ?: "—"} ${if (version.isAnalects) "章句" else "节"}", style = MaterialTheme.typography.bodySmall)
+                                Text("${version.description} · ${counts[version.id] ?: "—"} ${if (version.isClassical) "段" else "节"}", style = MaterialTheme.typography.bodySmall)
                             }
                         }
                     }
                 }
                 }
-                Text("圣经：4 套文本、3 种译本。古兰经：中阿双语。论语：二十篇文言原文，可用现代汉语查找。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
+                Text("圣经：5 套文本，含拉丁文。古兰经：中阿双语。儒家四书、佛教心经与金刚经、道家道德经与庄子均含完整原文，可用现代汉语检索。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
             }
         }, confirmButton = { TextButton(onClick = onDismiss) { Text("完成") } })
 }

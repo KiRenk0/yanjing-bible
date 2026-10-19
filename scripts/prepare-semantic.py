@@ -1,4 +1,4 @@
-"""Build the offline BGE index from the bundled, unmodified CUV verse texts.
+"""Build offline BGE indexes from the bundled original texts and separate hints.
 
 Use the same int8 ONNX model, CLS pooling and normalization as the Android client.
 No queries or verse texts are sent to a service. Ordinary Android builds use the
@@ -30,7 +30,8 @@ def sha(path):
 def main():
     global OUT
     parser = argparse.ArgumentParser()
-    parser.add_argument('--corpus', choices=['bible','quran','analects'], default='bible')
+    classic_ids = ['daxue','zhongyong','mengzi','heart_sutra','diamond_sutra','tao_te_ching','zhuangzi']
+    parser.add_argument('--corpus', choices=['bible','quran','analects']+classic_ids, default='bible')
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--output', type=Path, default=OUT)
     args = parser.parse_args()
@@ -40,15 +41,15 @@ def main():
     corpus_kind = args.corpus
     OUT = args.output
     OUT.mkdir(parents=True, exist_ok=True)
-    version = {'bible': 'cuvs', 'quran': 'quran_zh', 'analects': 'analects'}[corpus_kind]
+    version = {'bible': 'cuvs', 'quran': 'quran_zh'}.get(corpus_kind,corpus_kind)
     corpus = ROOT / f"app/src/main/assets/bibles/{version}.tsv"
     prefix = f"{corpus_kind}-ort{ort.__version__}-batch{args.batch_size}-"
     rows = [line.rstrip("\n").split("\t", 5) for line in corpus.open(encoding="utf-8") if line.strip() and not line.startswith('#')]
     source_verses = len(rows)
-    if corpus_kind in ('quran', 'analects'):
+    if corpus_kind != 'bible':
         passages = []
         for row in rows:
-            texts = [row[3]] + ([row[5]] if corpus_kind == 'analects' else [])
+            texts = [row[3]] + ([row[5]] if corpus_kind != 'quran' and len(row)>5 and row[5] else [])
             candidates = []
             for text in texts:
                 candidates += [text] if len(text) <= 220 else [text[i:i+200] for i in range(0,len(text),160)]

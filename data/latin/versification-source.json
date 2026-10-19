@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/bibletime/crosswire-sword-mirror",
+  "revision": "0a18221125bba6bc7f594e36074b42cf779555b5",
+  "url": "https://raw.githubusercontent.com/bibletime/crosswire-sword-mirror/0a18221125bba6bc7f594e36074b42cf779555b5/include/canon_vulg.h",
+  "license": "GPL-2.0-only",
+  "note": "Versification data only; no SWORD runtime code is bundled."
+}

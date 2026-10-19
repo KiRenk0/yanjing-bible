@@ -3,45 +3,58 @@ package org.yanjing.app.core
 import java.text.Normalizer
 import java.util.Locale
 
-enum class Scripture(val title: String) { BIBLE("圣经"), QURAN("古兰经"), ANALECTS("论语") }
+enum class Scripture(val title: String) { BIBLE("圣经"), QURAN("古兰经"), ANALECTS("儒家"), BUDDHISM("佛教"), TAOISM("道家") }
 
 enum class BibleVersion(val id: String, val title: String, val description: String, val scripture: Scripture = Scripture.BIBLE) {
     CUVS("cuvs", "和合本·简体", "白话文 · 简体转换"),
     CUVT("cuvt", "和合本·繁體", "白話文 · 繁體原文"),
     WENLI("wenli", "文理和合本", "文言文 · 繁體"),
     KJV("kjv", "King James Version", "English · 1769"),
+    VULGATE("vulgate", "Vulgata Clementina", "拉丁文 · 73 卷 · 原版分节"),
     QURAN_ZH("quran_zh", "古兰经·马坚译本", "中文经义译本 · QuranEnc", Scripture.QURAN),
     QURAN_AR("quran_ar", "古兰经·阿拉伯文", "Tanzil Uthmani · 1.1", Scripture.QURAN),
-    ANALECTS("analects", "论语·文言原文", "二十篇 · 现代汉语检索", Scripture.ANALECTS);
+    ANALECTS("analects", "论语·文言原文", "二十篇 · 现代汉语检索", Scripture.ANALECTS),
+    GREAT_LEARNING("daxue", "大学·文言原文", "全文 · 所附版本段落编号", Scripture.ANALECTS),
+    DOCTRINE_MEAN("zhongyong", "中庸·文言原文", "全文 · 所附版本段落编号", Scripture.ANALECTS),
+    MENCIUS("mengzi", "孟子·文言原文", "十四篇 · 现代汉语检索", Scripture.ANALECTS),
+    HEART_SUTRA("heart_sutra", "心经·玄奘译本", "文言原文 · 全文", Scripture.BUDDHISM),
+    DIAMOND_SUTRA("diamond_sutra", "金刚经·鸠摩罗什译本", "文言原文 · 三十二分", Scripture.BUDDHISM),
+    TAO_TE_CHING("tao_te_ching", "道德经·文言原文", "八十一章 · 现代汉语检索", Scripture.TAOISM),
+    ZHUANGZI("zhuangzi", "庄子·文言原文", "内外杂篇 · 全三十三篇", Scripture.TAOISM);
 
     val isQuran: Boolean get() = scripture == Scripture.QURAN
-    val isAnalects: Boolean get() = scripture == Scripture.ANALECTS
+    val isAnalects: Boolean get() = this == ANALECTS
+    val isClassical: Boolean get() = scripture !in listOf(Scripture.BIBLE,Scripture.QURAN)
     val isRtl: Boolean get() = this == QURAN_AR
-    val peers: List<BibleVersion> get() = entries.filter { it.scripture == scripture }
-    val defaultBook: Int get() = when (scripture) { Scripture.BIBLE -> 43; Scripture.QURAN -> Quran.BOOK; Scripture.ANALECTS -> Analects.BOOK }
-    fun acceptsBook(book: Int) = when (scripture) { Scripture.BIBLE -> book in 1..66; Scripture.QURAN -> book == Quran.BOOK; Scripture.ANALECTS -> book == Analects.BOOK }
+    val peers: List<BibleVersion> get() = if(isClassical) listOf(this) else entries.filter { it.scripture == scripture }
+    val corpusId: String get() = if((isClassical && !isAnalects) || this==VULGATE) id else scripture.name
+    val defaultBook: Int get() = when { isClassical -> Classics.forVersion(this)!!.book; isQuran -> Quran.BOOK; this==VULGATE -> 150; else -> 43 }
+    fun acceptsBook(book: Int) = when { isClassical -> book==defaultBook; isQuran -> book==Quran.BOOK; this==VULGATE -> book in 101..173; else -> book in 1..66 }
 }
 
 data class VerseKey(val book: Int, val chapter: Int, val verse: Int) {
     val encoded: String get() = "$book:$chapter:$verse"
-    val scripture: Scripture get() = when (book) { Quran.BOOK -> Scripture.QURAN; Analects.BOOK -> Scripture.ANALECTS; else -> Scripture.BIBLE }
+    val scripture: Scripture get() = when (book) { Quran.BOOK -> Scripture.QURAN; in 68..71 -> Scripture.ANALECTS; in 72..73 -> Scripture.BUDDHISM; in 74..75 -> Scripture.TAOISM; else -> Scripture.BIBLE }
     val reference: String get() = when (book) {
         Quran.BOOK -> "古兰经 $chapter:$verse"
         Analects.BOOK -> "论语·${Analects.chapterName(chapter)} $chapter:$verse"
+        in 69..75 -> "${Classics.forBook(book)!!.title}·${Classics.forBook(book)!!.names.getOrNull(chapter-1).orEmpty()} $chapter:$verse"
+        in 101..173 -> "${Vulgate.bookName(book)}〔拉丁文〕 $chapter:$verse"
         else -> "${Books.names[book - 1]} $chapter:$verse"
     }
     companion object {
         fun decode(raw: String): VerseKey? {
             val values = raw.split(':').map { it.toIntOrNull() ?: return null }
-            return if (values.size == 3 && values[0] in 1..68 && values[1] > 0 && values[2] > 0 &&
+            return if (values.size == 3 && (values[0] in 1..75 || values[0] in 101..173) && values[1] > 0 && values[2] > 0 &&
                 (values[0] != Quran.BOOK || (values[1] in 1..114 && values[2] <= Quran.verseCounts[values[1] - 1])) &&
-                (values[0] != Analects.BOOK || (values[1] in 1..20 && values[2] <= Analects.verseCounts[values[1] - 1])))
+                (values[0] !in 68..75 || Classics.forBook(values[0])!!.verseCounts.getOrNull(values[1]-1)?.let { values[2]<=it } == true) &&
+                (values[0] !in 101..173 || Vulgate.verseCounts[values[0]]?.getOrNull(values[1]-1)?.let { values[2]<=it } == true))
                 VerseKey(values[0], values[1], values[2]) else null
         }
     }
 }
 
-data class Verse(val key: VerseKey, val text: String, val normalized: String, val notes: String = "", val searchGloss: String = "")
+data class Verse(val key: VerseKey, val text: String, val normalized: String, val notes: String = "", val searchGloss: String = "", val canonicalKeys: List<VerseKey> = emptyList())
 data class SearchHit(val verse: Verse, val score: Double, val reason: String, val matchedModes: Set<SearchMode> = emptySet())
 enum class SearchMode(val title: String, val description: String) {
     SEMANTIC("句意搜索", "理解中文句子的意思，即使用词不同也查找相关经文"),
@@ -49,7 +62,7 @@ enum class SearchMode(val title: String, val description: String) {
     KEYWORD("原文搜索", "查找包含输入内容的原文，支持简繁体")
 }
 enum class Testament(val title: String) { ALL("全本圣经"), OLD("旧约"), NEW("新约");
-    fun accepts(book: Int) = this == ALL || (this == OLD && book in 1..39) || (this == NEW && book in 40..66)
+    fun accepts(book: Int) = this == ALL || (this == OLD && (book in 1..39 || book in 101..146)) || (this == NEW && (book in 40..66 || book in 147..173))
 }
 data class SearchResponse(val hits: List<SearchHit>, val total: Int, val message: String? = null)
 
@@ -78,6 +91,8 @@ class TextNormalizer(private val traditionalMap: Map<Char, Char> = emptyMap()) {
         .map { traditionalMap[it] ?: it }.joinToString("")
     fun script(text: String): String = forSemantic(text).lowercase(Locale.ROOT)
     fun normalize(text: String): String = script(text).filter { it.isLetterOrDigit() }
+    fun normalizeLatin(text: String): String = Normalizer.normalize(script(text), Normalizer.Form.NFKD)
+        .replace("æ","ae").replace("œ","oe").filter { it.isLetterOrDigit() }
     fun normalizeArabic(text: String): String = Normalizer.normalize(text, Normalizer.Form.NFKD)
         .filter { it.isLetterOrDigit() && it != 'ـ' && it != 'ۥ' && it != 'ۦ' }.map { when (it) { 'ٱ', 'أ', 'إ', 'آ' -> 'ا'; 'ى' -> 'ي'; else -> it } }.joinToString("")
 }
@@ -85,9 +100,12 @@ class TextNormalizer(private val traditionalMap: Map<Char, Char> = emptyMap()) {
 data class ReferenceQuery(val book: Int, val chapter: Int, val start: Int?, val end: Int?)
 object ReferenceParser {
     private val pattern = Regex("^(.+?)\\s*(\\d+)\\s*(?:(?::|章)\\s*(\\d+)\\s*(?:[-–—]\\s*(\\d+))?\\s*(?:节)?)?\\s*(?:章)?$")
-    fun parse(raw: String, normalizer: TextNormalizer, scripture: Scripture = Scripture.BIBLE): ReferenceQuery? {
+    fun parse(raw: String, normalizer: TextNormalizer, scripture: Scripture = Scripture.BIBLE, version: BibleVersion? = null): ReferenceQuery? {
+        if(version?.isClassical == true) return Classics.parse(raw,normalizer,version)
+        if(version == BibleVersion.VULGATE) return Vulgate.parse(raw,normalizer)
         if (scripture == Scripture.QURAN) return Quran.parse(raw, normalizer)
         if (scripture == Scripture.ANALECTS) return Analects.parse(raw, normalizer)
+        if(scripture != Scripture.BIBLE) return null
         val m = pattern.matchEntire(normalizer.script(raw.trim())) ?: return null
         val name = m.groupValues[1].filterNot { it.isWhitespace() }
         val book = Books.aliases().entries.firstOrNull {

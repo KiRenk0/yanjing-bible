@@ -2,6 +2,18 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.5.0：拉丁文圣经与儒释道经典
+
+新增 **Vulgata Clementina 拉丁文圣经，73 卷、35,809 节**，保留原版编号。使用固定 CrossWire 分节数据关联中文查询与对照，例如中文诗篇 23:1 对应拉丁诗篇 22:1，而非按相同编号机械拼接。无共有对应的增补内容仍能完整阅读、按出处和拉丁原文搜索；不猜测中文对应。原始数据、分节表及各自许可随源码归档。
+
+儒家四书（论语、大学、中庸、孟子）、佛教心经与金刚经、道家道德经与庄子，共 **八部完整经典、1,952 段**。按所附版本的篇章和段落编号，可用现代汉语描述意思，或按出处、原文查找；支持阅读、上下文、收藏、复制和分享。新增经典分别生成离线语义索引，配有本项目编写的部分现代检索提示；提示单列，不能代替完整翻译或权威注疏。大学／中庸按所附全文的一篇、多段展示，段号不冒充其他版本的标准章号。切换经典保留各书阅读位置，旧收藏继续可读。
+
+新增 **ARM64 小安装包 65.1 MB**，较 1.4.1 通用包 91.0 MB 减少 **28.49%**；保留四种架构的通用包 **98.0 MB**（均为十进制下载大小）。新更新器按设备架构选择，逐包校验 SHA-256 与原签名；旧更新器仍可下载通用包。全部文本、模型和索引均保留，新增原始 JSON 随源码提供，APK 不重复携带。逐包验证见 Release `verification.json`；安装后占用不会同比例下降。
+
+原文固定来源：chinese-poetry（MIT）、Chinese-Classical-Literature-Android（MIT）、Rushi scriptures（CC0）、Scrollmapper 拉丁文（公有领域文本／MIT 数据）；独立分节表采用 CrossWire 数据许可 GPL-2.0-only。完整许可和来源见 [NOTICE](third_party/NOTICE.md)。复现：先运行 `node scripts/prepare-classics.mjs`、`node --use-system-ca scripts/prepare-latin.mjs`；如需重建新增索引，使用匹配的 Python 环境执行 `scripts/prepare-semantic.py --corpus daxue` 等。普通 Android 构建直接使用提交的全部文本和索引。
+
+继承 1.4.1 的 Android 17 启动与恢复修正。用户已确认 1.4.1 在所反馈的小米 15 Pro 上可正常进入；尚未进行 1.5.0 的同机验证。
+
 ## v1.4.1：启动兼容与恢复
 
 针对 Xiaomi 15 Pro、HyperOS 4.0.0.17.XOBCNXM.D01、Android 17 的启动即闪退反馈，修正启动链中的可确认风险：WorkManager 改为官方的按需初始化，界面与本地文本就绪后才调度自动更新；更新组件初始化或调度失败会报告错误，不再直接中断主界面。动态配色缺少系统色板资源时回退到内置配色。
@@ -69,7 +81,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上，ARM64、ARMv7、x86、x86_64 通用安装包。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 `yanjing-1.4.1.apk`。无需登录，内置模型、圣经、古兰经和论语，安装后即可离线搜索。
+Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.5.0-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.5.0.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 

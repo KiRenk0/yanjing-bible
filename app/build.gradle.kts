@@ -12,11 +12,19 @@ android {
         applicationId = "org.yanjing.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 7
-        versionName = "1.4.1"
+        versionCode = 8
+        versionName = "1.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true; buildConfig = true; aidl = true }
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+            isUniversalApk = true
+        }
+    }
     // Models are copied to private storage and indexes use streams, so both can be compressed.
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

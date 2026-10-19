@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "model": "BAAI/bge-small-zh-v1.5",
+  "onnxRepository": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "license": "MIT",
+  "pooling": "CLS",
+  "normalization": "L2",
+  "dimensions": 512,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "embeddingBatchSize": 1,
+  "intraOpThreads": 2,
+  "onnxRuntime": "1.25.1",
+  "sourceVersion": "tao_te_ching",
+  "verses": 81,
+  "passages": 501,
+  "corpusSha256": "31ba77c395a00449ee91d4defae84a60ffbc4af3bf0a1f520c505d5c7f065223",
+  "files": {
+    "bge-small-zh-int8.onnx": {
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    "tao_te_ching.i8": {
+      "bytes": 260540,
+      "sha256": "d8cd5dd1d44ab837a9c22f48f54765b7870dcaac2bd8fa360a1a30d2a9086fe5"
+    },
+    "vocab.txt": {
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    }
+  }
+}

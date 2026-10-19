@@ -14,9 +14,13 @@ const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
 const metadata={schema:1,applicationId:'org.yanjing.app',versionCode,versionName,minSdk:26,
   apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${apkName}`,
   size:bytes.length,sha256,
-  notes:'启动兼容更新：自动更新改为按需初始化并延后至界面就绪，调度异常不再直接导致主界面退出；系统动态色板缺失时使用内置配色。新增独立启动恢复页，可兼容启动、保留本机数据并导出诊断。补充 Android 17 启动与恢复测试。尚无 Xiaomi 15 Pro／HyperOS 4 的真机堆栈，具体设备问题仍需覆盖安装后验证。'};
+  notes:'新增拉丁文 Vulgata Clementina 圣经（73 卷），保留原版分节并按所附映射关联中文查询；新增大学、中庸、孟子、心经、金刚经、道德经、庄子完整原文，与既有论语组成儒释道八部经典，支持离线现代汉语检索、阅读、收藏。新增 ARM64 小安装包，更新时按设备架构选择并校验哈希与签名；保留通用包。继承 1.4.1 的 Android 17 启动修正与恢复入口。'};
+const armName=`yanjing-${versionName}-arm64-v8a.apk`;
+const armBytes=fs.readFileSync(path.join(root,'dist',armName));
+metadata.arm64={apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${armName}`,size:armBytes.length,
+  sha256:crypto.createHash('sha256').update(armBytes).digest('hex')};
 fs.writeFileSync(path.join(root,'dist/update.json'),JSON.stringify(metadata,null,2)+'\n');
-fs.writeFileSync(path.join(root,'dist/SHA256SUMS.txt'),`${sha256}  ${apkName}\n`);
+fs.writeFileSync(path.join(root,'dist/SHA256SUMS.txt'),`${sha256}  ${apkName}\n${metadata.arm64.sha256}  ${armName}\n`);
 const mapping=fs.readFileSync(path.join(root,'app/build/outputs/mapping/release/mapping.txt'));
 fs.writeFileSync(path.join(root,'dist',`yanjing-${versionName}-mapping.txt.gz`),gzipSync(mapping,{level:9}));
 console.log(JSON.stringify({versionName,versionCode,bytes:bytes.length,sha256}));

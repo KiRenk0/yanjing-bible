@@ -36,7 +36,9 @@ def main():
     apk_path = DIST / f"yanjing-{info['versionName']}.apk"
     source_path = DIST / f"yanjing-{info['versionName']}-source.zip"
     assert apk_path.stat().st_size == info["size"] and sha(apk_path.read_bytes()) == info["sha256"]
-    assert (DIST / "SHA256SUMS.txt").read_text().strip() == f"{info['sha256']}  {apk_path.name}"
+    arm_path = DIST / f"yanjing-{info['versionName']}-arm64-v8a.apk"
+    assert arm_path.stat().st_size == info['arm64']['size'] and sha(arm_path.read_bytes()) == info['arm64']['sha256']
+    assert (DIST / "SHA256SUMS.txt").read_text().strip() == f"{info['sha256']}  {apk_path.name}\n{info['arm64']['sha256']}  {arm_path.name}"
     tools = args.build_tools.resolve()
     signature = subprocess.check_output([str(tools / "apksigner.bat"), "verify", "--verbose", "--print-certs", str(apk_path)], text=True)
     assert f"certificate SHA-256 digest: {SIGNER}" in signature
@@ -45,6 +47,14 @@ def main():
     assert "application-debuggable" not in badging
     assert f"name='{info['applicationId']}' versionCode='{info['versionCode']}' versionName='{info['versionName']}'" in badging
     assert "sdkVersion:'26'" in badging
+    arm_signature = subprocess.check_output([str(tools / "apksigner.bat"), "verify", "--verbose", "--print-certs", str(arm_path)], text=True)
+    assert f"certificate SHA-256 digest: {SIGNER}" in arm_signature
+    subprocess.run([str(tools / "zipalign.exe"), "-c", "-P", "16", "4", str(arm_path)], check=True, capture_output=True)
+    arm_badging = subprocess.check_output([str(tools / "aapt.exe"), "dump", "badging", str(arm_path)], text=True, encoding="utf-8")
+    assert "application-debuggable" not in arm_badging
+    assert f"name='{info['applicationId']}' versionCode='{info['versionCode']}' versionName='{info['versionName']}'" in arm_badging
+    assert "native-code: 'arm64-v8a'" in arm_badging and "sdkVersion:'26'" in arm_badging
+    assert arm_path.stat().st_size < apk_path.stat().st_size
     manifest_dump = subprocess.check_output([str(tools / "aapt.exe"), "dump", "xmltree", str(apk_path), "AndroidManifest.xml"], text=True, encoding="utf-8")
     assert re.search(r"extractNativeLibs.*0xffffffff",manifest_dump), "Compressed native libraries must be extracted by Android"
     assert "org.yanjing.app.StartupActivity" in manifest_dump
@@ -67,8 +77,8 @@ def main():
             if path.is_file():
                 relative = path.relative_to(ASSETS).as_posix()
                 assert apk.read("assets/" + relative) == path.read_bytes(), relative
-        for name in ("manifest.json", "quran-manifest.json", "analects-manifest.json"):
-            manifest = read_json(ASSETS / "semantic" / name)
+        for manifest_path in sorted((ASSETS / "semantic").glob("*manifest.json")):
+            manifest = read_json(manifest_path)
             assert manifest["onnxRuntime"] == "1.25.1" and manifest["embeddingBatchSize"] == 1 and manifest["intraOpThreads"] == 2
             corpus = ASSETS / f"bibles/{manifest['sourceVersion']}.tsv"
             assert sha(corpus.read_bytes()) == manifest["corpusSha256"]
@@ -104,6 +114,52 @@ def main():
         assert {name.split('/')[1] for name in native} == {"arm64-v8a", "armeabi-v7a", "x86", "x86_64"}
         for name in ("bge-small-zh-int8.onnx","verses.i8","quran.i8","analects.i8"):
             assert apk.getinfo("assets/semantic/"+name).compress_type == zipfile.ZIP_DEFLATED
+        with zipfile.ZipFile(arm_path) as arm:
+            assert {n.split('/')[1] for n in arm.namelist() if n.startswith('lib/') and n.endswith('.so')} == {'arm64-v8a'}
+            for entry in arm.namelist():
+                if entry.startswith(('assets/','lib/')) or entry.endswith('.dex'):
+                    assert arm.read(entry) == apk.read(entry), entry
+
+    classic_manifest = read_json(ASSETS / 'classics/manifest.json')
+    for source in classic_manifest['sources']:
+        assert sha((ROOT / 'data/classics/sources' / source['file']).read_bytes()) == source['sha256']
+    classic_summary = []
+    for work in classic_manifest['works']:
+        corpus = ASSETS / f"bibles/{work['id']}.tsv"
+        assert sha(corpus.read_bytes()) == work['sha256']
+        rows = [line.split('\t') for line in corpus.read_text(encoding='utf-8').splitlines()]
+        assert len(rows) == work['verses'] == sum(work['verseCounts'])
+        assert [tuple(map(int,row[:3])) for row in rows] == [(work['book'],i,j) for i,n in enumerate(work['verseCounts'],1) for j in range(1,n+1)]
+        index = read_json(ASSETS / f"semantic/{work['id']}-manifest.json")
+        assert index['verses'] == len(rows)
+        squash = lambda text: re.sub(r'\s+', '', text)
+        raw_dir = ROOT / 'data/classics/sources'
+        if work['id'] in ('daxue','zhongyong','mengzi'):
+            original = read_json(raw_dir / f"chinese-poetry-{work['id']}.json")
+            chapters = original if isinstance(original,list) else [original]
+            assert [r[3] for r in rows] == [p for chapter in chapters for p in chapter['paragraphs']]
+        elif work['id'] == 'tao_te_ching':
+            original = read_json(raw_dir / 'banghuazhao-道德经_json.json')['道德经']
+            assert [squash(r[3]) for r in rows] == [squash(c['章节内容']) for c in original]
+        elif work['id'] == 'zhuangzi':
+            original = [c for part in ('内篇_json','外篇','杂篇') for chapters in read_json(raw_dir / f'banghuazhao-庄子{part}.json').values() for c in chapters]
+            assert squash(''.join(r[3] for r in rows)) == squash(''.join(c['章节内容'] for c in original))
+        else:
+            filename = 'hooosberg-zh-Hant.md' if work['id']=='heart_sutra' else 'hooosberg-zh-Hant_kumarajiva.md'
+            body = (raw_dir / filename).read_text(encoding='utf-8').split('---',2)[2]
+            body = '\n'.join(line for line in body.splitlines() if not line.startswith(('#','*')))
+            assert squash(''.join(r[3] for r in rows)) == squash(body)
+        classic_summary.append({'id':work['id'],'chapters':len(work['chapterNames']),'paragraphs':len(rows),'semanticPassages':index['passages']})
+    latin_manifest = read_json(ASSETS / 'latin/manifest.json')
+    assert sha((ROOT / 'data/latin/VulgClementine.json').read_bytes()) == latin_manifest['sourceSha256']
+    assert sha((ROOT / 'data/latin/canon_vulg.h').read_bytes()) == latin_manifest['versificationSource']['sourceSha256']
+    assert sha((ASSETS / 'latin/mapping.tsv').read_bytes()) == latin_manifest['mappingSha256']
+    assert sha((ASSETS / 'bibles/vulgate.tsv').read_bytes()) == latin_manifest['assetSha256']
+    raw = read_json(ROOT / 'data/latin/VulgClementine.json')
+    latin_rows = [line.split('\t') for line in (ASSETS / 'bibles/vulgate.tsv').read_text(encoding='utf-8').splitlines()]
+    original_rows = [(str(i+101),str(c['chapter']),str(v['verse']),re.sub(r'[\t\r\n]+',' ',v['text']).strip()) for i,b in enumerate(raw['books']) for c in b['chapters'] for v in c['verses'] if v['text'].strip()]
+    assert len(latin_rows) == 35809 and len({r[0] for r in latin_rows}) == 73
+    assert [tuple(r[:4]) for r in latin_rows] == original_rows
 
     manifest = read_json(ASSETS / "analects/manifest.json")
     for filename, expected in manifest["files"].items():
@@ -136,6 +192,9 @@ def main():
     assert any(s["name"].endswith("SemanticRankerTest") and s["tests"] >= 4 for s in suites)
     assert any(s["name"].endswith("Android17StartupTest") and s["tests"] >= 1 for s in suites)
     assert any(s["name"].endswith("StartupRecoveryTest") and s["tests"] >= 8 for s in suites)
+    assert any(s['name'].endswith('ClassicsAndLatinSearchTest') and s['tests'] >= 4 for s in suites)
+    assert any(s['name'].endswith('ClassicsRepositoryTest') and s['tests'] >= 2 for s in suites)
+    assert any(s['name'].endswith('ArchitectureUpdateTest') and s['tests'] >= 2 for s in suites)
     issues = ET.parse(ROOT / "app/build/reports/lint-results-debug.xml").getroot().findall("issue")
     assert not [i for i in issues if i.attrib["severity"] in ("Error", "Fatal")]
     warnings = [i.attrib["id"] for i in issues if i.attrib["severity"] == "Warning"]
@@ -171,6 +230,12 @@ def main():
                              "reductionPercent":round(100*(1-apk_path.stat().st_size/previous_bytes),2),
                              "strategy":"R8/resource shrinking; compressed model, vectors and native libraries; all four ABIs retained; native libraries extracted at install"},
         "mappingSha256":sha(mapping_path.read_bytes()),"semanticEvaluation":evaluation,
+        "classics":classic_summary,
+        "latin":{'books':73,'verses':35809,'mappedVerses':latin_manifest['mappedVerses'],'mappingSha256':latin_manifest['mappingSha256'],
+                 'numbering':'Native Vulgate book/chapter/verse keys; known shared references mapped with pinned CrossWire data; unmatched material is readable and searchable by original text'},
+        "arm64":{'apkBytes':arm_path.stat().st_size,'apkSha256':info['arm64']['sha256'],'previousUniversalBytes':91014763,
+                 'reductionFromPreviousUniversalPercent':round(100*(1-arm_path.stat().st_size/91014763),2),
+                 'verification':'Same signer, version and assets/dex as universal; only arm64 native libraries; zipalign 16 KB check passed'},
         "sourceBytes": source_path.stat().st_size, "sourceSha256": sha(source_path.read_bytes()), "sourceFiles": len(names),
         "signerSha256": SIGNER, "signing": "apksigner verified; same certificate as previous releases; release is non-debuggable",
         "alignment": "zipalign -c -P 16 4 passed; all ELF LOAD segments align to at least 16 KB", "nativeLibraries": native,
@@ -180,7 +245,7 @@ def main():
         "deviceTesting": "Robolectric API 35/36 Compose flows; API 37 direct framework/native-graphics startup; API 36/37 platform recovery and scheduler/palette failure injection; real ONNX inference; no physical Android device verification",
         "startupCompatibility": {"onDemandWorkManager": True, "platformRecoveryScreen": True,
                                  "reportedDevice": "Xiaomi 15 Pro; HyperOS 4.0.0.17.XOBCNXM.D01; Android 17",
-                                 "limitation": "No crash stack or physical-device reproduction; changes address verified startup failure paths, not a confirmed diagnosis of this device"},
+                                 "feedback": "User confirmed 1.4.1 can launch normally on the reported device on 2026-10-19; 1.5.0 inherits those changes; no agent-controlled physical-device testing"},
         "updateValidation": "Metadata, resumable download, package/version/hash/signer rejection and in-app update UI covered by existing regression tests",
     }
     (DIST / "verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

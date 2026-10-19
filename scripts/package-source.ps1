@@ -9,6 +9,7 @@ if (Test-Path -LiteralPath $output) { Remove-Item -LiteralPath $output }
 $archive = [IO.Compression.ZipFile]::Open($output, [IO.Compression.ZipArchiveMode]::Create)
 try {
     $include = @('.gitignore','.gitattributes','README.md','LICENSE','build.gradle.kts','settings.gradle.kts','gradle.properties','gradlew','gradlew.bat','package.json','package-lock.json','gradle','scripts','docs','data\cuv-verse-mappings.json','data\semantic-evaluation.tsv','data\semantic-baseline.tsv','third_party','app\build.gradle.kts','app\proguard-rules.pro','app\src')
+    $include += @('data\classics','data\latin')
     foreach ($relative in $include) {
         $item = Get-Item -LiteralPath (Join-Path $root $relative)
         $files = if ($item.PSIsContainer) { Get-ChildItem -LiteralPath $item.FullName -Recurse -File } else { @($item) }

@@ -1,0 +1,74 @@
+[
+  {
+    "file": "chinese-poetry-daxue.json",
+    "url": "https://raw.githubusercontent.com/chinese-poetry/chinese-poetry/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/四书五经/daxue.json",
+    "repository": "https://github.com/chinese-poetry/chinese-poetry",
+    "revision": "fa1814a8044db4fb0c7a9e0a0449974e8c3463b7",
+    "license": "MIT",
+    "sha256": "1939dfeb2cb8fde6c96fb5ce6bd1cff93df05460027c90c685f4863b05c550e8"
+  },
+  {
+    "file": "chinese-poetry-zhongyong.json",
+    "url": "https://raw.githubusercontent.com/chinese-poetry/chinese-poetry/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/四书五经/zhongyong.json",
+    "repository": "https://github.com/chinese-poetry/chinese-poetry",
+    "revision": "fa1814a8044db4fb0c7a9e0a0449974e8c3463b7",
+    "license": "MIT",
+    "sha256": "2962a8b52bf78c010b051622b8803a956b461813ae0ed86148e4851e7d605ed8"
+  },
+  {
+    "file": "chinese-poetry-mengzi.json",
+    "url": "https://raw.githubusercontent.com/chinese-poetry/chinese-poetry/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/四书五经/mengzi.json",
+    "repository": "https://github.com/chinese-poetry/chinese-poetry",
+    "revision": "fa1814a8044db4fb0c7a9e0a0449974e8c3463b7",
+    "license": "MIT",
+    "sha256": "349888018acd0b3fea58de92e53403b8c77640d84b1ae9d37360d5ff1966bcdc"
+  },
+  {
+    "file": "banghuazhao-道德经_json.json",
+    "url": "https://raw.githubusercontent.com/banghuazhao/Chinese-Classical-Literature-Android/f2c40b864c00c97d2d148a82857884fe8ba527d4/app/src/main/assets/files/道德经_json.json",
+    "repository": "https://github.com/banghuazhao/Chinese-Classical-Literature-Android",
+    "revision": "f2c40b864c00c97d2d148a82857884fe8ba527d4",
+    "license": "MIT",
+    "sha256": "ba5ca8d659adc58be707ef15367f7585c8665d07986bb3f22b8fe389c4124a93"
+  },
+  {
+    "file": "banghuazhao-庄子内篇_json.json",
+    "url": "https://raw.githubusercontent.com/banghuazhao/Chinese-Classical-Literature-Android/f2c40b864c00c97d2d148a82857884fe8ba527d4/app/src/main/assets/files/庄子内篇_json.json",
+    "repository": "https://github.com/banghuazhao/Chinese-Classical-Literature-Android",
+    "revision": "f2c40b864c00c97d2d148a82857884fe8ba527d4",
+    "license": "MIT",
+    "sha256": "f44ab2508785e48b98fde4a02c10493834a95f8d5501256a8c95dd3f83d0a9c9"
+  },
+  {
+    "file": "banghuazhao-庄子外篇.json",
+    "url": "https://raw.githubusercontent.com/banghuazhao/Chinese-Classical-Literature-Android/f2c40b864c00c97d2d148a82857884fe8ba527d4/app/src/main/assets/files/庄子外篇.json",
+    "repository": "https://github.com/banghuazhao/Chinese-Classical-Literature-Android",
+    "revision": "f2c40b864c00c97d2d148a82857884fe8ba527d4",
+    "license": "MIT",
+    "sha256": "f7ded775585c6e2a5af0ba7ce9125b97fa5392a98d78af0fe37edd1d63581fac"
+  },
+  {
+    "file": "banghuazhao-庄子杂篇.json",
+    "url": "https://raw.githubusercontent.com/banghuazhao/Chinese-Classical-Literature-Android/f2c40b864c00c97d2d148a82857884fe8ba527d4/app/src/main/assets/files/庄子杂篇.json",
+    "repository": "https://github.com/banghuazhao/Chinese-Classical-Literature-Android",
+    "revision": "f2c40b864c00c97d2d148a82857884fe8ba527d4",
+    "license": "MIT",
+    "sha256": "8f115544bf13f0beaa00f0e2ecfb2e482c98ce6c53ed4c7ed948dba6137c6fbe"
+  },
+  {
+    "file": "hooosberg-zh-Hant.md",
+    "url": "https://raw.githubusercontent.com/hooosberg/Rushi/bda9d95a2876aec4dc4d8b60b2594d9de79a1062/scriptures/xin-jing/zh-Hant.md",
+    "repository": "https://github.com/hooosberg/Rushi",
+    "revision": "bda9d95a2876aec4dc4d8b60b2594d9de79a1062",
+    "license": "CC0-1.0",
+    "sha256": "39ddfe3912d3d483612511c1e92c85a86d63e11f884a6e1950af97f78fcf6f85"
+  },
+  {
+    "file": "hooosberg-zh-Hant_kumarajiva.md",
+    "url": "https://raw.githubusercontent.com/hooosberg/Rushi/bda9d95a2876aec4dc4d8b60b2594d9de79a1062/scriptures/jingang-jing/zh-Hant_kumarajiva.md",
+    "repository": "https://github.com/hooosberg/Rushi",
+    "revision": "bda9d95a2876aec4dc4d8b60b2594d9de79a1062",
+    "license": "CC0-1.0",
+    "sha256": "e2db33872e302820026426fe1eef79595f4eb8def1e81c84fd4999c53c5523d1"
+  }
+]

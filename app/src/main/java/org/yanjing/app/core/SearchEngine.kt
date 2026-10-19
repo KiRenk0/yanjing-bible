@@ -6,20 +6,22 @@ import kotlin.math.min
 /** Offline character n-gram retrieval, with explicit, reviewable expression expansions. */
 class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormalizer, val version: BibleVersion = BibleVersion.CUVS) {
     private val byKey = verses.associateBy { it.key }
+    private val canonical = verses.flatMap { verse -> verse.canonicalKeys.map { it to verse } }.groupBy({ it.first },{ it.second })
     private val retrievalText = verses.associate { it.key to (it.normalized + normalizer.normalize(it.searchGloss)) }
     private val charFrequency: Map<Char, Int> = buildMap {
         retrievalText.values.forEach { text -> text.toSet().forEach { put(it, (get(it) ?: 0) + 1) } }
     }
     private val stop = "的了是我你他她它们在有和与及就也都这那吗呢吧啊呀不着把被个地得为以而其之乎者也".toSet()
 
-    fun verse(key: VerseKey): Verse? = byKey[key] ?: byKey[VerseMappings.resolve(version, key)]
+    fun verse(key: VerseKey): Verse? = byKey[key] ?: byKey[VerseMappings.resolve(version, key)] ?: canonical[key]?.firstOrNull()
+    fun versesForSemanticKey(key: VerseKey): List<Verse> = canonical[key] ?: listOfNotNull(verse(key))
     fun chapter(book: Int, chapter: Int): List<Verse> = verses.filter { it.key.book == book && it.key.chapter == chapter }
     fun chapters(book: Int): Int = verses.asSequence().filter { it.key.book == book }.maxOfOrNull { it.key.chapter } ?: 0
 
     fun search(raw: String, mode: SearchMode = SearchMode.EXPRESSION, testament: Testament = Testament.ALL, limit: Int = 60): SearchResponse {
         if (raw.isBlank()) return SearchResponse(emptyList(), 0)
         if (raw.length > 200) return SearchResponse(emptyList(), 0, "请输入 200 字以内的内容。")
-        ReferenceParser.parse(raw, normalizer, version.scripture)?.let { reference ->
+        ReferenceParser.parse(raw, normalizer, version.scripture, version)?.let { reference ->
             val chapter = chapter(reference.book, reference.chapter)
             if (chapter.isEmpty() || reference.chapter <= 0 ||
                 (reference.start != null && (reference.start <= 0 || reference.end!! < reference.start ||
@@ -36,7 +38,7 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
                 .map { SearchHit(it, 100.0, if (merged) "出处定位 · 此版合并分节" else "出处定位") }
             return SearchResponse(result.take(limit), result.size)
         }
-        val query = if (version.isRtl) normalizer.normalizeArabic(raw) else normalizer.normalize(raw)
+        val query = if (version.isRtl) normalizer.normalizeArabic(raw) else if(version==BibleVersion.VULGATE) normalizer.normalizeLatin(raw) else normalizer.normalize(raw)
         if (query.isEmpty()) return SearchResponse(emptyList(), 0, "请输入文字、关键词或经文出处。")
         if (mode == SearchMode.SEMANTIC) return SearchResponse(emptyList(), 0, "句意搜索需要语义检索组件。")
         if (mode == SearchMode.KEYWORD) {
@@ -56,8 +58,9 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
                 }
             }
             if (match > 0) group.references.forEachIndexed { i, requested ->
-                val key = VerseMappings.resolve(version, requested)
-                expanded[key] = maxOf(expanded[key] ?: 0.0, match - i * 1.5)
+                versesForSemanticKey(requested).forEach { actual ->
+                    expanded[actual.key] = maxOf(expanded[actual.key] ?: 0.0, match - i * 1.5)
+                }
             }
         }
         val grams = query.windowed(2).distinct()

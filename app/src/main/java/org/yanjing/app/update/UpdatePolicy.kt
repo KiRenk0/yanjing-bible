@@ -15,14 +15,14 @@ object UpdatePolicy {
     const val REPOSITORY = "KiRenk0/yanjing-bible"
     const val REPOSITORY_URL = "https://github.com/$REPOSITORY"
     const val MANIFEST_URL = "$REPOSITORY_URL/releases/latest/download/update.json"
-    private val apkPath = Regex("^/$REPOSITORY/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/yanjing-[0-9]+\\.[0-9]+\\.[0-9]+\\.apk$")
+    private val apkPath = Regex("^/$REPOSITORY/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/yanjing-[0-9]+\\.[0-9]+\\.[0-9]+(?:-arm64-v8a)?\\.apk$")
 
     fun validate(release: ReleaseInfo): ReleaseInfo {
         val url = URI(release.apkUrl)
         require(url.scheme == "https" && url.host == "github.com" && url.port == -1 && url.userInfo == null && url.query == null && url.fragment == null)
         require(apkPath.matches(url.rawPath)) { "更新地址不属于本项目" }
         require(release.versionCode in 1..2_100_000_000L && release.versionName.matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+")))
-        require(url.rawPath.endsWith("/yanjing-${release.versionName}.apk") && url.rawPath.contains("/v${release.versionName}/"))
+        require((url.rawPath.endsWith("/yanjing-${release.versionName}.apk") || url.rawPath.endsWith("/yanjing-${release.versionName}-arm64-v8a.apk")) && url.rawPath.contains("/v${release.versionName}/"))
         require(release.size in 1_000_000..300_000_000 && release.sha256.matches(Regex("[a-f0-9]{64}")))
         require(release.minSdk in 26..100 && release.notes.length <= 8000)
         return release

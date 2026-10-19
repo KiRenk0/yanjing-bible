@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "model": "BAAI/bge-small-zh-v1.5",
+  "onnxRepository": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "license": "MIT",
+  "pooling": "CLS",
+  "normalization": "L2",
+  "dimensions": 512,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "embeddingBatchSize": 1,
+  "intraOpThreads": 2,
+  "onnxRuntime": "1.25.1",
+  "sourceVersion": "daxue",
+  "verses": 16,
+  "passages": 155,
+  "corpusSha256": "fdd2f410da09292ad06489ef0225a15a540572612da3577206e06fe72d569447",
+  "files": {
+    "bge-small-zh-int8.onnx": {
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    "daxue.i8": {
+      "bytes": 80620,
+      "sha256": "ba91a62ac9ef211886e589263dfb5b645c9a03b2ba03340dccaee289ccbd95f7"
+    },
+    "vocab.txt": {
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    }
+  }
+}

@@ -15,3 +15,5 @@
 边界：API 37 的 Espresso 输入注入依赖已移除的隐藏接口，因此启动测试直接布局绘制，没有把它算作 Android 17 触控全流程。Windows Robolectric 无法验证 FileProvider 的 POSIX URI 路径匹配，检查了报告内容、入口可达及 APK 中的目录声明，分享授权仍需 Android 设备验证。模拟器未成功启动；没有物理 Android 或 HyperOS 真机验证，不能据此宣称设备问题已完全解决。
 
 配置依据：[WorkManager 官方按需初始化说明](https://developer.android.com/develop/background-work/background-tasks/persistent/configuration/custom-configuration)。
+
+2026-10-19 后续反馈：用户覆盖安装 1.4.1 后确认“能够正常进入”。1.5.0 保留这批修正；此反馈不等于已获得原始堆栈或已经过 1.5.0 真机测试。

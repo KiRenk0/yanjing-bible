@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "model": "BAAI/bge-small-zh-v1.5",
+  "onnxRepository": "Xenova/bge-small-zh-v1.5",
+  "revision": "75c43b069aac4d136ba6bc1122f995fedcfd2781",
+  "license": "MIT",
+  "pooling": "CLS",
+  "normalization": "L2",
+  "dimensions": 512,
+  "maxTokens": 256,
+  "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "embeddingBatchSize": 1,
+  "intraOpThreads": 2,
+  "onnxRuntime": "1.25.1",
+  "sourceVersion": "mengzi",
+  "verses": 690,
+  "passages": 3173,
+  "corpusSha256": "b446bf5a3e3530926da5aab4f5a4c32c11041194b2abc0f325ef7f93e658920a",
+  "files": {
+    "bge-small-zh-int8.onnx": {
+      "bytes": 24010842,
+      "sha256": "15b717c382bcb518ba457b93ea6850ede7f4f1cd8937454aa06972366cd19bcc"
+    },
+    "mengzi.i8": {
+      "bytes": 1649980,
+      "sha256": "91bdf1451afb6f92cf0687caf08aa1f009c823a597c2f816ed1e1e4da6de192e"
+    },
+    "vocab.txt": {
+      "bytes": 109540,
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    }
+  }
+}

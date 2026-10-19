@@ -6,7 +6,8 @@ object ExpressionLexicon {
     fun forVersion(version: BibleVersion): List<ExpressionGroup> = when (version.scripture) {
         Scripture.BIBLE -> groups
         Scripture.QURAN -> quranGroups
-        Scripture.ANALECTS -> analectsGroups
+        Scripture.ANALECTS -> if(version == BibleVersion.ANALECTS) analectsGroups else classicExpressions[version].orEmpty()
+        Scripture.BUDDHISM, Scripture.TAOISM -> classicExpressions[version].orEmpty()
     }
 
     private val analectsGroups = listOf(
