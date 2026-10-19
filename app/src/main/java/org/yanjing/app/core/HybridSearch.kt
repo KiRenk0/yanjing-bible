@@ -33,22 +33,31 @@ class HybridSearch(
         }
         val exactExpressionKeys = ExpressionLexicon.forVersion(engine.version).filter { group -> group.phrases.any { normalizer.normalize(it) == normalizer.normalize(raw) } }
             .flatMap { it.references }.map { VerseMappings.resolve(engine.version, it) }.toSet()
-        data class Fused(val verse: Verse, var score: Double, val modes: MutableSet<SearchMode>, var priority: Int = 0)
+        val semanticResponse = responses.firstOrNull { it.first == SearchMode.SEMANTIC }?.second
+        val semanticKeys = semanticResponse?.hits?.map { it.verse.key }?.toSet()
+        data class Fused(val verse: Verse, var score: Double, val modes: MutableSet<SearchMode>, var priority: Int = 0, var semanticScore: Double? = null)
         val fused = linkedMapOf<VerseKey, Fused>()
         for ((mode, response) in responses) response.hits.forEachIndexed { rank, hit ->
+            // A weak expression overlap must not reintroduce candidates rejected by semantic search.
+            // If the native service failed, the independent expression fallback remains available.
+            if (mode == SearchMode.EXPRESSION && semanticKeys != null && hit.verse.key !in semanticKeys &&
+                hit.reason !in setOf("常用表达关联", "原文包含关键词")) return@forEachIndexed
             val item = fused.getOrPut(hit.verse.key) { Fused(hit.verse, 0.0, linkedSetOf()) }
             val weight = when (mode) { SearchMode.SEMANTIC -> 1.2; SearchMode.KEYWORD -> 1.1; else -> 1.0 }
             item.score += weight / (40.0 + rank + 1)
             item.modes += mode
+            if (mode == SearchMode.SEMANTIC) item.semanticScore = hit.score
             item.priority = maxOf(item.priority, when {
                 mode == SearchMode.KEYWORD -> 2
                 mode == SearchMode.EXPRESSION && hit.verse.key in exactExpressionKeys -> 1
                 else -> 0
             })
         }
-        val hits = fused.values.sortedWith(compareByDescending<Fused> { it.priority }.thenByDescending { it.score }).take(limit).map { item ->
-            SearchHit(item.verse, item.score, item.modes.sortedBy { it.ordinal }.joinToString(" · ") { it.title }, item.modes.toSet())
+        fun combined(item: Fused) = if (semanticResponse == null) item.score else (item.semanticScore ?: 0.0) + 0.02 * item.score
+        val hits = fused.values.sortedWith(compareByDescending<Fused> { it.priority }.thenByDescending(::combined)).take(limit).map { item ->
+            SearchHit(item.verse, combined(item), item.modes.sortedBy { it.ordinal }.joinToString(" · ") { it.title }, item.modes.toSet())
         }
-        return SearchResponse(hits, fused.size, failures.takeIf { it.isNotEmpty() }?.joinToString("；")?.plus("，已合并其他模式的结果。"))
+        return SearchResponse(hits, fused.size, failures.takeIf { it.isNotEmpty() }?.joinToString("；")?.plus("，已合并其他模式的结果。")
+            ?: if (hits.isEmpty()) semanticResponse?.message else null)
     }
 }

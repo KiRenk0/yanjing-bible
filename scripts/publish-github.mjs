@@ -8,11 +8,12 @@ const root=path.resolve(import.meta.dirname,'..');
 const repository='KiRenk0/yanjing-bible';
 const metadata=JSON.parse(fs.readFileSync(path.join(root,'dist/update.json'),'utf8'));
 const tag=`v${metadata.versionName}`;
-const names=[`yanjing-${metadata.versionName}.apk`,'update.json','SHA256SUMS.txt',`yanjing-${metadata.versionName}-source.zip`,'verification.json'];
+const names=[`yanjing-${metadata.versionName}.apk`,'update.json','SHA256SUMS.txt',`yanjing-${metadata.versionName}-source.zip`,'verification.json',`yanjing-${metadata.versionName}-mapping.txt.gz`];
 const hashes=new Map(names.map(name=>[name,crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'dist',name))).digest('hex')]));
 if(hashes.get(names[0])!==metadata.sha256) throw Error('APK does not match update.json');
 const verified=JSON.parse(fs.readFileSync(path.join(root,'dist/verification.json'),'utf8'));
 if(verified.version!==metadata.versionName || verified.versionCode!==metadata.versionCode || verified.apkSha256!==metadata.sha256 || verified.sourceSha256!==hashes.get(names[3]) || verified.tests<1 || verified.failures!==0 || verified.lint?.errors!==0) throw Error('Release artifacts do not match successful verification');
+if(verified.mappingSha256!==hashes.get(names[5])) throw Error('R8 mapping does not match verified build');
 const gradle=fs.readFileSync(path.join(root,'app/build.gradle.kts'),'utf8');
 if(gradle.match(/versionName\s*=\s*"([0-9.]+)"/)[1]!==metadata.versionName || Number(gradle.match(/versionCode\s*=\s*(\d+)/)[1])!==metadata.versionCode) throw Error('Release metadata does not match source version');
 
@@ -55,10 +56,12 @@ if((await git(['remote','get-url','origin'])).trim()!==repo.clone_url)throw Erro
 await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`言·经 ${tag}`]);
 await git(['push','origin',tag]);
-const body=`${metadata.notes}\n\n例如：“读书时要动脑筋，不能光背下来” → “学而不思则罔，思而不学则殆”；“不能把自己讨厌的待遇加到别人身上” → “己所不欲，勿施于人”。也可输入“论语 2:15”“学而篇”“论语第十五篇第二十四章”。\n\n论语原文来自 MIT 授权的 chinese-poetry 固定版本，二十篇、512 章句；章句划分可能与其他版本不同。现代汉语检索释义由本项目编写，仅辅助查找，原文、复制与分享均保留文言文本。\n\nAndroid 8.0 及以上，通用 APK。内置圣经四套文本、古兰经中阿双语、论语与 BGE 模型，安装后可离线使用。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络。安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和及验证摘要。测试记录见 verification.json；尚无物理 Android 设备验证。`;
+const size=verified.apkSizeComparison;
+const evaluation=verified.semanticEvaluation;
+const body=`${metadata.notes}\n\n通用 APK：${(size.previousBytes/1e6).toFixed(1)} MB → ${(size.currentBytes/1e6).toFixed(1)} MB，减少 ${size.reductionPercent}%。仍包含 ARM64、ARMv7、x86、x86_64、全部经典、模型和索引；安装后可完整离线搜索。原生库在安装时解压当前架构，安装后占用不会与下载体积同比例缩小。\n\n实际 ONNX 模型及应用排序代码验证：${evaluation.positiveQueries} 条有预期出处的人工编写样例，前五位命中由 ${evaluation.top5Before} 条提升到 ${evaluation.top5After} 条，首位由 ${evaluation.top1Before} 条提升到 ${evaluation.top1After} 条。另验证 ${evaluation.outOfScopeQueries} 条范围外查询；有限样例也用于参数选择，不代表所有查询的准确率。详见源码中的 docs/semantic-evaluation.tsv、评估说明及 verification.json。\n\nAndroid 8.0 及以上。继续使用原签名，可覆盖旧版并保留本机数据。默认仅 Wi-Fi 自动下载；手动下载可使用当前网络，安装需在 Android 界面确认。\n\n镜像下载：[线路一](https://gh-proxy.com/${metadata.apkUrl}) · [线路二](https://ghfast.top/${metadata.apkUrl})。第三方镜像可用性随地区与网络变化。\n\nAPK SHA-256：\`${metadata.sha256}\`\n\n附件包含安装包、源码、更新信息、校验和、验证摘要与 R8 映射。${verified.tests} 项自动测试通过；尚无物理 Android 设备验证。`;
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
-if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 用现代汉语搜索论语原文`,body,draft:true,prerelease:false});
+if(!release)release=await api('POST',`/repos/${repository}/releases`,{tag_name:tag,target_commitish:sourceHead,name:`言·经 ${tag} · 更精准的离线检索与更小的安装包`,body,draft:true,prerelease:false});
 for(const name of names){
  const existing=release.assets?.find(a=>a.name===name);
  if(existing?.digest===`sha256:${hashes.get(name)}`){console.log('Verified existing asset: '+name);continue;}

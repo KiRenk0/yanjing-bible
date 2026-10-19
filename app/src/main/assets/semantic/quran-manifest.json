@@ -9,6 +9,9 @@
   "dimensions": 512,
   "maxTokens": 256,
   "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "embeddingBatchSize": 1,
+  "intraOpThreads": 2,
+  "onnxRuntime": "1.25.1",
   "sourceVersion": "quran_zh",
   "verses": 6236,
   "passages": 15876,
@@ -20,11 +23,7 @@
     },
     "quran.i8": {
       "bytes": 8255540,
-      "sha256": "545e8ddfd09c14d1a34ea6836daff9176bd19fe012c4cc9ccc81eec899b7f2c5"
-    },
-    "verses.i8": {
-      "bytes": 16137700,
-      "sha256": "54fc99480b7e05d7b9ca216ad5f323663501fd8c085a0811db853e58d04f40de"
+      "sha256": "7dc84c036d45a09837fdf99e1f885771c3129d3463a463f3d6da6c4048c9f81a"
     },
     "vocab.txt": {
       "bytes": 109540,

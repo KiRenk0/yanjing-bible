@@ -9,8 +9,12 @@
   "dimensions": 512,
   "maxTokens": 256,
   "queryPrefix": "为这个句子生成表示以用于检索相关文章：",
+  "embeddingBatchSize": 1,
+  "intraOpThreads": 2,
+  "onnxRuntime": "1.25.1",
   "sourceVersion": "cuvs",
   "verses": 31034,
+  "passages": 31034,
   "corpusSha256": "8cda388978b271c848875199d0a684c7917d4f13359c5e4cc5c7cc5358bff23f",
   "files": {
     "bge-small-zh-int8.onnx": {
@@ -19,7 +23,7 @@
     },
     "verses.i8": {
       "bytes": 16137700,
-      "sha256": "54fc99480b7e05d7b9ca216ad5f323663501fd8c085a0811db853e58d04f40de"
+      "sha256": "45519f0e4f73684e8623ae90fff71ee2d6d1751affc7358949953392b9fe9545"
     },
     "vocab.txt": {
       "bytes": 109540,

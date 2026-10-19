@@ -11,31 +11,46 @@ class SemanticRepository(context: Context, private val normalizer: TextNormalize
     private val encoder: SemanticEncoder = RemoteSemanticEncoder(context)) {
     private val app = context.applicationContext
     private val mutex = Mutex()
-    private val indexes = mutableMapOf<Scripture, SemanticIndex>()
+    private data class Retrieval(val index: SemanticIndex, val ranker: SemanticRanker)
+    private val indexes = mutableMapOf<Scripture, Retrieval>()
     private val prefix = "为这个句子生成表示以用于检索相关文章："
 
     suspend fun search(raw: String, engine: SearchEngine, testament: Testament, limit: Int): SearchResponse = mutex.withLock {
-        val index = indexes[engine.version.scripture] ?: withContext(Dispatchers.IO) {
+        val retrieval = indexes[engine.version.scripture] ?: withContext(Dispatchers.IO) {
             val asset = when (engine.version.scripture) {
                 Scripture.BIBLE -> "semantic/verses.i8"
                 Scripture.QURAN -> "semantic/quran.i8"
                 Scripture.ANALECTS -> "semantic/analects.i8"
             }
-            SemanticIndex(app.assets.open(asset))
-                .also { indexes[engine.version.scripture] = it }
+            val canonicalVersion = when (engine.version.scripture) {
+                Scripture.BIBLE -> BibleVersion.CUVS
+                Scripture.QURAN -> BibleVersion.QURAN_ZH
+                Scripture.ANALECTS -> BibleVersion.ANALECTS
+            }
+            val verses = if (engine.version == canonicalVersion) engine.verses else BibleRepository(app).load(canonicalVersion).verses
+            val groups = app.assets.open("semantic/concepts.txt").bufferedReader().useLines { lines ->
+                lines.filter { it.isNotBlank() && !it.startsWith('#') }.map { it.split('|') }.toList()
+            }
+            Retrieval(SemanticIndex(app.assets.open(asset)), SemanticRanker(verses, normalizer, groups, ExpressionLexicon.forVersion(canonicalVersion)))
+                .also {
+                    // Keep one corpus's lexical postings resident on memory-constrained phones.
+                    indexes.clear()
+                    indexes[engine.version.scripture] = it
+                }
         }
         withContext(Dispatchers.Default) {
             ensureActive()
             val vector = encoder.encode(prefix + normalizer.forSemantic(raw))
             ensureActive()
             val job = currentCoroutineContext().job
-            val candidates = index.nearest(vector, limit,
-                accepts = { testament.accepts(it.book) && engine.verse(it) != null }, checkpoint = { job.ensureActive() })
-            // An empirical floor suppresses unrelated matches; it is not a probability.
-            val hits = candidates.filter { it.cosine >= 0.5f }.mapNotNull { candidate ->
-                engine.verse(candidate.key)?.let { SearchHit(it, candidate.cosine.toDouble(), "句意相近", setOf(SearchMode.SEMANTIC)) }
+            val seeds = retrieval.ranker.seeds(raw, checkpoint = { job.ensureActive() })
+            val candidates = retrieval.index.nearest(vector, maxOf(120,limit),
+                accepts = { testament.accepts(it.book) && engine.verse(it) != null }, checkpoint = { job.ensureActive() }, include = seeds)
+            val ranked = retrieval.ranker.rank(raw,candidates,limit)
+            val hits = ranked.mapNotNull { candidate ->
+                engine.verse(candidate.key)?.let { SearchHit(it, candidate.score, "句意相近", setOf(SearchMode.SEMANTIC)) }
             }.distinctBy { it.verse.key }
-            SearchResponse(hits, hits.size)
+            SearchResponse(hits, hits.size, if (hits.isEmpty()) "未找到足够相关的原文，请换一个更具体的说法。" else null)
         }
     }
     fun close() {

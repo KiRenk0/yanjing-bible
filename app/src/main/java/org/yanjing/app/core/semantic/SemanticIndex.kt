@@ -33,7 +33,7 @@ class SemanticIndex(input: InputStream) {
             require(stream.read() == -1) { "语义索引包含多余内容" }
         }
     }
-    fun nearest(query: FloatArray, limit: Int = 60, accepts: (VerseKey) -> Boolean = { true }, checkpoint: () -> Unit = {}): List<SemanticCandidate> {
+    fun nearest(query: FloatArray, limit: Int = 60, accepts: (VerseKey) -> Boolean = { true }, checkpoint: () -> Unit = {}, include: Set<VerseKey> = emptySet()): List<SemanticCandidate> {
         require(query.size == dimensions && query.all { it.isFinite() })
         require(limit > 0)
         // Multiple passages may point to one long verse. Keep its best score, then rank unique verses.
@@ -54,6 +54,7 @@ class SemanticIndex(input: InputStream) {
             if (heap.size < limit) heap.add(SemanticCandidate(key,score))
             else if (score > heap.element().cosine) { heap.poll(); heap.add(SemanticCandidate(key,score)) }
         }
-        return heap.sortedByDescending { it.cosine }
+        val recalled = include.mapNotNull { key -> best[key]?.let { SemanticCandidate(key,it) } }
+        return (heap + recalled).distinctBy { it.key }.sortedByDescending { it.cosine }
     }
 }
