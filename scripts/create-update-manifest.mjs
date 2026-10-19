@@ -14,7 +14,7 @@ const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
 const metadata={schema:1,applicationId:'org.yanjing.app',versionCode,versionName,minSdk:26,
   apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${apkName}`,
   size:bytes.length,sha256,
-  notes:'新增拉丁文 Vulgata Clementina 圣经（73 卷），保留原版分节并按所附映射关联中文查询；新增大学、中庸、孟子、心经、金刚经、道德经、庄子完整原文，与既有论语组成儒释道八部经典，支持离线现代汉语检索、阅读、收藏。新增 ARM64 小安装包，更新时按设备架构选择并校验哈希与签名；保留通用包。继承 1.4.1 的 Android 17 启动修正与恢复入口。'};
+  notes:'修复 1.5.0 显示“更新组件暂时不可用”的问题：保留更新数据库通过反射调用的无参构造函数，恢复自动检查、手动检查和下载更新。修复重复检查可能隐藏已下载安装包的问题。新增对最终压缩 APK 的构造函数检查，保留 Android 17 启动保护、全部经典与离线检索。1.5.0 更新器无法使用时，请从 Release 下载此版本覆盖安装，保留收藏、历史与阅读进度。'};
 const armName=`yanjing-${versionName}-arm64-v8a.apk`;
 const armBytes=fs.readFileSync(path.join(root,'dist',armName));
 metadata.arm64={apkUrl:`https://github.com/KiRenk0/yanjing-bible/releases/download/v${versionName}/${armName}`,size:armBytes.length,

@@ -8,11 +8,13 @@ import argparse
 import hashlib
 import gzip
 import json
+import os
 import re
 import struct
 import subprocess
 import zipfile
 import xml.etree.ElementTree as ET
+from verify_update_artifact import verify_update_database
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "app/src/main/assets"
@@ -40,6 +42,9 @@ def main():
     assert arm_path.stat().st_size == info['arm64']['size'] and sha(arm_path.read_bytes()) == info['arm64']['sha256']
     assert (DIST / "SHA256SUMS.txt").read_text().strip() == f"{info['sha256']}  {apk_path.name}\n{info['arm64']['sha256']}  {arm_path.name}"
     tools = args.build_tools.resolve()
+    analyzer = tools.parent.parent / "cmdline-tools/latest/bin" / ("apkanalyzer.bat" if os.name == "nt" else "apkanalyzer")
+    # Both APKs are checked below to contain identical DEX files.
+    update_database = verify_update_database(apk_path, analyzer)
     signature = subprocess.check_output([str(tools / "apksigner.bat"), "verify", "--verbose", "--print-certs", str(apk_path)], text=True)
     assert f"certificate SHA-256 digest: {SIGNER}" in signature
     subprocess.run([str(tools / "zipalign.exe"), "-c", "-P", "16", "4", str(apk_path)], check=True, capture_output=True)
@@ -195,6 +200,7 @@ def main():
     assert any(s['name'].endswith('ClassicsAndLatinSearchTest') and s['tests'] >= 4 for s in suites)
     assert any(s['name'].endswith('ClassicsRepositoryTest') and s['tests'] >= 2 for s in suites)
     assert any(s['name'].endswith('ArchitectureUpdateTest') and s['tests'] >= 2 for s in suites)
+    assert any(s['name'].endswith('UpdateManagerTest') and s['tests'] >= 4 for s in suites)
     issues = ET.parse(ROOT / "app/build/reports/lint-results-debug.xml").getroot().findall("issue")
     assert not [i for i in issues if i.attrib["severity"] in ("Error", "Fatal")]
     warnings = [i.attrib["id"] for i in issues if i.attrib["severity"] == "Warning"]
@@ -245,8 +251,9 @@ def main():
         "deviceTesting": "Robolectric API 35/36 Compose flows; API 37 direct framework/native-graphics startup; API 36/37 platform recovery and scheduler/palette failure injection; real ONNX inference; no physical Android device verification",
         "startupCompatibility": {"onDemandWorkManager": True, "platformRecoveryScreen": True,
                                  "reportedDevice": "Xiaomi 15 Pro; HyperOS 4.0.0.17.XOBCNXM.D01; Android 17",
-                                 "feedback": "User confirmed 1.4.1 can launch normally on the reported device on 2026-10-19; 1.5.0 inherits those changes; no agent-controlled physical-device testing"},
-        "updateValidation": "Metadata, resumable download, package/version/hash/signer rejection and in-app update UI covered by existing regression tests",
+                                 "feedback": "User confirmed 1.4.1 launches, then supplied 1.5.0 diagnostics showing Room's reflective constructor was missing; fixed in this release and checked in minified DEX; no agent-controlled physical-device testing"},
+        "updateDatabase": update_database,
+        "updateValidation": "Minified APK retains Room's reflective public no-argument constructor; metadata, resumable download, package/version/hash/signer rejection, READY state preservation and in-app update UI regression checks passed",
     }
     (DIST / "verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: report[k] for k in ("version", "tests", "failures", "apkSha256", "lint")}))

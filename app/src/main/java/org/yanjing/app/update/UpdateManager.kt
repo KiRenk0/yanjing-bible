@@ -41,7 +41,7 @@ class UpdateManager(context: Context, private val workManager: (Context) -> Work
         }
     }
     fun check() {
-        if (state.value.phase == UpdatePhase.DOWNLOADING) return
+        if (state.value.phase in setOf(UpdatePhase.DOWNLOADING, UpdatePhase.READY)) return
         safelySchedule {
             store.status(UpdatePhase.CHECKING, "正在检查 GitHub Release…")
             val request = OneTimeWorkRequestBuilder<CheckUpdateWorker>().setInputData(workDataOf("manual" to true))

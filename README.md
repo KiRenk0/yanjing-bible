@@ -2,6 +2,12 @@
 
 原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
 
+## v1.5.1：修复更新组件不可用
+
+修复发布包中更新数据库缺少反射构造函数的问题，恢复更新检查与下载；同时保留已下载更新的安装入口。发布校验现在直接检查压缩 APK 的 DEX，防止只通过 Debug 测试却漏掉 R8 反射入口。详情见 [原因、修复与复查](docs/update-component-review.md)。
+
+1.5.0 应用内更新不可用时，请从 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest) 下载 1.5.1 覆盖安装，无需卸载；收藏、历史和阅读进度保留。小米 15 Pro 可使用 ARM64 包。未进行修复版真机验证。
+
 ## v1.5.0：拉丁文圣经与儒释道经典
 
 新增 **Vulgata Clementina 拉丁文圣经，73 卷、35,809 节**，保留原版编号。使用固定 CrossWire 分节数据关联中文查询与对照，例如中文诗篇 23:1 对应拉丁诗篇 22:1，而非按相同编号机械拼接。无共有对应的增补内容仍能完整阅读、按出处和拉丁原文搜索；不猜测中文对应。原始数据、分节表及各自许可随源码归档。
@@ -81,7 +87,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.5.0-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.5.0.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
+Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.5.1-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.5.1.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 
