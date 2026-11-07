@@ -19,7 +19,10 @@ with zipfile.ZipFile(ipa) as archive:
     info = plistlib.loads(archive.read(prefix + 'Info.plist'))
     assert info['CFBundleIdentifier'] == 'org.yanjing.app'
     assert info['CFBundleShortVersionString'] == '1.7.0'
+    assert info['CFBundleVersion'] == '13'
     assert info['MinimumOSVersion'] == '18.0'
+    assert set(info['CFBundleLocalizations']) == {'en','zh-Hans','zh-Hant'}
+    assert 'UILaunchScreen' in info
     executable = archive.read(prefix + info['CFBundleExecutable'])
     assert executable[:4] == bytes.fromhex('cffaedfe') and struct.unpack_from('<I',executable,4)[0] == 0x0100000c, 'Device binary must be arm64 Mach-O'
     manifest = json.loads(archive.read(prefix + 'Corpus/bundle-manifest.json'))
