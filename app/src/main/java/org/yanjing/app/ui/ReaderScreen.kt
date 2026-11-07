@@ -68,7 +68,7 @@ private fun readerChapterTitle(state: AppState): String = when {
     state.version.isClassical -> Classics.forVersion(state.version)!!.chapterTitle(state.readerChapter)
     state.version.isQuran -> Quran.chapterTitle(state.readerChapter)
     state.version==BibleVersion.VULGATE -> tr(R.string.ui_a8b275439c, Vulgate.bookName(state.readerBook), state.readerChapter)
-    else -> tr(R.string.ui_94f19500d5, Books.names[state.readerBook-1], state.readerChapter)
+    else -> tr(R.string.ui_94f19500d5, org.yanjing.app.i18n.I18n.bookName(state.readerBook), state.readerChapter)
 }
 
 @Composable
@@ -127,7 +127,7 @@ private fun ChapterPicker(state: AppState, dismiss: () -> Unit, select: (Int, In
                             val b = books[i]
                             Surface(onClick = { book = b }, shape = MaterialTheme.shapes.medium,
                                 color = if (book == b) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh) {
-                                Text(if(latin)Vulgate.bookName(b) else Books.names[b - 1], style = MaterialTheme.typography.bodyLarge, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 16.dp))
+                                Text(if(latin)Vulgate.bookName(b) else org.yanjing.app.i18n.I18n.bookName(b), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 16.dp))
                             }
                         }
                     }

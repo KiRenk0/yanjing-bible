@@ -6,7 +6,7 @@ object Vulgate {
     const val verses=35809
     val books: List<Int> get() = vulgateBooks.map { it.book }
     val verseCounts: Map<Int,List<Int>> by lazy { vulgateBooks.associate { it.book to it.counts } }
-    fun bookName(book: Int) = vulgateBooks.firstOrNull { it.book==book }?.title.orEmpty()
+    fun bookName(book: Int) = org.yanjing.app.i18n.I18n.bookName(book)
     fun chapterCount(book: Int) = verseCounts[book]?.size ?: 0
     fun parse(raw: String,normalizer: TextNormalizer): ReferenceQuery? {
         val text=normalizer.script(raw).replace(Regex("〔拉丁文〕|\\[拉丁文\\]"),"").trim()

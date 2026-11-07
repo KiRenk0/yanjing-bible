@@ -6,7 +6,7 @@ const traditional=Converter({from:'cn',to:'tw'});
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const android=[...JSON.parse(read('localization/android.json')),...Object.entries(JSON.parse(read('localization/formatting.json'))).map(([key,[en,source]])=>({key,en,source}))];
 const ios=JSON.parse(read('localization/ios.json'));
-const xml=value=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll("'","\\'").replaceAll('"','\\"').replaceAll('\n','\\n');
+const xml=value=>value.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll("'","\\'").replaceAll('"','\\"').replaceAll('\n','\\n').replace(/^ +| +$/g,spaces=>'\\u0020'.repeat(spaces.length));
 const bible=read('app/src/main/java/org/yanjing/app/core/Bible.kt');
 const list=key=>JSON.parse('['+bible.match(new RegExp(`val ${key} = listOf\\(([^\\n]+)\\)`))[1]+']');
 const names=list('names'), english=list('english');

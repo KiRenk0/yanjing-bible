@@ -54,7 +54,16 @@ object I18n {
         }
         return if (args.isEmpty()) resources.getString(id) else resources.getString(id, *args)
     }
-    fun bookName(book: Int): String = app?.let { context -> wrap(context).resources.getStringArray(R.array.book_names).getOrNull(book - 1) } ?: org.yanjing.app.core.Books.names.getOrNull(book - 1).orEmpty()
+    fun bookName(book: Int): String = app?.let { context ->
+        val resources = wrap(context).resources
+        val index = resources.getStringArray(R.array.catalog_ids).indexOf(book.toString())
+        resources.getStringArray(R.array.catalog_names).getOrNull(index)
+    } ?: when {
+        book in 1..66 -> org.yanjing.app.core.Books.names[book - 1]
+        book == 67 -> "古兰经"
+        book in 101..173 -> org.yanjing.app.core.vulgateBooks.firstOrNull { it.book == book }?.title.orEmpty()
+        else -> org.yanjing.app.core.Classics.forBook(book)?.title.orEmpty()
+    }
 }
 
 fun tr(id: Int, vararg args: Any): String = I18n.text(id, *args)

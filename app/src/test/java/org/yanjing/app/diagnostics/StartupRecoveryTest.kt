@@ -23,7 +23,7 @@ import org.yanjing.app.update.UpdatePhase
 import org.yanjing.app.update.UpdateStore
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [36,37])
+@Config(sdk = [36,37], qualifiers = "zh-rCN")
 class StartupRecoveryTest {
     private val app get() = ApplicationProvider.getApplicationContext<Application>()
     private fun children(view: View): List<View> = listOf(view) +

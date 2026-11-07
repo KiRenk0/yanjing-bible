@@ -12,7 +12,7 @@ import org.yanjing.app.data.*
 import org.yanjing.app.ui.exportedVerse
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk=[35])
+@Config(sdk=[35], qualifiers="zh-rCN")
 class QuranRepositoryTest {
     @Test fun semanticRepositorySwitchesIndexesAndBridgesChineseMeaningToArabic() = runBlocking {
         val context=ApplicationProvider.getApplicationContext<Context>()

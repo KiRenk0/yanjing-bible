@@ -15,7 +15,7 @@ import org.yanjing.app.semantic.ISemanticEncoder
 import java.io.RandomAccessFile
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk=[35])
+@Config(sdk=[35], qualifiers="zh-rCN")
 class SemanticServiceTest {
     private class BindingContext(base: Context, private val binder: ISemanticEncoder, private val connect: Boolean=true) : ContextWrapper(base) {
         lateinit var connection: ServiceConnection

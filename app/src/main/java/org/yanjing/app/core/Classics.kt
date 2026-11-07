@@ -1,10 +1,13 @@
 package org.yanjing.app.core
 
+import org.yanjing.app.R
+import org.yanjing.app.i18n.tr
+
 data class ClassicWork(val version: BibleVersion, val book: Int, val title: String,
     val names: List<String>, val verseCounts: List<Int>, val source: String) {
-    private val unit get() = when(version) { BibleVersion.TAO_TE_CHING -> "章"; BibleVersion.DIAMOND_SUTRA -> "分"; BibleVersion.LOTUS_SUTRA -> "品"; else -> "篇" }
-    fun chapterTitle(chapter: Int) = if (names.size == 1) names[0] else if(version==BibleVersion.TAO_TE_CHING) "第 $chapter 章" else "第 $chapter $unit · ${names.getOrNull(chapter-1).orEmpty()}"
-    val summary get() = "${names.size} $unit · ${verseCounts.sum()} 段 · 现代汉语搜索文言原文"
+    private val unit get() = tr(when(version) { BibleVersion.TAO_TE_CHING -> R.string.unit_chapter; BibleVersion.DIAMOND_SUTRA -> R.string.unit_section; BibleVersion.LOTUS_SUTRA -> R.string.unit_lotus; else -> R.string.unit_classic })
+    fun chapterTitle(chapter: Int) = if (names.size == 1) names[0] else if(version==BibleVersion.TAO_TE_CHING) tr(R.string.chapter_number, chapter) else tr(R.string.chapter_with_title, chapter, unit, names.getOrNull(chapter-1).orEmpty())
+    val summary get() = tr(R.string.classic_summary, names.size, unit, verseCounts.sum())
     val sourceUrl get() = when(source) {
         "chinese-poetry" -> "https://github.com/chinese-poetry/chinese-poetry/tree/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/四书五经"
         "hooosberg" -> "https://github.com/hooosberg/Rushi/tree/bda9d95a2876aec4dc4d8b60b2594d9de79a1062/scriptures"
@@ -15,6 +18,7 @@ data class ClassicWork(val version: BibleVersion, val book: Int, val title: Stri
 }
 
 object Classics {
+    val englishTitles = mapOf("analects" to "Analects", "daxue" to "Great Learning", "zhongyong" to "Doctrine of the Mean", "mengzi" to "Mencius", "heart_sutra" to "Heart Sutra", "diamond_sutra" to "Diamond Sutra", "lotus_sutra" to "Lotus Sutra", "tao_te_ching" to "Tao Te Ching", "zhuangzi" to "Zhuangzi")
     val works: List<ClassicWork> by lazy {
         listOf(ClassicWork(BibleVersion.ANALECTS,Analects.BOOK,"论语",Analects.names,Analects.verseCounts,"chinese-poetry")) + classicWorks
     }
@@ -35,7 +39,7 @@ object Classics {
     fun parse(raw: String, normalizer: TextNormalizer, version: BibleVersion): ReferenceQuery? {
         if (version == BibleVersion.ANALECTS) return Analects.parse(raw,normalizer)
         val work = forVersion(version) ?: return null
-        val titles = if(version == BibleVersion.LOTUS_SUTRA) listOf("妙法莲华经", "法华经") else listOf(work.title)
+        val titles = (if(version == BibleVersion.LOTUS_SUTRA) listOf("妙法莲华经", "法华经") else listOf(work.title)) + listOfNotNull(englishTitles[version.id])
         val prefix = titles.joinToString("|") { Regex.escape(normalizer.script(it)) }
         var text=normalizer.script(raw.trim()).replace(Regex("^《?(?:$prefix)》?[·・\\s]*"),"").trim()
         val chapterAliases = work.names.withIndex().associate { normalizer.script(it.value) to it.index } +

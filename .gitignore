@@ -12,6 +12,7 @@ repository.xml
 *.iml
 captures/
 hs_err_*.log
+replay_pid*.log
 *.hprof
 dist/
 *.jks

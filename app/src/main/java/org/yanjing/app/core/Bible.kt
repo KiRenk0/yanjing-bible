@@ -42,10 +42,10 @@ data class VerseKey(val book: Int, val chapter: Int, val verse: Int) {
     val encoded: String get() = "$book:$chapter:$verse"
     val scripture: Scripture get() = if (book == Quran.BOOK) Scripture.QURAN else Classics.forBook(book)?.version?.scripture ?: Scripture.BIBLE
     val reference: String get() = when {
-        book == Quran.BOOK -> "古兰经 $chapter:$verse"
-        book == Analects.BOOK -> "论语·${Analects.chapterName(chapter)} $chapter:$verse"
-        Classics.forBook(book) != null -> Classics.forBook(book)!!.let { "${it.title}·${it.names.getOrNull(chapter-1).orEmpty()} $chapter:$verse" }
-        book in 101..173 -> "${Vulgate.bookName(book)}〔拉丁文〕 $chapter:$verse"
+        book == Quran.BOOK -> "${org.yanjing.app.i18n.I18n.bookName(book)} $chapter:$verse"
+        book == Analects.BOOK -> "${org.yanjing.app.i18n.I18n.bookName(book)}·${Analects.chapterName(chapter)} $chapter:$verse"
+        Classics.forBook(book) != null -> Classics.forBook(book)!!.let { "${org.yanjing.app.i18n.I18n.bookName(book)}·${it.names.getOrNull(chapter-1).orEmpty()} $chapter:$verse" }
+        book in 101..173 -> tr(R.string.latin_reference, Vulgate.bookName(book), chapter, verse)
         else -> "${org.yanjing.app.i18n.I18n.bookName(book)} $chapter:$verse"
     }
     companion object {

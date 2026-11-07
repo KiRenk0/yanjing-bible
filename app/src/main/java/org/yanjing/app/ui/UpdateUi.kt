@@ -74,11 +74,12 @@ private fun UpdateToggle(title: String, description: String, checked: Boolean, c
 fun UpdatePrompt(manager: UpdateManager) {
     val state by manager.state.collectAsStateWithLifecycle()
     val release = state.release ?: return
+    val context = LocalContext.current
     if (state.dismissed == release.versionCode || state.phase !in setOf(UpdatePhase.AVAILABLE, UpdatePhase.DOWNLOADING, UpdatePhase.READY)) return
     AlertDialog(onDismissRequest = manager::dismiss, title = { Text(tr(R.string.ui_c8de69e34e, release.versionName)) },
         text = {
             Column(Modifier.heightIn(max = 360.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(release.notes.ifBlank { tr(R.string.ui_63fc3ceccf) })
+                Text(release.displayedNotes(context).ifBlank { tr(R.string.ui_63fc3ceccf) })
                 Text(state.message, style = MaterialTheme.typography.bodyMedium)
                 if (state.phase == UpdatePhase.DOWNLOADING) {
                     LinearProgressIndicator(progress = { state.progress / 100f }, modifier = Modifier.fillMaxWidth())

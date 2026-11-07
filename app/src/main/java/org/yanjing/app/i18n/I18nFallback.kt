@@ -292,6 +292,14 @@ internal object I18nFallback {
         R.string.language_system to "跟随系统",
         R.string.language_hint to "只更改界面语言；经典原文和文本版本可独立选择。",
         R.string.update_status_generic to "更新状态已变更，请重新检查以查看当前语言的详情。",
-        R.string.startup_recovery_shortcut to "启动恢复与诊断"
+        R.string.startup_recovery_shortcut to "启动恢复与诊断",
+        R.string.unit_chapter to "章",
+        R.string.unit_section to "分",
+        R.string.unit_lotus to "品",
+        R.string.unit_classic to "篇",
+        R.string.classic_summary to "%1\$s %2\$s · %3\$s 段 · 现代汉语搜索文言原文",
+        R.string.chapter_with_title to "第 %1\$s %2\$s · %3\$s",
+        R.string.chapter_number to "第 %1\$s 章",
+        R.string.latin_reference to "%1\$s〔拉丁文〕 %2\$s:%3\$s"
     )
 }

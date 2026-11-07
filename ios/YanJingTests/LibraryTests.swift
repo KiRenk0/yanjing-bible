@@ -53,7 +53,8 @@ final class LibraryTests: XCTestCase {
         XCTAssertEqual(vector.count, 512)
         XCTAssertEqual(vector.reduce(Float(0)) { $0 + $1*$1 }, 1, accuracy: 0.001)
         for index in ["verses", "quran", "analects", "lotus_sutra", "verses"] {
-            let hits = try semantic.nearest(index == "analects" ? "学习要结合思考" : "帮助别人", index: index)
+            let query = index == "analects" ? "学习要结合思考" : index == "lotus_sutra" ? "若有无量百千万亿众生受诸苦恼" : "帮助别人"
+            let hits = try semantic.nearest(query, index: index)
             XCTAssertFalse(hits.isEmpty, index)
             XCTAssertTrue(hits.allSatisfy { $0.1.isFinite })
             if index == "analects" { XCTAssertTrue(hits.prefix(5).contains { $0.0 == VerseKey(68,2,15) }) }

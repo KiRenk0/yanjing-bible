@@ -14,7 +14,8 @@ internal fun releaseFromJson(text: String, supportedAbis: List<String> = android
     val json = JSONObject(text)
     require(json.getInt("schema") == 1 && json.getString("applicationId") == BuildConfig.APPLICATION_ID)
     val universal = UpdatePolicy.validate(ReleaseInfo(json.getLong("versionCode"), json.getString("versionName"),
-        json.getString("apkUrl"), json.getLong("size"), json.getString("sha256"), json.optString("notes"), json.getInt("minSdk")))
+        json.getString("apkUrl"), json.getLong("size"), json.getString("sha256"), json.optString("notes"), json.getInt("minSdk"),
+        json.optJSONObject("notesLocalized")?.let { notes -> listOf("en", "zh-CN", "zh-TW").mapNotNull { language -> notes.optString(language).takeIf { it.isNotBlank() }?.let { language to it } }.toMap() }.orEmpty()))
     if(supportedAbis.firstOrNull() != "arm64-v8a") return universal
     val arm = json.optJSONObject("arm64") ?: return universal
     val selected = UpdatePolicy.validate(universal.copy(apkUrl=arm.getString("apkUrl"),size=arm.getLong("size"),sha256=arm.getString("sha256")))
@@ -23,7 +24,7 @@ internal fun releaseFromJson(text: String, supportedAbis: List<String> = android
 }
 internal fun ReleaseInfo.toJson(): String = JSONObject().put("schema", 1).put("applicationId", BuildConfig.APPLICATION_ID)
     .put("versionCode", versionCode).put("versionName", versionName).put("apkUrl", apkUrl)
-    .put("size", size).put("sha256", sha256).put("notes", notes).put("minSdk", minSdk).toString()
+    .put("size", size).put("sha256", sha256).put("notes", notes).put("notesLocalized", JSONObject(localizedNotes)).put("minSdk", minSdk).toString()
 
 class UpdateStore(private val context: Context) {
     val preferences = context.applicationContext.getSharedPreferences("updates", Context.MODE_PRIVATE)

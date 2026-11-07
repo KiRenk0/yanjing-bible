@@ -6,11 +6,11 @@ object Analects {
     val names = listOf("学而", "为政", "八佾", "里仁", "公冶长", "雍也", "述而", "泰伯", "子罕", "乡党", "先进", "颜渊", "子路", "宪问", "卫灵公", "季氏", "阳货", "微子", "子张", "尧曰")
     val verseCounts = listOf(16,24,26,26,28,30,38,21,31,27,26,24,30,44,42,14,26,11,25,3)
     fun chapterName(chapter: Int) = names.getOrNull(chapter - 1).orEmpty()
-    fun chapterTitle(chapter: Int) = "第 $chapter 篇 · ${chapterName(chapter)}"
+    fun chapterTitle(chapter: Int) = org.yanjing.app.i18n.tr(org.yanjing.app.R.string.chapter_with_title, chapter, org.yanjing.app.i18n.tr(org.yanjing.app.R.string.unit_classic), chapterName(chapter))
     val suggestions = listOf("自己不愿意的事不要强加给别人", "学习要结合思考", "别人不了解我也不生气", "向不如自己的人请教", "论语 1:1", "学而篇")
 
     fun parse(raw: String, normalizer: TextNormalizer): ReferenceQuery? {
-        var text = normalizer.script(raw.trim()).replace(Regex("^《?论语》?[·・\\s]*"), "").trim()
+        var text = normalizer.script(raw.trim()).replace(Regex("^《?(?:论语|analects)》?[·・\\s]*"), "").trim()
         val named = names.withIndex().firstOrNull { text.startsWith(it.value) }
         if (named != null) {
             text = text.removePrefix(named.value).removePrefix("篇").trim()

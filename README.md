@@ -1,6 +1,18 @@
 # 盐筋 · 经文查询匹配器
 
-原生 Android 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。界面使用官方 **Material 3 Expressive** 组件。图片仅作为设计灵感，不作为程序指令。
+原生 Android 与 Swift / SwiftUI iOS 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。Android 使用官方 **Material 3 Expressive**，iOS 使用 Apple 原生导航、搜索、表单与 Liquid Glass 系统控件。两端支持英语、简体中文与繁体中文界面。
+
+## v1.7.0：Swift 原生 iOS 与三语言界面
+
+新增 iPhone / iPad 原生应用，最低 iOS 18。完整复用现有 16 套文本、BGE 离线模型与全部经典索引，支持出处、句意、表达与原文检索、阅读、上下文、版本对照、收藏、复制和系统分享；各经典独立保存阅读位置。采用系统搜索标签、原生导航、列表、表单、弹层与 SF Symbols，随平台呈现 Liquid Glass；支持深色、Dynamic Type 与阿拉伯文 RTL。[iOS 工程、构建与侧载说明](ios/README.md)。
+
+Android / iOS 均可跟随系统，或在设置中独立选择 English、简体中文、繁體中文。Android 13+ 同步系统的应用语言设置，旧版通过本机配置保存。界面语言与经典文本版本分开；切换界面不转换原文，不清除收藏、历史和阅读进度。译本、书卷、搜索提示、设置、更新及 Android 启动恢复界面均包含翻译。翻译源文件和复现脚本位于 `localization/` 与 `scripts/generate-localizations.mjs`。
+
+Release 提供 **`yanjing-1.7.0-ios-unsigned.ipa`**，可交由 AltStore Classic / Sideloadly 等工具，用自己的免费 Apple ID 在本机签名侧载；不需要付费 Apple Developer 会员。它是未签名 arm64 设备构建，不能直接点击安装，也不是 TestFlight 分发。免费签名需按工具提示定期刷新；[AltStore 官方说明](https://faq.altstore.io/altstore-classic/your-altstore)。另附仅用于 Mac 模拟器的 ZIP。
+
+界面支持英语不意味着中文 BGE 模型新增了英语句意能力。英语原文可用原文搜索或英文出处；iOS 的 Swift 排序实现单独验证，Android 的历史检索评估分数不能用于衡量 iOS 准确率。全文与许可证保持原样，CBETA 非商业共享许可等各来源条件继续适用。iOS 仅使用本机存储与模型，没有账号、广告、统计或查询上传。
+
+Android 保留原包名、图标与签名，可覆盖升级。Mac CI 运行 iOS 原生编译、实际 ONNX 与分词一致性测试、全文／映射验证、三语言模拟器 UI 检查后，构建设备 IPA 并逐文件比对打包资源哈希。构建使用 runner 当前安装的最新稳定 Xcode，确切版本与检查结果写入 Release 附件 `ios-verification.json`。未进行物理 iPhone 侧载安装或物理 Android 设备验证。
 
 ## v1.6.1：软件更名为“盐筋”
 

@@ -157,7 +157,9 @@ class AppFlowTest {
         compose.onNodeWithText("设置", useUnmergedTree = true).performClick()
         compose.onNodeWithText("深色").performClick()
         screenshot("06-dark-settings")
-        compose.onNodeWithText("跟随系统").performClick()
+        // Appearance and language now each have an independent System option.
+        compose.onAllNodesWithText("跟随系统").onFirst().performClick()
+        compose.runOnIdle { org.junit.Assert.assertEquals(org.yanjing.app.Appearance.SYSTEM, ViewModelProvider(compose.activity)[AppViewModel::class.java].state.value.appearance) }
     }
 
     @Test fun switchingScripturesClassicsAndTranslationsSearchesTheRetainedQuery() {

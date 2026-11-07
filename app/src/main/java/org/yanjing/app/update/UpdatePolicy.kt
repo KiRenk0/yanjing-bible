@@ -13,7 +13,10 @@ enum class DownloadRoute(private val titleRes: Int) {
 }
 
 data class ReleaseInfo(val versionCode: Long, val versionName: String, val apkUrl: String,
-    val size: Long, val sha256: String, val notes: String, val minSdk: Int)
+    val size: Long, val sha256: String, val notes: String, val minSdk: Int,
+    val localizedNotes: Map<String, String> = emptyMap()) {
+    fun displayedNotes(context: android.content.Context): String = localizedNotes[org.yanjing.app.i18n.I18n.tag(context)] ?: notes
+}
 
 object UpdatePolicy {
     const val REPOSITORY = "KiRenk0/yanjing-bible"

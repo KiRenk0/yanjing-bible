@@ -7,7 +7,7 @@ object Quran {
     val basmala: String get() = quranBasmala
     fun chapterPrelude(chapter: Int): String? = if (chapter !in 2..114 || chapter == 9) null else quranBasmalaVariants[chapter] ?: basmala
     fun chapterName(number: Int) = quranChapterNames.getOrNull(number - 1).orEmpty()
-    fun chapterTitle(number: Int) = "第 $number 章 · ${chapterName(number)}"
+    fun chapterTitle(number: Int) = org.yanjing.app.i18n.tr(org.yanjing.app.R.string.chapter_with_title, number, org.yanjing.app.i18n.tr(org.yanjing.app.R.string.unit_chapter), chapterName(number))
     val suggestions = listOf("古兰经 1:1-7", "困难之后会有容易", "不要因绝望而放弃", "古兰经 2:255", "公平待人", "古兰经 112:1-4")
     private val names: Map<String, Int> by lazy {
         buildMap {

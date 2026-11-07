@@ -40,7 +40,9 @@ android {
         unitTests.all {
             // Robolectric's Android 16 runtime requires Java 21; app bytecode remains Java 17.
             it.javaLauncher.set(testJavaToolchains.launcherFor { languageVersion.set(JavaLanguageVersion.of(21)) })
-            it.maxHeapSize = "2g"
+            it.maxHeapSize = providers.gradleProperty("testHeap").getOrElse("1g")
+            // Release native Robolectric/ONNX memory between suites on small CI hosts.
+            it.forkEvery = 1
             val testTemp = rootProject.layout.buildDirectory.dir("test-tmp").get().asFile.apply { mkdirs() }
             it.systemProperty("java.io.tmpdir", testTemp.absolutePath)
             it.systemProperty("robolectric.dependency.repo.url", "https://repo.maven.apache.org/maven2")
