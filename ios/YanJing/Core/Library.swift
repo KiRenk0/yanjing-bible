@@ -58,7 +58,7 @@ actor Library {
             let queryTokens = TextTools.tokens(query)
             for (i, verse) in corpus.enumerated() {
                 if i % 128 == 0 { try Task.checkCancellation() }
-                let normalized = TextTools.normalize(verse.text, arabic: version.isRTL, latin: version.id == "vulgate")
+                let normalized = verse.normalized
                 let exact = normalized.contains(query)
                 if modes.contains(.keyword), exact { add(verse, mode: .keyword, score: 2) }
                 if modes.contains(.expression) {

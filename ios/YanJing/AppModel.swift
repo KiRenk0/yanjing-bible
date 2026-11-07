@@ -48,16 +48,18 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         self.defaults = defaults
         self.root = root ?? Bundle.main.resourceURL!.appendingPathComponent("Corpus")
         library = Library(root: self.root)
-        language = AppLanguage(rawValue: defaults.string(forKey: "language") ?? "system") ?? .system
+        let initialLanguage = AppLanguage(rawValue: defaults.string(forKey: "language") ?? "system") ?? .system
+        language = initialLanguage
         appearance = defaults.string(forKey: "appearance") ?? "system"
         let font = defaults.double(forKey: "fontSize")
         fontSize = font.isFinite && (16...32).contains(font) ? font : 20
-        version = TextVersion.find(defaults.string(forKey: "version") ?? (language.resolved == "en" ? "kjv" : language.resolved == "zh-Hant" ? "cuvt" : "cuvs"))
-        modes = Set((defaults.stringArray(forKey: "modes") ?? ["semantic", "expression"]).compactMap(SearchMode.init(rawValue:)))
-        if modes.isEmpty { modes = [.semantic, .expression] }
+        let initialVersion = TextVersion.find(defaults.string(forKey: "version") ?? (initialLanguage.resolved == "en" ? "kjv" : initialLanguage.resolved == "zh-Hant" ? "cuvt" : "cuvs"))
+        version = initialVersion
+        let initialModes = Set((defaults.stringArray(forKey: "modes") ?? ["semantic", "expression"]).compactMap(SearchMode.init(rawValue:)))
+        modes = initialModes.isEmpty ? [.semantic, .expression] : initialModes
         history = defaults.stringArray(forKey: "history") ?? []
         saved = defaults.data(forKey: "saved").flatMap { try? JSONDecoder().decode([SavedPassage].self, from: $0) } ?? []
-        readerBook = version.defaultBook; readerChapter = 1
+        readerBook = initialVersion.defaultBook; readerChapter = 1
         do { books = try JSONDecoder().decode([BookInfo].self, from: Data(contentsOf: self.root.appendingPathComponent("books.json"))) }
         catch { errorKey = "error.library" }
     }

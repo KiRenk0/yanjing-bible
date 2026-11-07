@@ -42,6 +42,7 @@ enum ReferenceParser {
             func number(_ group: Int) -> Int? { Range(match.range(at: group), in: rest).flatMap { Int(rest[$0]) } }
             guard let chapter = number(1) else { return .init(book: book.id, chapter: -1, start: nil, end: nil) }
             let start = number(2), end = number(3) ?? start
+            if (match.range(at: 2).location != NSNotFound && start == nil) || (match.range(at: 3).location != NSNotFound && number(3) == nil) { return .init(book: book.id, chapter: -1, start: nil, end: nil) }
             // Invalid recognized references return no results instead of falling through to lexical search.
             guard chapter > 0, start.map({ $0 > 0 }) ?? true, end.map({ $0 >= (start ?? 1) }) ?? true else { return .init(book: book.id, chapter: -1, start: nil, end: nil) }
             return .init(book: book.id, chapter: chapter, start: start, end: end)
