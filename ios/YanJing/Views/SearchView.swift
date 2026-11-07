@@ -57,6 +57,7 @@ struct SearchView: View {
                         Toggle(isOn: Binding(get: { model.modes.contains(mode) }, set: { enabled in
                             if enabled { model.modes.insert(mode) } else if model.modes.count > 1 { model.modes.remove(mode) }; model.search()
                         })) { VStack(alignment: .leading) { Text(model.text(mode.titleKey)); Text(model.text(mode.titleKey + ".hint")).font(.caption).foregroundStyle(.secondary) } }
+                    }
                 }
                 if model.version.group == "bible" {
                     Picker(model.text("search.scope"), selection: $model.testament) {
