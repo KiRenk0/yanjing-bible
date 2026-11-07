@@ -2,6 +2,8 @@
 
 package org.yanjing.app.ui
 
+import org.yanjing.app.i18n.tr
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -25,18 +27,18 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
         Column(Modifier.fillMaxWidth().fillMaxHeight(0.92f)) {
             Row(Modifier.fillMaxWidth().padding(start = 24.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(detail.key.reference, style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
-                IconButton(onClick = model::closeDetail) { Symbol(R.drawable.sym_close, "关闭经文详情") }
+                IconButton(onClick = model::closeDetail) { Symbol(R.drawable.sym_close, tr(R.string.ui_ab752a7650)) }
             }
             PrimaryTabRow(selectedTabIndex = tab) {
-                Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text(if (detail.version.isClassical) "原文与检索释义" else "版本对照") })
-                Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text("上下文") })
+                Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text(if (detail.version.isClassical) tr(R.string.ui_d30cd3b64f) else tr(R.string.ui_18f35c09c9)) })
+                Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text(tr(R.string.ui_6fc38ef360)) })
             }
             when {
                 detail.loading -> Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
-                detail.error != null -> EmptyState(R.drawable.sym_info, "加载失败", detail.error)
+                detail.error != null -> EmptyState(R.drawable.sym_info, tr(R.string.ui_d1d044826a), detail.error)
                 else -> LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     if (tab == 0) {
-                        item { Text(if (detail.version.isClassical) "检索释义为本项目编写的白话查找提示，不是完整翻译或权威注疏。章句编号依所附版本。" else "同一出处的不同文本。部分版本分节方式可能不同。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+                        item { Text(if (detail.version.isClassical) tr(R.string.ui_bc8c5659e0) else tr(R.string.ui_ad84f54382), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                         items(detail.version.peers.size, key = { detail.version.peers[it].id }) { i ->
                             val version = detail.version.peers[i]
                             val verse = detail.comparisons[version]
@@ -46,19 +48,19 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                                         Text(version.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
                                         if (verse != null) IconButton(onClick = { save(verse, version) }) {
                                             val saved = state.saved.any { it.verse.key == verse.key && it.version == version }
-                                            Symbol(if (saved) R.drawable.sym_bookmark_filled else R.drawable.sym_bookmark, if (saved) "取消收藏${version.title}" else "收藏${version.title}")
+                                            Symbol(if (saved) R.drawable.sym_bookmark_filled else R.drawable.sym_bookmark, if (saved) tr(R.string.ui_6f04186a09, version.title) else tr(R.string.ui_6069913efc, version.title))
                                         }
                                     }
-                                    if (verse != null && verse.key != detail.key) Text("此版对应 ${verse.key.reference}", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
-                                    SelectionContainer { Text(verse?.text ?: "此版本未附对应分节，请阅读当前原文和上下文。", style = verseTextStyle(version,state.fontSize), modifier = Modifier.fillMaxWidth().padding(end = 8.dp)) }
+                                    if (verse != null && verse.key != detail.key) Text(tr(R.string.ui_c56e3871a7, verse.key.reference), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 8.dp))
+                                    SelectionContainer { Text(verse?.text ?: tr(R.string.ui_abb0fd4d63), style = verseTextStyle(version,state.fontSize), modifier = Modifier.fillMaxWidth().padding(end = 8.dp)) }
                                     if (!verse?.searchGloss.isNullOrEmpty()) {
-                                        Text("现代汉语检索释义", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+                                        Text(tr(R.string.ui_116add13fa), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
                                         Text(verse.searchGloss, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(end = 8.dp))
                                     }
                                     CorpusSource(version)
                                     if (verse != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                                        TextButton(onClick = { shareVerse(context, verse, version) }) { Symbol(R.drawable.sym_share); Spacer(Modifier.width(8.dp)); Text("分享") }
-                                        TextButton(onClick = { copy(verse, version) }) { Symbol(R.drawable.sym_content_copy); Spacer(Modifier.width(8.dp)); Text("复制") }
+                                        TextButton(onClick = { shareVerse(context, verse, version) }) { Symbol(R.drawable.sym_share); Spacer(Modifier.width(8.dp)); Text(tr(R.string.ui_7e564575eb)) }
+                                        TextButton(onClick = { copy(verse, version) }) { Symbol(R.drawable.sym_content_copy); Spacer(Modifier.width(8.dp)); Text(tr(R.string.ui_63d90d9773)) }
                                     }
                                 }
                             }
@@ -67,7 +69,7 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                         item {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(detail.version.title, style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
-                                TextButton(onClick = onRead) { Text(if (detail.version.isClassical) "阅读整篇" else "阅读整章"); Symbol(R.drawable.sym_arrow_forward) }
+                                TextButton(onClick = onRead) { Text(if (detail.version.isClassical) tr(R.string.ui_b6d0d028d7) else tr(R.string.ui_3012027875)); Symbol(R.drawable.sym_arrow_forward) }
                             }
                         }
                         val verses = detail.context.filter { it.key.verse in (detail.key.verse - 3)..(detail.key.verse + 3) }
@@ -76,7 +78,7 @@ fun VerseDetailSheet(detail: DetailState, state: AppState, model: AppViewModel,
                             val selected = verse.key == detail.key
                             Surface(shape = MaterialTheme.shapes.medium, color = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLow) {
                                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text("${verse.key.chapter}:${verse.key.verse}${if (selected) " · 当前经文" else ""}", style = MaterialTheme.typography.labelLarge)
+                                    Text(tr(R.string.ui_2a6bb329fb, verse.key.chapter, verse.key.verse, if (selected) tr(R.string.ui_073efc46ad) else ""), style = MaterialTheme.typography.labelLarge)
                                     SelectionContainer { Text(verse.text, style = verseTextStyle(detail.version,state.fontSize), modifier = Modifier.fillMaxWidth()) }
                                 }
                             }

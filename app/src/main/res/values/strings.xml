@@ -1,4 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from localization/android.json. -->
 <resources>
-    <string name="app_name" translatable="false">盐筋</string>
-    <string name="startup_recovery_shortcut">启动恢复与诊断</string>
+    <string name="app_name">YanJing</string>
+    <string name="ui_fd047ccb20">Match</string>
+    <string name="ui_ce9b12499c">Read</string>
+    <string name="ui_60a53514eb">Saved</string>
+    <string name="ui_df3d58c7d8">Settings</string>
+    <string name="ui_d6cc6b2d14">Passage and reference copied</string>
+    <string name="ui_7fa7b63b0e">Removed from saved passages</string>
+    <string name="ui_95c8e5c111">Passage saved</string>
+    <string name="ui_c214cf65a4">%1$s reading</string>
+    <string name="ui_9385bfefca">My saved passages</string>
+    <string name="ui_72f30a9d58">Find a passage for everyday words</string>
+    <string name="ui_2ebb3b278e">Read the passage and its context</string>
+    <string name="ui_933a71e100">Keep the words that move you</string>
+    <string name="ui_cf307954e9">Make reading your own</string>
+    <string name="ui_ecdf24870a">Choose a text and version</string>
+    <string name="ui_567a685cee">Licenses and text sources</string>
+    <string name="ui_2c7bac0bff">Loading licenses…</string>
+    <string name="ui_c0b3fbff51">Done</string>
+    <string name="ui_550c1bce78">Keep your favourite passages here</string>
+    <string name="ui_66104bccc5">Tap the bookmark on a passage to save it and its version offline.</string>
+    <string name="ui_7c998110df">%1$s saved passages</string>
+    <string name="ui_2c3262050b">Share passage</string>
+    <string name="ui_7f7c718640">\nMuhammad Ma Jian · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin</string>
+    <string name="ui_d8d06d6030">\nText data: chinese-poetry/chinese-poetry · MIT</string>
+    <string name="ui_96ca005377">\nText data: %1$s</string>
+    <string name="ui_1b5f2ef791">\nVulgata Clementina · Scrollmapper · Public domain text; numbering follows the bundled mapping</string>
+    <string name="ui_b067b29f39">Remove bookmark for %1$s</string>
+    <string name="ui_715c8ae33d">Save %1$s</string>
+    <string name="ui_59b529978f">Context and comparison</string>
+    <string name="ui_912cc32cbb">Copy %1$s</string>
+    <string name="ui_6cb0240500">Text: %1$s · Numbering follows the bundled edition</string>
+    <string name="ui_3670a14237">Latin: Clementina · 73 books · Original chapter numbers; Chinese and Latin numbering may differ</string>
+    <string name="ui_5e46be85c6">Analects: chinese-poetry · MIT · Numbering follows the bundled edition</string>
+    <string name="ui_967ab37610">Arabic: Tanzil Project · Uthmani v1.1 · tanzil.net</string>
+    <string name="ui_b40b0fc33a">Translation: Muhammad Ma Jian · QuranEnc.com v1.0.2</string>
+    <string name="ui_3f014bdf31">All versions are included and available offline.</string>
+    <string name="ui_08e0264b24">%1$s · %2$s %3$s</string>
+    <string name="ui_0477dbbdee">passages</string>
+    <string name="ui_ada40d1b8b">verses</string>
+    <string name="ui_d1e7d184ff">Bible: 5 texts including Latin. Quran: Chinese and Arabic. Complete Confucian, Buddhist and Taoist classics are searchable using modern Chinese.</string>
+    <string name="ui_964663269e">Describe the meaning in Chinese, or enter Analects 1:1</string>
+    <string name="ui_875f2290ac">Describe the meaning in Chinese, or enter a chapter</string>
+    <string name="ui_174fed9168">Describe the meaning, or enter 2:255</string>
+    <string name="ui_a84afb0ba0">Describe the meaning in Chinese, or enter a reference</string>
+    <string name="ui_0002c0ee16">Enter a phrase, keyword or reference</string>
+    <string name="ui_cb4e7a1ff5">Close search</string>
+    <string name="ui_b6f00afa65">Clear search</string>
+    <string name="ui_2874151bd3">Search settings</string>
+    <string name="ui_0e0ecd4c21">Search for “%1$s”</string>
+    <string name="ui_3cdd980817">Search in %1$s</string>
+    <string name="ui_bdceb7de57">Start searching</string>
+    <string name="ui_cac3809c50">View matches</string>
+    <string name="ui_3b5ac9baaa">Recent searches</string>
+    <string name="ui_1ef3de06b3">Clear</string>
+    <string name="ui_fdcd6199e5">Try an everyday expression</string>
+    <string name="ui_c3e9c3c600">Selected modes</string>
+    <string name="ui_1e0a4f73f1">20 chapters · 512 passages · Search classical Chinese with modern Chinese</string>
+    <string name="ui_7c3ff9a0e4">114 chapters · 6,236 verses · Chinese and Arabic available offline</string>
+    <string name="ui_2e12854ada">Opening the offline library…</string>
+    <string name="ui_40493fd844">The text library is unavailable</string>
+    <string name="ui_b8784c8dd5">Retry</string>
+    <string name="ui_16778b4cd1">Searching offline; the local model loads on first use.</string>
+    <string name="ui_e7c66d9bed">No matches yet</string>
+    <string name="ui_51f7877be4">Try a more specific description in Chinese, or enable Original text or Expressions. You can also enter Analects 1:1.</string>
+    <string name="ui_f6a5dbf26d">Try a shorter sentence, another keyword, or Expressions. You can also enter John 3:16.</string>
+    <string name="ui_2ace33819d">Related passages · %1$s candidates</string>
+    <string name="ui_77fd8a97e7">%1$s matches</string>
+    <string name="ui_cdab8699f7">Searches original text and separate modern Chinese hints, and always displays the original passage.</string>
+    <string name="ui_27fff02351">Results combine selected modes. Similarity is not a probability; Latin results use the selected text’s numbering.</string>
+    <string name="ui_b0dbc2f2b4">Results combine selected modes. Similarity and combined scores are not probabilities.</string>
+    <string name="ui_530287e0b1">Duplicates are merged and each card lists its matching modes. Read the context to understand the text.</string>
+    <string name="ui_687a797e36">Ranked by related expressions and wording. Read the context to understand the text.</string>
+    <string name="ui_5bedbb2bbb">Exact text matching; punctuation is ignored.</string>
+    <string name="ui_2b12eb9c73">Showing the first %1$s matches. Use a more specific term to narrow the results.</string>
+    <string name="ui_b4e019b615">Search modes</string>
+    <string name="ui_a6b6b983b9">Choose multiple modes to search together and merge duplicate passages.</string>
+    <string name="ui_afeebd4e36">Choose at least one search mode.</string>
+    <string name="ui_c853617881">All searches run offline. A related result may not convey the original meaning.</string>
+    <string name="ui_63c73c4730">Apply</string>
+    <string name="ui_2cd0f3be87">Cancel</string>
+    <string name="ui_a70b1ce594">Use modern Chinese.\nFind the original words.</string>
+    <string name="ui_69cb65a50b">Use modern Chinese.\nFind the original words.</string>
+    <string name="ui_2db8d1d045">The words you need\nmay already be here.</string>
+    <string name="ui_24bdf2a299">Describe the meaning in modern Chinese to find related classical Chinese passages.</string>
+    <string name="ui_ba508d5b85">Find related original passages in %1$s.</string>
+    <string name="ui_c8c8e88dad">Find Quran passages and compare Chinese and Arabic.</string>
+    <string name="ui_afc8786371">Start exploring with an everyday expression.</string>
+    <string name="ui_c4da9d52e6">Fully offline · No account needed</string>
+    <string name="ui_0641ada9bf">Start with a sentence</string>
+    <string name="ui_a1571c3647">Try a modern Chinese description or Analects 2:15. Search glosses are aids, not authoritative translations. Passage numbering follows the bundled edition.</string>
+    <string name="ui_bca6e7c942">Search hints help find passages; they are not full translations or authoritative commentary. Numbering follows the bundled edition.</string>
+    <string name="ui_3f6c6be271">Try 2:255, Quran 94:5-6 or a chapter name. Similarity is not a probability; read the context to understand the text.</string>
+    <string name="ui_d3d5f013f1">References also work: John 3:16, Psalms 23, John 4:7. Similarity only helps you find text; use the context and comparisons to read further.</string>
+    <string name="ui_5e50d51846">Previous section</string>
+    <string name="ui_393f2a5120">Previous chapter</string>
+    <string name="ui_673ee5a5a4">Next section</string>
+    <string name="ui_9443994bc3">Next chapter</string>
+    <string name="ui_573afa897f">Unable to load text</string>
+    <string name="ui_c8886dc3da">Analects · %1$s</string>
+    <string name="ui_d8fe21c999">Quran %1$s</string>
+    <string name="ui_ca8b90f98d">Tap a passage to save, copy or view its search gloss and context.</string>
+    <string name="ui_29d3c74283">Tap a verse to save, copy or compare versions.</string>
+    <string name="ui_a8b275439c">%1$s · Chapter %2$s</string>
+    <string name="ui_94f19500d5">%1$s · Chapter %2$s</string>
+    <string name="ui_bd541337af">Choose a section of %1$s</string>
+    <string name="ui_3efc94a541">%1$s passages</string>
+    <string name="ui_99c63124e6">Choose an Analects chapter</string>
+    <string name="ui_222425afab">%1$s passages</string>
+    <string name="ui_9b4d803f44">Choose a Quran chapter</string>
+    <string name="ui_4c1e9455db">%1$s verses</string>
+    <string name="ui_1a138c26f1">Choose a book and chapter</string>
+    <string name="ui_f9c7acfecb">Old Testament</string>
+    <string name="ui_a18281e062">New Testament</string>
+    <string name="ui_e0bb0e98a0">Chapter %1$s</string>
+    <string name="ui_54d9bf6f75">Everyday expressions × Text exploration</string>
+    <string name="ui_5e6cd637d3">%1$s · Offline search · No ads</string>
+    <string name="ui_4c3fe66dba">Display and reading</string>
+    <string name="ui_bc99124901">Dynamic colours</string>
+    <string name="ui_13383b2187">Use Material colours from your system wallpaper</string>
+    <string name="ui_c700f88f57">Available on Android 12 and later</string>
+    <string name="ui_cbbbca43b0">Passage size · %1$s sp</string>
+    <string name="ui_11d393ce3c">Passage text size</string>
+    <string name="ui_b2111b4ec2">Thy word is a lamp unto my feet, and a light unto my path.</string>
+    <string name="ui_5dd460e68f">Psalms 119:105 · Text also scales with system settings</string>
+    <string name="ui_914f6a1974">Texts and data</string>
+    <string name="ui_da29379b71">Included texts and versions</string>
+    <string name="ui_5b75f44647">Bible including Latin · Chinese and Arabic Quran · Confucian, Buddhist and Taoist classics</string>
+    <string name="ui_02c0ab8fbd">Clear search history</string>
+    <string name="ui_fc4a87fa8d">%1$s entries · Stored only on this device</string>
+    <string name="ui_5aad762f28">Components, text sources and licensing terms</string>
+    <string name="ui_8a36e4082a">Unable to export diagnostics. Please try again later.</string>
+    <string name="ui_5326ad11c1">Preparing diagnostics…</string>
+    <string name="ui_a1fa288e54">Export local diagnostics</string>
+    <string name="ui_f623485bd2">Includes device and crash information. You choose where to share it; nothing uploads automatically.</string>
+    <string name="ui_2cc61c2dc1">About matching</string>
+    <string name="ui_f91cd10a7e">Meaning search uses a local Chinese BGE model and a separate index for each text. Expressions and Original text can run alongside it. Classical texts include separate modern Chinese search aids. Latin results use the bundled verse mapping; unmapped passages remain readable and searchable by original wording. Read the context to understand a result.</string>
+    <string name="ui_d0d7217ee0">Models, texts, saved passages and searches stay on this device. Network access is used only for checking versions and downloading updates; queries, saved passages and history are not sent.</string>
+    <string name="ui_5fb94d43ef">Clear search history?</string>
+    <string name="ui_f423d22508">Delete %1$s searches from this device.</string>
+    <string name="ui_cebbc1f61c">Version and updates</string>
+    <string name="ui_5a51b05996">Current version %1$s</string>
+    <string name="ui_bccda3b1ca">Updates come from this project’s GitHub Releases</string>
+    <string name="ui_8917b3c354">Last checked: %1$s</string>
+    <string name="ui_7f68ebad19">Check for updates</string>
+    <string name="ui_0ca906da49">New version %1$s · %2$s MB</string>
+    <string name="ui_e005bc1767">Download update now</string>
+    <string name="ui_c42a3dd9c2">Check automatically</string>
+    <string name="ui_173d0d252f">Check at startup and periodically in the background</string>
+    <string name="ui_7392248edb">Download automatically</string>
+    <string name="ui_85786e444b">Download new versions automatically; installation needs your confirmation</string>
+    <string name="ui_3a3fb31bf4">Automatic downloads on Wi-Fi only</string>
+    <string name="ui_526fa83137">Manual downloads can use your current connection</string>
+    <string name="ui_d9f41c12c3">Download route</string>
+    <string name="ui_588a1d210d">Switch to a mirror if needed; the app signature is verified after download</string>
+    <string name="ui_c8de69e34e">Version %1$s is available</string>
+    <string name="ui_63fc3ceccf">Improvements and fixes</string>
+    <string name="ui_0d326909fe">Download size %1$s MB</string>
+    <string name="ui_e3f33e0777">Download in background</string>
+    <string name="ui_b088e89d54">Download now</string>
+    <string name="ui_9d2ca26128">Later</string>
+    <string name="ui_bbd85c1dc1">After allowing installation, return here and tap Install update again.</string>
+    <string name="ui_dc08150198">Unable to open the installer. Please try again.</string>
+    <string name="ui_84717e2cad">Verifying…</string>
+    <string name="ui_7a6bafc9c8">Install update</string>
+    <string name="ui_ab752a7650">Close passage details</string>
+    <string name="ui_d30cd3b64f">Original text and search gloss</string>
+    <string name="ui_18f35c09c9">Compare versions</string>
+    <string name="ui_6fc38ef360">Context</string>
+    <string name="ui_d1d044826a">Unable to load</string>
+    <string name="ui_bc8c5659e0">Search glosses are project-authored aids in modern Chinese, not full translations or authoritative commentary. Numbering follows the bundled edition.</string>
+    <string name="ui_ad84f54382">Texts at the corresponding reference. Some versions use different verse divisions.</string>
+    <string name="ui_6f04186a09">Remove bookmark for %1$s</string>
+    <string name="ui_6069913efc">Save %1$s</string>
+    <string name="ui_c56e3871a7">Corresponds to %1$s in this version</string>
+    <string name="ui_abb0fd4d63">No mapped passage in this version. Read the original and its context.</string>
+    <string name="ui_116add13fa">Modern Chinese search gloss</string>
+    <string name="ui_7e564575eb">Share</string>
+    <string name="ui_63d90d9773">Copy</string>
+    <string name="ui_b6d0d028d7">Read full section</string>
+    <string name="ui_3012027875">Read full chapter</string>
+    <string name="ui_2a6bb329fb">%1$s:%2$s%3$s</string>
+    <string name="ui_073efc46ad"> · Current passage</string>
+    <string name="ui_2ab1425887">%1$s · Startup recovery</string>
+    <string name="ui_2bb608ca4c">The previous startup did not finish. Retry, or start with dynamic colours and automatic updates disabled. Saved passages, history and reading progress are preserved.</string>
+    <string name="ui_47d5cd3e98">Retry startup</string>
+    <string name="ui_466dc18f7d">Compatibility startup</string>
+    <string name="ui_6cf56c400b">Unable to export right now. Please try again later.</string>
+    <string name="ui_db987f1de5">Diagnostics contain device information, exception stacks and system exit records. You choose whether to share them.</string>
+    <string name="ui_217cfe7db1">System</string>
+    <string name="ui_aa0819dfc4">Light</string>
+    <string name="ui_a6b75d0680">Dark</string>
+    <string name="ui_b8aa78a241">Unable to load the text library. Please retry.</string>
+    <string name="ui_c9b2eeafab">Search failed. Please retry.</string>
+    <string name="ui_cb3a0faf06">Unable to load right now. Close and try again.</string>
+    <string name="ui_0e2cd5747f">Bible</string>
+    <string name="ui_606dbd6b27">Quran</string>
+    <string name="ui_c51146217b">Confucian</string>
+    <string name="ui_1363ec4228">Buddhist</string>
+    <string name="ui_d1e21b634c">Taoist</string>
+    <string name="ui_baace69a71">Chinese Union · Simplified</string>
+    <string name="ui_7b13bab106">Vernacular Chinese · Simplified conversion</string>
+    <string name="ui_d23d957ed9">Chinese Union · Traditional</string>
+    <string name="ui_2f5dcf76af">Vernacular Chinese · Traditional original</string>
+    <string name="ui_bf20918500">Chinese Union · Literary</string>
+    <string name="ui_fa7e933721">Classical Chinese · Traditional</string>
+    <string name="ui_fd94c82c5f">King James Version</string>
+    <string name="ui_cfd9ce64d1">English · 1769</string>
+    <string name="ui_246ccd291a">Vulgata Clementina</string>
+    <string name="ui_eced9bec0a">Latin · 73 books · Original numbering</string>
+    <string name="ui_edf5851580">Quran · Ma Jian Chinese</string>
+    <string name="ui_d931243865">Chinese translation · QuranEnc</string>
+    <string name="ui_d76bdeaf42">Quran · Arabic</string>
+    <string name="ui_e7c6bcd6de">Tanzil Uthmani · 1.1</string>
+    <string name="ui_d119fee8ed">Analects · Original text</string>
+    <string name="ui_0d068ebbea">20 chapters · Modern Chinese search</string>
+    <string name="ui_0d8bb379d0">Great Learning · Original text</string>
+    <string name="ui_544227b298">Complete text · Bundled edition numbering</string>
+    <string name="ui_4bb73f988e">Doctrine of the Mean · Original text</string>
+    <string name="ui_6069e51f61">Mencius · Original text</string>
+    <string name="ui_83f279fc4d">14 chapters · Modern Chinese search</string>
+    <string name="ui_af70da5ec9">Heart Sutra · Xuanzang</string>
+    <string name="ui_cff0c6b7e1">Classical Chinese · Complete text</string>
+    <string name="ui_91811727af">Diamond Sutra · Kumārajīva</string>
+    <string name="ui_6c34cc91f4">Classical Chinese · 32 sections</string>
+    <string name="ui_482fc29a96">Lotus Sutra · Kumārajīva</string>
+    <string name="ui_b4d5e67994">Lotus Sutra · All 28 chapters</string>
+    <string name="ui_758969d38e">Tao Te Ching · Original text</string>
+    <string name="ui_2744c4fa16">81 chapters · Modern Chinese search</string>
+    <string name="ui_2d6696e0b7">Zhuangzi · Original text</string>
+    <string name="ui_195c12a441">Inner, outer and miscellaneous · All 33 chapters</string>
+    <string name="ui_948d1d6892">Meaning</string>
+    <string name="ui_83c7b2c9ca">Understand Chinese meaning to find related passages even with different wording</string>
+    <string name="ui_b9347c5e68">Expressions</string>
+    <string name="ui_13a8f0257f">Find passages using common expressions and related wording</string>
+    <string name="ui_cda0204d03">Original text</string>
+    <string name="ui_ab41007196">Find original wording, with simplified and traditional Chinese support</string>
+    <string name="ui_67d66ee478">Whole Bible</string>
+    <string name="ui_7bc94376a0">Enter at most 200 characters.</string>
+    <string name="ui_55df8c5a87">This reference range is unavailable in this version. Check the chapter and verse numbers.</string>
+    <string name="ui_bc826a751a">Reference · Merged verses in this edition</string>
+    <string name="ui_6034acde0c">Reference</string>
+    <string name="ui_36231598c1">Enter a phrase, keyword or reference.</string>
+    <string name="ui_c28607abce">Meaning search needs the local semantic component.</string>
+    <string name="ui_e51850cd4b">Original text contains the keyword</string>
+    <string name="ui_2ded27fb5c">Related expression</string>
+    <string name="ui_a774c7d400">Related original wording and search gloss</string>
+    <string name="ui_ac0879712d">Related wording</string>
+    <string name="ui_42f9253143">The local component for %1$s could not load</string>
+    <string name="ui_abb884d68e">%1$s is temporarily unavailable</string>
+    <string name="ui_48df8db6cd">. Please retry.</string>
+    <string name="ui_6a03e11949">. Current results come from %1$s.</string>
+    <string name="ui_5adfc173a2">. Results from other modes have been combined.</string>
+    <string name="ui_ac804358b8">Related meaning</string>
+    <string name="ui_0a42d9f03d">No sufficiently related passage. Try a more specific description.</string>
+    <string name="ui_fa368c4403">Package integrity check failed</string>
+    <string name="ui_5b7fc6d216">Not a valid Android package</string>
+    <string name="ui_4ec1b81c9d">Package identity does not match the update information</string>
+    <string name="ui_e7f99a7cca">This version does not need to be installed</string>
+    <string name="ui_383c7c6ed3">Installation rejected because the package signature differs from the installed app</string>
+    <string name="ui_7e94f5697a">Updates are temporarily unavailable. Try later or download from GitHub.</string>
+    <string name="ui_3d7de4bc0a">Checking GitHub Releases…</string>
+    <string name="ui_8b2a48dda0">Update available; waiting for Wi-Fi to download automatically</string>
+    <string name="ui_285b6fd649">Update available; waiting for a network connection</string>
+    <string name="ui_f205bdc28b">Automatic</string>
+    <string name="ui_294e0dedc9">Prefer mirrors</string>
+    <string name="ui_52f5637dd3">GitHub direct</string>
+    <string name="ui_e1e2b19f31">The update URL does not belong to this project</string>
+    <string name="ui_922ad93ddf">Update connections must use HTTPS</string>
+    <string name="ui_5778435246">Redirect is missing a destination</string>
+    <string name="ui_991f77e8b0">Too many redirects</string>
+    <string name="ui_ec51185064">Update information is too large</string>
+    <string name="ui_a9be422d14">Download resume range does not match</string>
+    <string name="ui_409bebbcf0">Unexpected download size</string>
+    <string name="ui_461c153672">Download exceeds the declared size</string>
+    <string name="ui_7d5d0aacb3">Download is not complete</string>
+    <string name="ui_b783743f82">You have the latest version: %1$s</string>
+    <string name="ui_65c34b0c40">This update requires Android API %1$s, which this device does not support</string>
+    <string name="ui_5df389145a">Unable to check for updates. Try another route or check later</string>
+    <string name="ui_9fbfea7c70">Downloading %1$s…</string>
+    <string name="ui_5619ce7c4a">Update downloaded and signature verified</string>
+    <string name="ui_bf4a2d3eff">Unable to save the update</string>
+    <string name="ui_e47e41d111">Download interrupted; will retry when connected</string>
+    <string name="ui_7697849586">Download incomplete; try another route</string>
+    <string name="ui_a1688b2a54">Download paused; reconnect to resume</string>
+    <string name="settings_language">App language</string>
+    <string name="language_system">System</string>
+    <string name="language_hint">Changes interface language. Original passages and text versions stay independent.</string>
+    <string name="update_status_generic">Update status changed. Check again for details in this language.</string>
+    <string name="startup_recovery_shortcut">Startup recovery and diagnostics</string>
+    <string-array name="book_names">
+        <item>Genesis</item>
+        <item>Exodus</item>
+        <item>Leviticus</item>
+        <item>Numbers</item>
+        <item>Deuteronomy</item>
+        <item>Joshua</item>
+        <item>Judges</item>
+        <item>Ruth</item>
+        <item>1 Samuel</item>
+        <item>2 Samuel</item>
+        <item>1 Kings</item>
+        <item>2 Kings</item>
+        <item>1 Chronicles</item>
+        <item>2 Chronicles</item>
+        <item>Ezra</item>
+        <item>Nehemiah</item>
+        <item>Esther</item>
+        <item>Job</item>
+        <item>Psalms</item>
+        <item>Proverbs</item>
+        <item>Ecclesiastes</item>
+        <item>Song of Solomon</item>
+        <item>Isaiah</item>
+        <item>Jeremiah</item>
+        <item>Lamentations</item>
+        <item>Ezekiel</item>
+        <item>Daniel</item>
+        <item>Hosea</item>
+        <item>Joel</item>
+        <item>Amos</item>
+        <item>Obadiah</item>
+        <item>Jonah</item>
+        <item>Micah</item>
+        <item>Nahum</item>
+        <item>Habakkuk</item>
+        <item>Zephaniah</item>
+        <item>Haggai</item>
+        <item>Zechariah</item>
+        <item>Malachi</item>
+        <item>Matthew</item>
+        <item>Mark</item>
+        <item>Luke</item>
+        <item>John</item>
+        <item>Acts</item>
+        <item>Romans</item>
+        <item>1 Corinthians</item>
+        <item>2 Corinthians</item>
+        <item>Galatians</item>
+        <item>Ephesians</item>
+        <item>Philippians</item>
+        <item>Colossians</item>
+        <item>1 Thessalonians</item>
+        <item>2 Thessalonians</item>
+        <item>1 Timothy</item>
+        <item>2 Timothy</item>
+        <item>Titus</item>
+        <item>Philemon</item>
+        <item>Hebrews</item>
+        <item>James</item>
+        <item>1 Peter</item>
+        <item>2 Peter</item>
+        <item>1 John</item>
+        <item>2 John</item>
+        <item>3 John</item>
+        <item>Jude</item>
+        <item>Revelation</item>
+    </string-array>
 </resources>

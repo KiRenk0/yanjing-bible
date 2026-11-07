@@ -2,6 +2,8 @@
 
 package org.yanjing.app.ui
 
+import org.yanjing.app.i18n.tr
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -22,19 +24,19 @@ fun ReaderScreen(state: AppState, model: AppViewModel) {
     LaunchedEffect(state.readerBook, state.readerChapter, state.version) { scroll.scrollToItem(0) }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { model.read(state.readerBook, state.readerChapter - 1) }, enabled = !state.loading && state.readerChapter > 1) { Symbol(R.drawable.sym_arrow_back, if (state.version.isClassical) "上一篇" else "上一章") }
+            IconButton(onClick = { model.read(state.readerBook, state.readerChapter - 1) }, enabled = !state.loading && state.readerChapter > 1) { Symbol(R.drawable.sym_arrow_back, if (state.version.isClassical) tr(R.string.ui_5e50d51846) else tr(R.string.ui_393f2a5120)) }
             FilledTonalButton(onClick = { picker = true }, modifier = Modifier.weight(1f), enabled = !state.loading) {
                 Text(readerChapterTitle(state))
                 Spacer(Modifier.width(8.dp)); Symbol(R.drawable.sym_expand_more)
             }
-            IconButton(onClick = { model.read(state.readerBook, state.readerChapter + 1) }, enabled = !state.loading && state.readerChapter < state.chapterCount) { Symbol(R.drawable.sym_arrow_forward, if (state.version.isClassical) "下一篇" else "下一章") }
+            IconButton(onClick = { model.read(state.readerBook, state.readerChapter + 1) }, enabled = !state.loading && state.readerChapter < state.chapterCount) { Symbol(R.drawable.sym_arrow_forward, if (state.version.isClassical) tr(R.string.ui_673ee5a5a4) else tr(R.string.ui_9443994bc3)) }
         }
         if (state.loading) Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
-        else if (state.error != null) EmptyState(R.drawable.sym_info, "无法加载经文", state.error, action = { Button(onClick = { model.loadVersion(state.version) }) { Text("重试") } })
+        else if (state.error != null) EmptyState(R.drawable.sym_info, tr(R.string.ui_573afa897f), state.error, action = { Button(onClick = { model.loadVersion(state.version) }) { Text(tr(R.string.ui_b8784c8dd5)) } })
         else LazyColumn(state = scroll, contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             item {
                 Text(state.version.title, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
-                Text(if(state.version.isAnalects) "论语·${Analects.chapterName(state.readerChapter)}" else if(state.version.isQuran) "古兰经 ${state.readerChapter}" else readerChapterTitle(state), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
+                Text(if(state.version.isAnalects) tr(R.string.ui_c8886dc3da, Analects.chapterName(state.readerChapter)) else if(state.version.isQuran) tr(R.string.ui_d8fe21c999, state.readerChapter) else readerChapterTitle(state), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
                 CorpusSource(state.version)
                 if (state.version.isRtl) Quran.chapterPrelude(state.readerChapter)?.let { prelude ->
                     Text(prelude, style = verseTextStyle(state.version,state.fontSize), textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp))
@@ -51,7 +53,7 @@ fun ReaderScreen(state: AppState, model: AppViewModel) {
                     }
                 }
             }
-            item { Text(if (state.version.isClassical) "点击章句，可收藏、复制并查看检索释义与上下文。" else "点击任意一节，可收藏、复制并对照其他版本。", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(8.dp)) }
+            item { Text(if (state.version.isClassical) tr(R.string.ui_ca8b90f98d) else tr(R.string.ui_29d3c74283), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(8.dp)) }
         }
     }
     if (picker) {
@@ -65,44 +67,44 @@ fun ReaderScreen(state: AppState, model: AppViewModel) {
 private fun readerChapterTitle(state: AppState): String = when {
     state.version.isClassical -> Classics.forVersion(state.version)!!.chapterTitle(state.readerChapter)
     state.version.isQuran -> Quran.chapterTitle(state.readerChapter)
-    state.version==BibleVersion.VULGATE -> "${Vulgate.bookName(state.readerBook)} · 第 ${state.readerChapter} 章"
-    else -> "${Books.names[state.readerBook-1]} · 第 ${state.readerChapter} 章"
+    state.version==BibleVersion.VULGATE -> tr(R.string.ui_a8b275439c, Vulgate.bookName(state.readerBook), state.readerChapter)
+    else -> tr(R.string.ui_94f19500d5, Books.names[state.readerBook-1], state.readerChapter)
 }
 
 @Composable
 private fun ClassicChapterPicker(work: ClassicWork,current: Int,dismiss: () -> Unit,select: (Int) -> Unit) {
-    AlertDialog(onDismissRequest=dismiss,title={Text("选择${work.title}篇章")},text={
+    AlertDialog(onDismissRequest=dismiss,title={Text(tr(R.string.ui_bd541337af, work.title))},text={
         LazyColumn(Modifier.heightIn(max=440.dp)) {
             items(work.names.size) { i -> ListItem(onClick={select(i+1);dismiss()},content={Text(work.chapterTitle(i+1))},
-                supportingContent={Text("${work.verseCounts[i]} 段")},trailingContent={if(current==i+1)Symbol(R.drawable.sym_check)}) }
+                supportingContent={Text(tr(R.string.ui_3efc94a541, work.verseCounts[i]))},trailingContent={if(current==i+1)Symbol(R.drawable.sym_check)}) }
         }
-    },confirmButton={TextButton(onClick=dismiss){Text("取消")}})
+    },confirmButton={TextButton(onClick=dismiss){Text(tr(R.string.ui_2cd0f3be87))}})
 }
 
 @Composable
 private fun AnalectsChapterPicker(current: Int, dismiss: () -> Unit, select: (Int) -> Unit) {
-    AlertDialog(onDismissRequest = dismiss, title = { Text("选择论语篇章") }, text = {
+    AlertDialog(onDismissRequest = dismiss, title = { Text(tr(R.string.ui_99c63124e6)) }, text = {
         LazyColumn(Modifier.heightIn(max = 440.dp)) {
             items(Analects.names.size, key = { it }) { i ->
                 ListItem(onClick = { select(i + 1); dismiss() },
-                    content = { Text(Analects.chapterTitle(i + 1)) }, supportingContent = { Text("${Analects.verseCounts[i]} 章句") },
+                    content = { Text(Analects.chapterTitle(i + 1)) }, supportingContent = { Text(tr(R.string.ui_222425afab, Analects.verseCounts[i])) },
                     trailingContent = { if (current == i + 1) Symbol(R.drawable.sym_check) })
             }
         }
-    }, confirmButton = { TextButton(onClick = dismiss) { Text("取消") } })
+    }, confirmButton = { TextButton(onClick = dismiss) { Text(tr(R.string.ui_2cd0f3be87)) } })
 }
 
 @Composable
 private fun QuranChapterPicker(current: Int, dismiss: () -> Unit, select: (Int) -> Unit) {
-    AlertDialog(onDismissRequest = dismiss, title = { Text("选择古兰经章节") }, text = {
+    AlertDialog(onDismissRequest = dismiss, title = { Text(tr(R.string.ui_9b4d803f44)) }, text = {
         LazyColumn(Modifier.heightIn(max = 440.dp)) {
             items(114, key = { it }) { i ->
                 ListItem(onClick = { select(i + 1); dismiss() },
-                    content = { Text(Quran.chapterTitle(i + 1)) }, supportingContent = { Text("${Quran.verseCounts[i]} 节") },
+                    content = { Text(Quran.chapterTitle(i + 1)) }, supportingContent = { Text(tr(R.string.ui_4c1e9455db, Quran.verseCounts[i])) },
                     trailingContent = { if (current == i + 1) Symbol(R.drawable.sym_check) })
             }
         }
-    }, confirmButton = { TextButton(onClick = dismiss) { Text("取消") } })
+    }, confirmButton = { TextButton(onClick = dismiss) { Text(tr(R.string.ui_2cd0f3be87)) } })
 }
 
 @Composable
@@ -112,11 +114,11 @@ private fun ChapterPicker(state: AppState, dismiss: () -> Unit, select: (Int, In
     var section by remember { mutableIntStateOf(if ((latin && book<147)||(!latin&&book<40)) 0 else 1) }
     // Canonical chapter counts, used only for the picker. The reader checks the actual local corpus.
     val chapterCounts = listOf(50,40,27,36,34,24,21,4,31,24,22,25,29,36,10,13,10,42,150,31,12,8,66,52,5,48,12,14,3,9,1,4,7,3,3,3,2,14,4,28,16,24,21,28,16,16,13,6,6,4,4,5,3,6,4,3,1,13,5,5,3,5,1,1,1,22)
-    AlertDialog(onDismissRequest = dismiss, title = { Text("选择书卷与章节") },
+    AlertDialog(onDismissRequest = dismiss, title = { Text(tr(R.string.ui_1a138c26f1)) },
         text = {
             Column(Modifier.heightIn(max = 500.dp)) {
                 SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                    listOf("旧约", "新约").forEachIndexed { i, label -> SegmentedButton(selected = section == i, onClick = { section = i }, shape = SegmentedButtonDefaults.itemShape(i, 2)) { Text(label) } }
+                    listOf(tr(R.string.ui_f9c7acfecb), tr(R.string.ui_a18281e062)).forEachIndexed { i, label -> SegmentedButton(selected = section == i, onClick = { section = i }, shape = SegmentedButtonDefaults.itemShape(i, 2)) { Text(label) } }
                 }
                 Row(Modifier.padding(top = 12.dp).heightIn(max = 380.dp)) {
                     val books = if(latin) { if(section==0)(101..146).toList() else(147..173).toList() } else if (section == 0) (1..39).toList() else (40..66).toList()
@@ -135,7 +137,7 @@ private fun ChapterPicker(state: AppState, dismiss: () -> Unit, select: (Int, In
                         items(if(latin)Vulgate.chapterCount(book) else chapterCounts[book - 1]) { i ->
                             Surface(onClick = { select(book, i + 1); dismiss() }, shape = MaterialTheme.shapes.medium) {
                                 Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    Text("第 ${i + 1} 章", modifier = Modifier.weight(1f))
+                                    Text(tr(R.string.ui_e0bb0e98a0, i + 1), modifier = Modifier.weight(1f))
                                     if (book == state.readerBook && i + 1 == state.readerChapter) Symbol(R.drawable.sym_check)
                                 }
                             }
@@ -143,5 +145,5 @@ private fun ChapterPicker(state: AppState, dismiss: () -> Unit, select: (Int, In
                     }
                 }
             }
-        }, confirmButton = { TextButton(onClick = dismiss) { Text("取消") } })
+        }, confirmButton = { TextButton(onClick = dismiss) { Text(tr(R.string.ui_2cd0f3be87)) } })
 }

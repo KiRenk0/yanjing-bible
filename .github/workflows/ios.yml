@@ -1,0 +1,70 @@
+name: iOS native build
+on:
+  push:
+    branches: [main, 'codex/**']
+    paths: ['ios/**', 'app/src/main/assets/**', 'scripts/prepare-ios.mjs', 'scripts/generate-localizations.mjs', 'localization/**', '.github/workflows/ios.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Select latest installed stable Xcode
+        run: |
+          python3 - <<'PY'
+          import glob, os, subprocess
+          apps = [p for p in glob.glob('/Applications/Xcode*.app') if 'beta' not in p.lower()]
+          def version(p):
+              return tuple(int(n) for n in subprocess.check_output(['/usr/libexec/PlistBuddy','-c','Print :CFBundleShortVersionString',p+'/Contents/Info.plist'],text=True).strip().split('.'))
+          selected = max(apps, key=version)
+          subprocess.run(['sudo','xcode-select','-s',selected+'/Contents/Developer'],check=True)
+          PY
+          xcodebuild -version
+      - name: Prepare shared offline resources and native project
+        run: |
+          npm ci
+          node scripts/generate-localizations.mjs
+          node scripts/prepare-ios.mjs
+          brew install xcodegen
+          cd ios
+          xcodegen generate
+      - name: Run native model, data and UI tests
+        run: |
+          DEVICE=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin)["devices"]; print(next(x["udid"] for k,v in sorted(d.items(),reverse=True) for x in v if "iPhone" in x["name"]))')
+          xcodebuild test -project ios/YanJing.xcodeproj -scheme YanJing -destination "platform=iOS Simulator,id=$DEVICE" -derivedDataPath ios/DerivedData -resultBundlePath ios/build/Tests.xcresult CODE_SIGNING_ALLOWED=NO
+      - name: Archive unsigned IPA for local sideload signing
+        run: |
+          xcodebuild archive -project ios/YanJing.xcodeproj -scheme YanJing -destination 'generic/platform=iOS' -archivePath ios/build/YanJing.xcarchive CODE_SIGNING_ALLOWED=NO
+          mkdir -p ios/build/Payload
+          cp -R ios/build/YanJing.xcarchive/Products/Applications/YanJing.app ios/build/Payload/
+          ditto -c -k --keepParent ios/build/Payload ios/build/yanjing-1.7.0-ios-unsigned.ipa
+          ditto -c -k --keepParent ios/DerivedData/Build/Products/Debug-iphonesimulator/YanJing.app ios/build/yanjing-1.7.0-ios-simulator.zip
+          shasum -a 256 ios/build/*.ipa ios/build/*simulator.zip > ios/build/ios-SHA256SUMS.txt
+          xcodebuild -version > ios/build/xcode-version.txt
+          git rev-parse HEAD > ios/build/source-commit.txt
+      - name: Export UI screenshots
+        if: always()
+        run: |
+          if [ -d ios/build/Tests.xcresult ]; then xcrun xcresulttool export attachments --path ios/build/Tests.xcresult --output-path ios/build/screenshots; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: yanjing-ios-${{ github.sha }}
+          path: |
+            ios/build/*.ipa
+            ios/build/*simulator.zip
+            ios/build/*.txt
+            ios/build/Tests.xcresult
+            ios/build/screenshots
+            ios/YanJing.xcodeproj
+          retention-days: 30

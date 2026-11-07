@@ -2,6 +2,8 @@
 
 package org.yanjing.app.ui
 
+import org.yanjing.app.i18n.tr
+
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,15 +44,15 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
     val inputField: @Composable () -> Unit = {
         SearchBarDefaults.InputField(textFieldState = textFieldState, searchBarState = searchBarState,
             onSearch = { model.query(it); submit() },
-            placeholder = { Text(if (state.version.isAnalects) "用白话描述，或输入 学而1" else if(state.version.isClassical) "用现代汉语描述意思，或输入篇章" else if (state.version.isQuran) "描述意思，或输入 2:255" else if (SearchMode.SEMANTIC in state.modes) "用中文描述意思，或输入出处" else "输入想说的话、关键词或出处") },
+            placeholder = { Text(if (state.version.isAnalects) tr(R.string.ui_964663269e) else if(state.version.isClassical) tr(R.string.ui_875f2290ac) else if (state.version.isQuran) tr(R.string.ui_174fed9168) else if (SearchMode.SEMANTIC in state.modes) tr(R.string.ui_a84afb0ba0) else tr(R.string.ui_0002c0ee16)) },
             leadingIcon = {
-                if (searchBarState.currentValue == SearchBarValue.Expanded) IconButton(onClick = collapse) { Symbol(R.drawable.sym_arrow_back, "收起搜索") }
+                if (searchBarState.currentValue == SearchBarValue.Expanded) IconButton(onClick = collapse) { Symbol(R.drawable.sym_arrow_back, tr(R.string.ui_cb4e7a1ff5)) }
                 else Symbol(R.drawable.sym_search)
             },
             trailingIcon = {
                 Row {
-                    if (state.query.isNotEmpty()) IconButton(onClick = { model.query("") }) { Symbol(R.drawable.sym_close, "清空搜索") }
-                    if (searchBarState.currentValue == SearchBarValue.Expanded) IconButton(onClick = { searchSettings = true }) { Symbol(R.drawable.sym_settings, "搜索设置") }
+                    if (state.query.isNotEmpty()) IconButton(onClick = { model.query("") }) { Symbol(R.drawable.sym_close, tr(R.string.ui_b6f00afa65)) }
+                    if (searchBarState.currentValue == SearchBarValue.Expanded) IconButton(onClick = { searchSettings = true }) { Symbol(R.drawable.sym_settings, tr(R.string.ui_2874151bd3)) }
                 }
             })
     }
@@ -58,21 +60,21 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             SearchBar(state = searchBarState, inputField = inputField, colors = SearchBarDefaults.containedColors(searchBarState), modifier = Modifier.weight(1f))
-            FilledTonalIconButton(onClick = { searchSettings = true }) { Symbol(R.drawable.sym_settings, "搜索设置") }
+            FilledTonalIconButton(onClick = { searchSettings = true }) { Symbol(R.drawable.sym_settings, tr(R.string.ui_2874151bd3)) }
         }
         ExpandedFullScreenContainedSearchBar(state = searchBarState, inputField = inputField) {
             LazyColumn(contentPadding = PaddingValues(bottom = 16.dp)) {
                 if (state.query.isNotBlank()) item {
-                    ListItem(content = { Text("搜索“${state.query}”") }, leadingContent = { Symbol(R.drawable.sym_search) },
-                        modifier = Modifier.fillMaxWidth(), supportingContent = { Text("在${state.version.title}中查找") },
-                        trailingContent = { IconButton(onClick = submit) { Symbol(R.drawable.sym_arrow_forward, "开始搜索") } })
-                    TextButton(onClick = submit, modifier = Modifier.padding(horizontal = 16.dp)) { Text("查看匹配结果") }
+                    ListItem(content = { Text(tr(R.string.ui_0e0ecd4c21, state.query)) }, leadingContent = { Symbol(R.drawable.sym_search) },
+                        modifier = Modifier.fillMaxWidth(), supportingContent = { Text(tr(R.string.ui_3cdd980817, state.version.title)) },
+                        trailingContent = { IconButton(onClick = submit) { Symbol(R.drawable.sym_arrow_forward, tr(R.string.ui_bdceb7de57)) } })
+                    TextButton(onClick = submit, modifier = Modifier.padding(horizontal = 16.dp)) { Text(tr(R.string.ui_cac3809c50)) }
                 }
                 if (state.history.isNotEmpty()) {
                     item {
                         Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Text("最近搜索", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                            TextButton(onClick = model::clearHistory) { Text("清空") }
+                            Text(tr(R.string.ui_3b5ac9baaa), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                            TextButton(onClick = model::clearHistory) { Text(tr(R.string.ui_1ef3de06b3)) }
                         }
                     }
                     items(state.history.size) { i ->
@@ -81,7 +83,7 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
                         }
                     }
                 }
-                item { Text("试试这些日常表达", style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(16.dp)) }
+                item { Text(tr(R.string.ui_fdcd6199e5), style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(16.dp)) }
                 items(suggestions.size) { i ->
                     Surface(onClick = { pick(suggestions[i]) }) {
                         ListItem(content = { Text(suggestions[i]) }, leadingContent = { Symbol(R.drawable.sym_auto_awesome) })
@@ -92,7 +94,7 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
         run {
             Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp, top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(state.modes.sortedBy { it.ordinal }.joinToString(" + ") { it.title }, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
-                TextButton(onClick = { searchSettings = true }) { Text("选择模式") }
+                TextButton(onClick = { searchSettings = true }) { Text(tr(R.string.ui_c3e9c3c600)) }
             }
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 4.dp),horizontalArrangement=Arrangement.spacedBy(8.dp)) {
                 Scripture.entries.forEach { scripture ->
@@ -110,32 +112,32 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
                         leadingIcon = if (state.testament == testament) ({ Symbol(R.drawable.sym_check) }) else null)
                 }
             }
-            else Text(if(state.version.isAnalects) "20 篇 · 512 章句 · 白话搜索文言原文" else if(state.version.isClassical) Classics.forVersion(state.version)!!.summary else "114 章 · 6,236 节 · 中阿文本可对照", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            else Text(if(state.version.isAnalects) tr(R.string.ui_1e0a4f73f1) else if(state.version.isClassical) Classics.forVersion(state.version)!!.summary else tr(R.string.ui_7c3ff9a0e4), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
             when {
-                state.loading -> Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) { Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) { CircularProgressIndicator(); Text("正在打开离线经文库…") } }
-                state.error != null -> EmptyState(R.drawable.sym_info, "经文库暂时无法打开", state.error, action = { Button(onClick = { model.loadVersion(state.version) }) { Text("重试") } })
+                state.loading -> Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) { Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) { CircularProgressIndicator(); Text(tr(R.string.ui_2e12854ada)) } }
+                state.error != null -> EmptyState(R.drawable.sym_info, tr(R.string.ui_40493fd844), state.error, action = { Button(onClick = { model.loadVersion(state.version) }) { Text(tr(R.string.ui_b8784c8dd5)) } })
                 state.query.isBlank() -> WelcomeContent(state, pick)
                 state.searching -> Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         CircularProgressIndicator()
-                        if (SearchMode.SEMANTIC in state.modes) Text("正在按句意查找，首次使用需加载本地模型…", style = MaterialTheme.typography.bodyMedium)
+                        if (SearchMode.SEMANTIC in state.modes) Text(tr(R.string.ui_16778b4cd1), style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-                state.response.hits.isEmpty() -> EmptyState(R.drawable.sym_search, "暂时没有找到", state.response.message ?: if (state.version.isAnalects) "试试更具体的白话描述，并启用“句意搜索”或“日常表达”。也可以输入“论语 1:1”或“学而篇”。" else "试试缩短句子、换个关键词，或切换“日常表达”。也可以输入“约 3:16”。", Modifier.padding(top = 32.dp))
+                state.response.hits.isEmpty() -> EmptyState(R.drawable.sym_search, tr(R.string.ui_e7c66d9bed), state.response.message ?: if (state.version.isAnalects) tr(R.string.ui_51f7877be4) else tr(R.string.ui_f6a5dbf26d), Modifier.padding(top = 32.dp))
                 else -> {
                     LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         item {
                             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                Text(if (SearchMode.SEMANTIC in state.modes) "相关经文 · ${state.response.hits.size} 处候选" else "找到 ${state.response.total} 处经文", style = MaterialTheme.typography.titleMedium)
+                                Text(if (SearchMode.SEMANTIC in state.modes) tr(R.string.ui_2ace33819d, state.response.hits.size) else tr(R.string.ui_77fd8a97e7, state.response.total), style = MaterialTheme.typography.titleMedium)
                                 Text(when {
                                     SearchMode.SEMANTIC in state.modes -> when (state.version.scripture) {
-                                        Scripture.ANALECTS, Scripture.BUDDHISM, Scripture.TAOISM -> "结合原文与现代汉语检索提示查找，结果展示文言原文。"
-                                        Scripture.QURAN -> "按所选模式合并排序；句意基于马坚中文经义译本，展示所选文本。"
-                                        Scripture.BIBLE -> "按所选模式合并排序；句意基于和合本检索，展示当前版本原文。"
+                                        Scripture.ANALECTS, Scripture.BUDDHISM, Scripture.TAOISM -> tr(R.string.ui_cdab8699f7)
+                                        Scripture.QURAN -> tr(R.string.ui_27fff02351)
+                                        Scripture.BIBLE -> tr(R.string.ui_b0dbc2f2b4)
                                     }
-                                    state.modes.size > 1 -> "已合并去重，卡片标明命中模式。请结合上下文理解。"
-                                    SearchMode.EXPRESSION in state.modes -> "按表达与用词的相关程度排序，请结合上下文理解。"
-                                    else -> "精确匹配原文，简繁体通用。"
+                                    state.modes.size > 1 -> tr(R.string.ui_530287e0b1)
+                                    SearchMode.EXPRESSION in state.modes -> tr(R.string.ui_687a797e36)
+                                    else -> tr(R.string.ui_5bedbb2bbb)
                                 }, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 state.response.message?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error) }
                                 CorpusSource(state.version)
@@ -146,7 +148,7 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
                             VerseCard(hit.verse, state.version, state.saved.any { it.version == state.version && it.verse.key == hit.verse.key }, state.fontSize, hit.reason,
                                 onOpen = { model.openDetail(hit.verse) }, onSave = { save(hit.verse) }, onCopy = { copy(hit.verse) })
                         }
-                        if (state.response.total > state.response.hits.size) item { Text("已显示前 ${state.response.hits.size} 条。加入更具体的词，可进一步缩小范围。", style = MaterialTheme.typography.bodySmall) }
+                        if (state.response.total > state.response.hits.size) item { Text(tr(R.string.ui_2b12eb9c73, state.response.hits.size), style = MaterialTheme.typography.bodySmall) }
                     }
                 }
             }
@@ -158,20 +160,20 @@ fun MatchScreen(state: AppState, model: AppViewModel, save: (Verse) -> Unit, cop
 @Composable
 private fun SearchModesDialog(selected: Set<SearchMode>, dismiss: () -> Unit, apply: (Set<SearchMode>) -> Unit) {
     var pending by remember { mutableStateOf(selected) }
-    AlertDialog(onDismissRequest = dismiss, icon = { Symbol(R.drawable.sym_settings) }, title = { Text("搜索模式") },
+    AlertDialog(onDismissRequest = dismiss, icon = { Symbol(R.drawable.sym_settings) }, title = { Text(tr(R.string.ui_b4e019b615)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("可多选，同时查找并合并重复经文。", style = MaterialTheme.typography.bodyMedium)
+                Text(tr(R.string.ui_a6b6b983b9), style = MaterialTheme.typography.bodyMedium)
                 SearchMode.entries.forEach { mode ->
                     val toggle = { pending = if (mode in pending) pending - mode else pending + mode }
                     ListItem(modifier = Modifier.toggleable(value = mode in pending, role = Role.Checkbox, onValueChange = { toggle() }), leadingContent = { Checkbox(checked = mode in pending, onCheckedChange = null) },
                         supportingContent = { Text(mode.description) }) { Text(mode.title) }
                 }
-                Text(if (pending.isEmpty()) "请至少选择一种搜索模式。" else "句意搜索完全离线，理解相关不等于经文原意。", style = MaterialTheme.typography.bodySmall,
+                Text(if (pending.isEmpty()) tr(R.string.ui_afeebd4e36) else tr(R.string.ui_c853617881), style = MaterialTheme.typography.bodySmall,
                     color = if (pending.isEmpty()) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant)
             }
-        }, confirmButton = { TextButton(enabled = pending.isNotEmpty(), onClick = { apply(pending); dismiss() }) { Text("应用") } },
-        dismissButton = { TextButton(onClick = dismiss) { Text("取消") } })
+        }, confirmButton = { TextButton(enabled = pending.isNotEmpty(), onClick = { apply(pending); dismiss() }) { Text(tr(R.string.ui_63c73c4730)) } },
+        dismissButton = { TextButton(onClick = dismiss) { Text(tr(R.string.ui_2cd0f3be87)) } })
 }
 
 @Composable
@@ -181,15 +183,15 @@ private fun ColumnScope.WelcomeContent(state: AppState, pick: (String) -> Unit) 
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
                 Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Symbol(R.drawable.sym_auto_awesome)
-                    Text(if (state.version.isAnalects) "用今天的话，\n找到论语原句。" else if(state.version.isClassical) "用今天的话，\n找到经典原句。" else "你想说的话，\n经文里也许有。", style = MaterialTheme.typography.headlineMedium)
-                    Text(if (state.version.isAnalects) "用现代汉语描述意思，读孔子与弟子的文言原文。" else if(state.version.isClassical) "在《${Classics.forVersion(state.version)!!.title}》中查找意思相近的文言原文。" else if (state.version.isQuran) "在古兰经中查找经义，读中文译文与阿拉伯文。" else "把一句日常表达，换成一次经文探索。", style = MaterialTheme.typography.bodyLarge)
-                    Text("完全离线 · 无需登录", style = MaterialTheme.typography.labelLarge)
+                    Text(if (state.version.isAnalects) tr(R.string.ui_a70b1ce594) else if(state.version.isClassical) tr(R.string.ui_69cb65a50b) else tr(R.string.ui_2db8d1d045), style = MaterialTheme.typography.headlineMedium)
+                    Text(if (state.version.isAnalects) tr(R.string.ui_24bdf2a299) else if(state.version.isClassical) tr(R.string.ui_ba508d5b85, Classics.forVersion(state.version)!!.title) else if (state.version.isQuran) tr(R.string.ui_c8c8e88dad) else tr(R.string.ui_afc8786371), style = MaterialTheme.typography.bodyLarge)
+                    Text(tr(R.string.ui_c4da9d52e6), style = MaterialTheme.typography.labelLarge)
                 }
             }
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("从一句话开始", style = MaterialTheme.typography.titleMedium)
+                Text(tr(R.string.ui_0641ada9bf), style = MaterialTheme.typography.titleMedium)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     searchSuggestions(state.version).forEach { phrase -> AssistChip(onClick = { pick(phrase) }, label = { Text(phrase) }) }
                 }
@@ -198,7 +200,7 @@ private fun ColumnScope.WelcomeContent(state: AppState, pick: (String) -> Unit) 
         if (state.history.isNotEmpty()) item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("最近搜索", style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+                    Text(tr(R.string.ui_3b5ac9baaa), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                 }
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     state.history.take(4).forEach { phrase -> SuggestionChip(onClick = { pick(phrase) }, label = { Text(phrase) }) }
@@ -206,7 +208,7 @@ private fun ColumnScope.WelcomeContent(state: AppState, pick: (String) -> Unit) 
             }
         }
         item {
-            Text(if (state.version.isAnalects) "可输入“学习要结合思考”“论语 2:15”或“学而篇”。现代检索释义只辅助查找；章句编号依所附版本，其他版本分章可能不同。" else if(state.version.isClassical) "检索提示辅助白话查找，不是完整翻译或权威注疏。篇章和段落编号依所附版本。" else if (state.version.isQuran) "可输入 2:255、古兰经 94:5-6 或开端章。中文内容是经义译文，句意相近不代表经文原意。" else "也支持出处定位，例如：约 3:16、诗篇 23、John 4:7。表达关联仅辅助查找，点击结果可读上下文和版本对照。", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(if (state.version.isAnalects) tr(R.string.ui_a1571c3647) else if(state.version.isClassical) tr(R.string.ui_bca6e7c942) else if (state.version.isQuran) tr(R.string.ui_3f6c6be271) else tr(R.string.ui_d3d5f013f1), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             CorpusSource(state.version)
         }
     }

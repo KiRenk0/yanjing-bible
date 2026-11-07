@@ -1,5 +1,8 @@
 package org.yanjing.app.core
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import kotlin.math.ln
 import kotlin.math.min
 
@@ -20,13 +23,13 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
 
     fun search(raw: String, mode: SearchMode = SearchMode.EXPRESSION, testament: Testament = Testament.ALL, limit: Int = 60): SearchResponse {
         if (raw.isBlank()) return SearchResponse(emptyList(), 0)
-        if (raw.length > 200) return SearchResponse(emptyList(), 0, "请输入 200 字以内的内容。")
+        if (raw.length > 200) return SearchResponse(emptyList(), 0, tr(R.string.ui_7bc94376a0))
         ReferenceParser.parse(raw, normalizer, version.scripture, version)?.let { reference ->
             val chapter = chapter(reference.book, reference.chapter)
             if (chapter.isEmpty() || reference.chapter <= 0 ||
                 (reference.start != null && (reference.start <= 0 || reference.end!! < reference.start ||
                     verse(VerseKey(reference.book, reference.chapter, reference.start)) == null || verse(VerseKey(reference.book, reference.chapter, reference.end)) == null))) {
-                return SearchResponse(emptyList(), 0, "此版本中没有这个章节范围，请检查章号和节号。")
+                return SearchResponse(emptyList(), 0, tr(R.string.ui_55df8c5a87))
             }
             val selected = if (reference.start == null) chapter else (reference.start..reference.end!!)
                 .mapNotNull { verse(VerseKey(reference.book, reference.chapter, it)) }.distinctBy { it.key }
@@ -35,15 +38,15 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
                 VerseMappings.resolve(version, key) != key
             }
             val result = selected.filter { testament.accepts(it.key.book) }
-                .map { SearchHit(it, 100.0, if (merged) "出处定位 · 此版合并分节" else "出处定位") }
+                .map { SearchHit(it, 100.0, if (merged) tr(R.string.ui_bc826a751a) else tr(R.string.ui_6034acde0c)) }
             return SearchResponse(result.take(limit), result.size)
         }
         val query = if (version.isRtl) normalizer.normalizeArabic(raw) else if(version==BibleVersion.VULGATE) normalizer.normalizeLatin(raw) else normalizer.normalize(raw)
-        if (query.isEmpty()) return SearchResponse(emptyList(), 0, "请输入文字、关键词或经文出处。")
-        if (mode == SearchMode.SEMANTIC) return SearchResponse(emptyList(), 0, "句意搜索需要语义检索组件。")
+        if (query.isEmpty()) return SearchResponse(emptyList(), 0, tr(R.string.ui_36231598c1))
+        if (mode == SearchMode.SEMANTIC) return SearchResponse(emptyList(), 0, tr(R.string.ui_c28607abce))
         if (mode == SearchMode.KEYWORD) {
             val result = verses.asSequence().filter { testament.accepts(it.key.book) && it.normalized.contains(query) }
-                .map { SearchHit(it, 100.0, "原文包含关键词") }.toList()
+                .map { SearchHit(it, 100.0, tr(R.string.ui_e51850cd4b)) }.toList()
             return SearchResponse(result.take(limit), result.size)
         }
         val expanded = mutableMapOf<VerseKey, Double>()
@@ -78,10 +81,10 @@ class SearchEngine(val verses: List<Verse>, private val normalizer: TextNormaliz
             val score = expansion + (if (exact) 80.0 else 0.0) + 22 * coverage + 35 * gramCoverage +
                 4.0 * query.length / text.length.coerceAtLeast(query.length)
             SearchHit(verse, score, when {
-                expansion > 0 -> "常用表达关联"
-                exact -> "原文包含关键词"
-                verse.searchGloss.isNotEmpty() -> "原文与检索释义用词相近"
-                else -> "用词相近"
+                expansion > 0 -> tr(R.string.ui_2ded27fb5c)
+                exact -> tr(R.string.ui_e51850cd4b)
+                verse.searchGloss.isNotEmpty() -> tr(R.string.ui_a774c7d400)
+                else -> tr(R.string.ui_ac0879712d)
             })
         }.sortedWith(compareByDescending<SearchHit> { it.score }.thenBy { it.verse.key.book }.thenBy { it.verse.key.chapter }.thenBy { it.verse.key.verse }).toList()
         return SearchResponse(results.take(limit), results.size)

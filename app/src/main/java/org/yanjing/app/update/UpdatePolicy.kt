@@ -1,11 +1,15 @@
 package org.yanjing.app.update
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import java.net.URI
 import java.security.MessageDigest
 import java.io.File
 
-enum class DownloadRoute(val title: String) {
-    AUTO("自动切换"), MIRROR_FIRST("镜像优先"), DIRECT("GitHub 直连")
+enum class DownloadRoute(private val titleRes: Int) {
+    AUTO(R.string.ui_f205bdc28b), MIRROR_FIRST(R.string.ui_294e0dedc9), DIRECT(R.string.ui_52f5637dd3);
+    val title: String get() = tr(titleRes)
 }
 
 data class ReleaseInfo(val versionCode: Long, val versionName: String, val apkUrl: String,
@@ -20,7 +24,7 @@ object UpdatePolicy {
     fun validate(release: ReleaseInfo): ReleaseInfo {
         val url = URI(release.apkUrl)
         require(url.scheme == "https" && url.host == "github.com" && url.port == -1 && url.userInfo == null && url.query == null && url.fragment == null)
-        require(apkPath.matches(url.rawPath)) { "更新地址不属于本项目" }
+        require(apkPath.matches(url.rawPath)) { tr(R.string.ui_e1e2b19f31) }
         require(release.versionCode in 1..2_100_000_000L && release.versionName.matches(Regex("[0-9]+\\.[0-9]+\\.[0-9]+")))
         require((url.rawPath.endsWith("/yanjing-${release.versionName}.apk") || url.rawPath.endsWith("/yanjing-${release.versionName}-arm64-v8a.apk")) && url.rawPath.contains("/v${release.versionName}/"))
         require(release.size in 1_000_000..300_000_000 && release.sha256.matches(Regex("[a-f0-9]{64}")))

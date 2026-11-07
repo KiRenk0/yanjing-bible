@@ -2,6 +2,8 @@
 
 package org.yanjing.app.ui
 
+import org.yanjing.app.i18n.tr
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -42,15 +44,15 @@ fun shareVerse(context: Context, verse: Verse, version: BibleVersion) {
     context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, exportedVerse(verse, version))
-    }, "分享经文"))
+    }, tr(R.string.ui_2c3262050b)))
 }
 
 fun exportedVerse(verse: Verse, version: BibleVersion): String {
     val credit = when (version) {
-        BibleVersion.QURAN_ZH -> "\n穆罕默德·马坚 · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin"
+        BibleVersion.QURAN_ZH -> tr(R.string.ui_7f7c718640)
         BibleVersion.QURAN_AR -> "\nTanzil Project · Uthmani v1.1 · CC BY 3.0 · https://tanzil.net"
-        BibleVersion.ANALECTS -> "\n原文数据：chinese-poetry/chinese-poetry · MIT"
-        else -> Classics.forVersion(version)?.let { "\n原文数据：${it.credit}" } ?: if(version==BibleVersion.VULGATE) "\nVulgata Clementina · Scrollmapper · 公有领域原文；分节对应依所附映射" else ""
+        BibleVersion.ANALECTS -> tr(R.string.ui_d8d06d6030)
+        else -> Classics.forVersion(version)?.let { tr(R.string.ui_96ca005377, it.credit) } ?: if(version==BibleVersion.VULGATE) tr(R.string.ui_1b5f2ef791) else ""
     }
     return "${verse.text}\n——${verse.key.reference}（${version.title}）$credit"
 }
@@ -62,7 +64,7 @@ fun VerseCard(verse: Verse, version: BibleVersion, saved: Boolean, fontSize: Flo
         Column(Modifier.padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 4.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(verse.key.reference, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.weight(1f))
-                IconButton(onClick = onSave) { Symbol(if (saved) R.drawable.sym_bookmark_filled else R.drawable.sym_bookmark, if (saved) "取消收藏 ${verse.key.reference}" else "收藏 ${verse.key.reference}") }
+                IconButton(onClick = onSave) { Symbol(if (saved) R.drawable.sym_bookmark_filled else R.drawable.sym_bookmark, if (saved) tr(R.string.ui_b067b29f39, verse.key.reference) else tr(R.string.ui_715c8ae33d, verse.key.reference)) }
             }
             Text(verse.text, style = verseTextStyle(version, fontSize), modifier = Modifier.fillMaxWidth().padding(end = 8.dp, bottom = 8.dp))
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
@@ -70,8 +72,8 @@ fun VerseCard(verse: Verse, version: BibleVersion, saved: Boolean, fontSize: Flo
                     Text(version.title, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     if (reason != null) Text(reason, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                TextButton(onClick = onOpen) { Text("上下文与对照") }
-                IconButton(onClick = onCopy) { Symbol(R.drawable.sym_content_copy, "复制 ${verse.key.reference}") }
+                TextButton(onClick = onOpen) { Text(tr(R.string.ui_59b529978f)) }
+                IconButton(onClick = onCopy) { Symbol(R.drawable.sym_content_copy, tr(R.string.ui_912cc32cbb, verse.key.reference)) }
             }
         }
     }
@@ -99,28 +101,28 @@ fun CorpusSource(version: BibleVersion) {
     val uri = LocalUriHandler.current
     if(version.isClassical && !version.isAnalects) Classics.forVersion(version)?.let { work ->
         TextButton(onClick={uri.openUri(work.sourceUrl)},contentPadding=PaddingValues(0.dp)) {
-            Text("原文：${work.credit} · 编号依所附版本",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(tr(R.string.ui_6cb0240500, work.credit),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
     if(version==BibleVersion.VULGATE) TextButton(onClick={uri.openUri("https://github.com/scrollmapper/bible_databases/tree/e1b254cef86d0e65b1a5d1a94b8b112d0f296a2c/sources/la/VulgClementine")},contentPadding=PaddingValues(0.dp)) {
-        Text("拉丁文：Clementina · 73 卷 · 保留原版章号；中拉分节可能不同",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(tr(R.string.ui_3670a14237),style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
     }
     if (version.isAnalects) TextButton(onClick = { uri.openUri("https://github.com/chinese-poetry/chinese-poetry/blob/fa1814a8044db4fb0c7a9e0a0449974e8c3463b7/论语/lunyu.json") }, contentPadding = PaddingValues(0.dp)) {
-        Text("论语原文：chinese-poetry · MIT · 章句依所附版本", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(tr(R.string.ui_5e46be85c6), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
     if (version.isQuran) TextButton(onClick = { uri.openUri(if (version.isRtl) "https://tanzil.net" else "https://quranenc.com/zh/browse/chinese_makin") }, contentPadding = PaddingValues(0.dp)) { Text(
-        if (version.isRtl) "阿拉伯文：Tanzil Project · Uthmani v1.1 · tanzil.net"
-        else "经义译文：穆罕默德·马坚 · QuranEnc.com v1.0.2",
+        if (version.isRtl) tr(R.string.ui_967ab37610)
+        else tr(R.string.ui_b40b0fc33a),
         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
 }
 
 @Composable
 fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: () -> Unit, onSelect: (BibleVersion) -> Unit) {
     AlertDialog(onDismissRequest = onDismiss,
-        icon = { Symbol(R.drawable.sym_menu_book) }, title = { Text("选择经典与版本") },
+        icon = { Symbol(R.drawable.sym_menu_book) }, title = { Text(tr(R.string.ui_ecdf24870a)) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Text("所有版本均已内置，可离线使用。", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 12.dp))
+                Text(tr(R.string.ui_3f014bdf31), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 12.dp))
                 Scripture.entries.forEach { scripture ->
                 Text(scripture.title, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
                 BibleVersion.entries.filter { it.scripture == scripture }.forEach { version ->
@@ -129,13 +131,13 @@ fun VersionDialog(current: BibleVersion, counts: Map<String, Int>, onDismiss: ()
                             RadioButton(selected = version == current, onClick = null, modifier = Modifier.padding(12.dp))
                             Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
                                 Text(version.title, style = MaterialTheme.typography.titleSmall)
-                                Text("${version.description} · ${counts[version.id] ?: "—"} ${if (version.isClassical) "段" else "节"}", style = MaterialTheme.typography.bodySmall)
+                                Text(tr(R.string.ui_08e0264b24, version.description, counts[version.id] ?: "—", if (version.isClassical) tr(R.string.ui_0477dbbdee) else tr(R.string.ui_ada40d1b8b)), style = MaterialTheme.typography.bodySmall)
                             }
                         }
                     }
                 }
                 }
-                Text("圣经：5 套文本，含拉丁文。古兰经：中阿双语。儒家四书、佛教心经、金刚经与法华经、道家道德经与庄子均含完整原文，可用现代汉语检索。", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
+                Text(tr(R.string.ui_d1e7d184ff), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 12.dp))
             }
-        }, confirmButton = { TextButton(onClick = onDismiss) { Text("完成") } })
+        }, confirmButton = { TextButton(onClick = onDismiss) { Text(tr(R.string.ui_c0b3fbff51)) } })
 }

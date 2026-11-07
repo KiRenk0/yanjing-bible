@@ -11,6 +11,7 @@ class YanJingApplication : Application(), Configuration.Provider {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
+        org.yanjing.app.i18n.I18n.initialize(this)
         val previous = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler { thread, failure ->
             runCatching { Diagnostics.record(this,thread,failure) }

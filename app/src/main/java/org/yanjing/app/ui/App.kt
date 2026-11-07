@@ -2,6 +2,8 @@
 
 package org.yanjing.app.ui
 
+import org.yanjing.app.i18n.tr
+
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
@@ -22,10 +24,10 @@ import org.yanjing.app.*
 import org.yanjing.app.R
 import org.yanjing.app.core.*
 
-private data class Destination(val title: String, val icon: Int)
+private data class Destination(private val titleRes: Int, val icon: Int) { val title: String get() = tr(titleRes) }
 private val destinations = listOf(
-    Destination("匹配", R.drawable.sym_auto_awesome), Destination("阅读", R.drawable.sym_menu_book),
-    Destination("收藏", R.drawable.sym_bookmark), Destination("设置", R.drawable.sym_settings)
+    Destination(R.string.ui_fd047ccb20, R.drawable.sym_auto_awesome), Destination(R.string.ui_ce9b12499c, R.drawable.sym_menu_book),
+    Destination(R.string.ui_60a53514eb, R.drawable.sym_bookmark), Destination(R.string.ui_df3d58c7d8, R.drawable.sym_settings)
 )
 
 @Composable
@@ -39,12 +41,12 @@ fun YanJingApp(state: AppState, model: AppViewModel) {
     val context = LocalContext.current
     val copy: (Verse, BibleVersion) -> Unit = { verse, version ->
         copyVerse(context, verse, version)
-        if (Build.VERSION.SDK_INT < 33) scope.launch { snackbars.showSnackbar("经文与出处已复制") }
+        if (Build.VERSION.SDK_INT < 33) scope.launch { snackbars.showSnackbar(tr(R.string.ui_d6cc6b2d14)) }
     }
     val save: (Verse, BibleVersion) -> Unit = { verse, version ->
         val alreadySaved = state.saved.any { it.verse.key == verse.key && it.version == version }
         model.toggleSave(verse, version)
-        scope.launch { snackbars.currentSnackbarData?.dismiss(); snackbars.showSnackbar(if (alreadySaved) "已取消收藏" else "已收藏经文") }
+        scope.launch { snackbars.currentSnackbarData?.dismiss(); snackbars.showSnackbar(if (alreadySaved) tr(R.string.ui_7fa7b63b0e) else tr(R.string.ui_95c8e5c111)) }
     }
     BackHandler(enabled = destination != 0 && state.detail == null) { destination = 0 }
 
@@ -61,10 +63,10 @@ fun YanJingApp(state: AppState, model: AppViewModel) {
             }
             Scaffold(modifier = Modifier.weight(1f),
                 topBar = {
-                    TopAppBar(title = { Text(when (destination) { 0 -> stringResource(R.string.app_name); 1 -> "${state.version.scripture.title}阅读"; 2 -> "我的收藏"; else -> "设置" }) },
-                        subtitle = { Text(when (destination) { 0 -> "让日常的话，遇见经文"; 1 -> "读一句，也读它的上下文"; 2 -> "留住触动你的字句"; else -> "按你的习惯阅读" }) },
+                    TopAppBar(title = { Text(when (destination) { 0 -> stringResource(R.string.app_name); 1 -> tr(R.string.ui_c214cf65a4, state.version.scripture.title); 2 -> tr(R.string.ui_9385bfefca); else -> tr(R.string.ui_df3d58c7d8) }) },
+                        subtitle = { Text(when (destination) { 0 -> tr(R.string.ui_72f30a9d58); 1 -> tr(R.string.ui_2ebb3b278e); 2 -> tr(R.string.ui_933a71e100); else -> tr(R.string.ui_cf307954e9) }) },
                         actions = {
-                            if (destination <= 1) TextButton(onClick = { versions = true },modifier=Modifier.semantics { contentDescription="选择经典与版本" }) {
+                            if (destination <= 1) TextButton(onClick = { versions = true },modifier=Modifier.semantics { contentDescription=tr(R.string.ui_ecdf24870a) }) {
                                 Text(state.version.title, maxLines = 1, style = MaterialTheme.typography.labelLarge)
                                 Spacer(Modifier.width(4.dp)); Symbol(R.drawable.sym_expand_more)
                             }
@@ -104,19 +106,19 @@ fun YanJingApp(state: AppState, model: AppViewModel) {
         })
     }
     if (showLegal) AlertDialog(onDismissRequest = { showLegal = false },
-        title = { Text("开源许可与经文来源") },
-        text = { Column(Modifier.heightIn(max = 480.dp).verticalScroll(rememberScrollState())) { Text(legal ?: "正在读取许可…", style = MaterialTheme.typography.bodySmall) } },
-        confirmButton = { TextButton(onClick = { showLegal = false }) { Text("完成") } })
+        title = { Text(tr(R.string.ui_567a685cee)) },
+        text = { Column(Modifier.heightIn(max = 480.dp).verticalScroll(rememberScrollState())) { Text(legal ?: tr(R.string.ui_2c7bac0bff), style = MaterialTheme.typography.bodySmall) } },
+        confirmButton = { TextButton(onClick = { showLegal = false }) { Text(tr(R.string.ui_c0b3fbff51)) } })
     UpdatePrompt(model.updates)
 }
 
 @Composable
 private fun SavedScreen(state: AppState, model: AppViewModel, save: (Verse, BibleVersion) -> Unit, copy: (Verse, BibleVersion) -> Unit) {
     if (state.saved.isEmpty()) {
-        EmptyState(R.drawable.sym_bookmark, "把喜欢的经文留在这里", "点击经文卡片上的收藏图标，即可离线保存经文与版本。", Modifier.padding(top = 48.dp))
+        EmptyState(R.drawable.sym_bookmark, tr(R.string.ui_550c1bce78), tr(R.string.ui_66104bccc5), Modifier.padding(top = 48.dp))
     } else {
         androidx.compose.foundation.lazy.LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            item { Text("${state.saved.size} 条收藏", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+            item { Text(tr(R.string.ui_7c998110df, state.saved.size), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant) }
             items(state.saved.size, key = { state.saved[it].id }) { i ->
                 val item = state.saved[i]
                 VerseCard(item.verse, item.version, true, state.fontSize,

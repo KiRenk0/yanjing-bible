@@ -1,5 +1,8 @@
 package org.yanjing.app.update
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import java.io.File
@@ -13,7 +16,7 @@ class UpdateTransport(private val connectionFactory: (String) -> HttpURLConnecti
     private fun open(url: String, offset: Long = 0): HttpURLConnection {
         var target = url
         repeat(8) {
-            require(URI(target).scheme == "https") { "更新连接必须使用 HTTPS" }
+            require(URI(target).scheme == "https") { tr(R.string.ui_922ad93ddf) }
             val connection = connectionFactory(target)
             connection.connectTimeout = 8000; connection.readTimeout = 20000; connection.instanceFollowRedirects = false
             connection.setRequestProperty("User-Agent", "YanJing-Android")
@@ -21,12 +24,12 @@ class UpdateTransport(private val connectionFactory: (String) -> HttpURLConnecti
             if (offset > 0) connection.setRequestProperty("Range", "bytes=$offset-")
             val status = connection.responseCode
             if (status in listOf(301,302,303,307,308)) {
-                val location = connection.getHeaderField("Location") ?: throw IOException("重定向缺少地址")
+                val location = connection.getHeaderField("Location") ?: throw IOException(tr(R.string.ui_5778435246))
                 val next = URI(target).resolve(location).toString()
                 connection.disconnect(); target = next
             } else return connection
         }
-        throw IOException("重定向次数过多")
+        throw IOException(tr(R.string.ui_991f77e8b0))
     }
     suspend fun manifest(url: String): String {
         val connection = open(url)
@@ -35,7 +38,7 @@ class UpdateTransport(private val connectionFactory: (String) -> HttpURLConnecti
             val output = java.io.ByteArrayOutputStream()
             connection.inputStream.use { input -> val buffer = ByteArray(4096)
                 while (true) { currentCoroutineContext().ensureActive(); val n = input.read(buffer); if (n < 0) break
-                    if (output.size() + n > 65536) throw IOException("更新信息过大")
+                    if (output.size() + n > 65536) throw IOException(tr(R.string.ui_ec51185064))
                     output.write(buffer, 0, n)
                 }
             }
@@ -50,22 +53,22 @@ class UpdateTransport(private val connectionFactory: (String) -> HttpURLConnecti
         try {
             when (connection.responseCode) {
                 200 -> offset = 0
-                206 -> if (!connection.getHeaderField("Content-Range").orEmpty().startsWith("bytes $offset-")) throw IOException("断点范围不一致")
+                206 -> if (!connection.getHeaderField("Content-Range").orEmpty().startsWith("bytes $offset-")) throw IOException(tr(R.string.ui_a9be422d14))
                 else -> throw IOException("HTTP ${connection.responseCode}")
             }
-            if (connection.contentLengthLong > release.size - offset) throw IOException("下载长度异常")
+            if (connection.contentLengthLong > release.size - offset) throw IOException(tr(R.string.ui_409bebbcf0))
             var received = offset; var lastProgress = 0L
             connection.inputStream.use { input -> FileOutputStream(part, offset > 0).use { output ->
                 val buffer = ByteArray(65536)
                 while (true) { currentCoroutineContext().ensureActive(); val count = input.read(buffer); if (count < 0) break
                     received += count
-                    if (received > release.size) throw IOException("下载超过声明大小")
+                    if (received > release.size) throw IOException(tr(R.string.ui_461c153672))
                     output.write(buffer, 0, count)
                     if (System.currentTimeMillis() - lastProgress > 750) { progress((received * 100 / release.size).toInt()); lastProgress = System.currentTimeMillis() }
                 }
                 output.fd.sync()
             } }
-            if (received != release.size) throw IOException("下载尚未完成")
+            if (received != release.size) throw IOException(tr(R.string.ui_7d5d0aacb3))
         } finally { connection.disconnect() }
     }
 }

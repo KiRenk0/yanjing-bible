@@ -1,0 +1,1442 @@
+[
+  {
+    "key": "ui_fd047ccb20",
+    "source": "匹配",
+    "en": "Match"
+  },
+  {
+    "key": "ui_ce9b12499c",
+    "source": "阅读",
+    "en": "Read"
+  },
+  {
+    "key": "ui_60a53514eb",
+    "source": "收藏",
+    "en": "Saved"
+  },
+  {
+    "key": "ui_df3d58c7d8",
+    "source": "设置",
+    "en": "Settings"
+  },
+  {
+    "key": "ui_d6cc6b2d14",
+    "source": "经文与出处已复制",
+    "en": "Passage and reference copied"
+  },
+  {
+    "key": "ui_7fa7b63b0e",
+    "source": "已取消收藏",
+    "en": "Removed from saved passages"
+  },
+  {
+    "key": "ui_95c8e5c111",
+    "source": "已收藏经文",
+    "en": "Passage saved"
+  },
+  {
+    "key": "ui_c214cf65a4",
+    "source": "%1$s阅读",
+    "en": "%1$s reading"
+  },
+  {
+    "key": "ui_9385bfefca",
+    "source": "我的收藏",
+    "en": "My saved passages"
+  },
+  {
+    "key": "ui_72f30a9d58",
+    "source": "让日常的话，遇见经文",
+    "en": "Find a passage for everyday words"
+  },
+  {
+    "key": "ui_2ebb3b278e",
+    "source": "读一句，也读它的上下文",
+    "en": "Read the passage and its context"
+  },
+  {
+    "key": "ui_933a71e100",
+    "source": "留住触动你的字句",
+    "en": "Keep the words that move you"
+  },
+  {
+    "key": "ui_cf307954e9",
+    "source": "按你的习惯阅读",
+    "en": "Make reading your own"
+  },
+  {
+    "key": "ui_ecdf24870a",
+    "source": "选择经典与版本",
+    "en": "Choose a text and version"
+  },
+  {
+    "key": "ui_567a685cee",
+    "source": "开源许可与经文来源",
+    "en": "Licenses and text sources"
+  },
+  {
+    "key": "ui_2c7bac0bff",
+    "source": "正在读取许可…",
+    "en": "Loading licenses…"
+  },
+  {
+    "key": "ui_c0b3fbff51",
+    "source": "完成",
+    "en": "Done"
+  },
+  {
+    "key": "ui_550c1bce78",
+    "source": "把喜欢的经文留在这里",
+    "en": "Keep your favourite passages here"
+  },
+  {
+    "key": "ui_66104bccc5",
+    "source": "点击经文卡片上的收藏图标，即可离线保存经文与版本。",
+    "en": "Tap the bookmark on a passage to save it and its version offline."
+  },
+  {
+    "key": "ui_7c998110df",
+    "source": "%1$s 条收藏",
+    "en": "%1$s saved passages"
+  },
+  {
+    "key": "ui_2c3262050b",
+    "source": "分享经文",
+    "en": "Share passage"
+  },
+  {
+    "key": "ui_7f7c718640",
+    "source": "\n穆罕默德·马坚 · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin",
+    "en": "\nMuhammad Ma Jian · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin"
+  },
+  {
+    "key": "ui_d8d06d6030",
+    "source": "\n原文数据：chinese-poetry/chinese-poetry · MIT",
+    "en": "\nText data: chinese-poetry/chinese-poetry · MIT"
+  },
+  {
+    "key": "ui_96ca005377",
+    "source": "\n原文数据：%1$s",
+    "en": "\nText data: %1$s"
+  },
+  {
+    "key": "ui_1b5f2ef791",
+    "source": "\nVulgata Clementina · Scrollmapper · 公有领域原文；分节对应依所附映射",
+    "en": "\nVulgata Clementina · Scrollmapper · Public domain text; numbering follows the bundled mapping"
+  },
+  {
+    "key": "ui_b067b29f39",
+    "source": "取消收藏 %1$s",
+    "en": "Remove bookmark for %1$s"
+  },
+  {
+    "key": "ui_715c8ae33d",
+    "source": "收藏 %1$s",
+    "en": "Save %1$s"
+  },
+  {
+    "key": "ui_59b529978f",
+    "source": "上下文与对照",
+    "en": "Context and comparison"
+  },
+  {
+    "key": "ui_912cc32cbb",
+    "source": "复制 %1$s",
+    "en": "Copy %1$s"
+  },
+  {
+    "key": "ui_6cb0240500",
+    "source": "原文：%1$s · 编号依所附版本",
+    "en": "Text: %1$s · Numbering follows the bundled edition"
+  },
+  {
+    "key": "ui_3670a14237",
+    "source": "拉丁文：Clementina · 73 卷 · 保留原版章号；中拉分节可能不同",
+    "en": "Latin: Clementina · 73 books · Original chapter numbers; Chinese and Latin numbering may differ"
+  },
+  {
+    "key": "ui_5e46be85c6",
+    "source": "论语原文：chinese-poetry · MIT · 章句依所附版本",
+    "en": "Analects: chinese-poetry · MIT · Numbering follows the bundled edition"
+  },
+  {
+    "key": "ui_967ab37610",
+    "source": "阿拉伯文：Tanzil Project · Uthmani v1.1 · tanzil.net",
+    "en": "Arabic: Tanzil Project · Uthmani v1.1 · tanzil.net"
+  },
+  {
+    "key": "ui_b40b0fc33a",
+    "source": "经义译文：穆罕默德·马坚 · QuranEnc.com v1.0.2",
+    "en": "Translation: Muhammad Ma Jian · QuranEnc.com v1.0.2"
+  },
+  {
+    "key": "ui_3f014bdf31",
+    "source": "所有版本均已内置，可离线使用。",
+    "en": "All versions are included and available offline."
+  },
+  {
+    "key": "ui_08e0264b24",
+    "source": "%1$s · %2$s %3$s",
+    "en": "%1$s · %2$s %3$s"
+  },
+  {
+    "key": "ui_0477dbbdee",
+    "source": "段",
+    "en": "passages"
+  },
+  {
+    "key": "ui_ada40d1b8b",
+    "source": "节",
+    "en": "verses"
+  },
+  {
+    "key": "ui_d1e7d184ff",
+    "source": "圣经：5 套文本，含拉丁文。古兰经：中阿双语。儒家四书、佛教心经、金刚经与法华经、道家道德经与庄子均含完整原文，可用现代汉语检索。",
+    "en": "Bible: 5 texts including Latin. Quran: Chinese and Arabic. Complete Confucian, Buddhist and Taoist classics are searchable using modern Chinese."
+  },
+  {
+    "key": "ui_964663269e",
+    "source": "用白话描述，或输入 学而1",
+    "en": "Describe the meaning in Chinese, or enter Analects 1:1"
+  },
+  {
+    "key": "ui_875f2290ac",
+    "source": "用现代汉语描述意思，或输入篇章",
+    "en": "Describe the meaning in Chinese, or enter a chapter"
+  },
+  {
+    "key": "ui_174fed9168",
+    "source": "描述意思，或输入 2:255",
+    "en": "Describe the meaning, or enter 2:255"
+  },
+  {
+    "key": "ui_a84afb0ba0",
+    "source": "用中文描述意思，或输入出处",
+    "en": "Describe the meaning in Chinese, or enter a reference"
+  },
+  {
+    "key": "ui_0002c0ee16",
+    "source": "输入想说的话、关键词或出处",
+    "en": "Enter a phrase, keyword or reference"
+  },
+  {
+    "key": "ui_cb4e7a1ff5",
+    "source": "收起搜索",
+    "en": "Close search"
+  },
+  {
+    "key": "ui_b6f00afa65",
+    "source": "清空搜索",
+    "en": "Clear search"
+  },
+  {
+    "key": "ui_2874151bd3",
+    "source": "搜索设置",
+    "en": "Search settings"
+  },
+  {
+    "key": "ui_0e0ecd4c21",
+    "source": "搜索“%1$s”",
+    "en": "Search for “%1$s”"
+  },
+  {
+    "key": "ui_3cdd980817",
+    "source": "在%1$s中查找",
+    "en": "Search in %1$s"
+  },
+  {
+    "key": "ui_bdceb7de57",
+    "source": "开始搜索",
+    "en": "Start searching"
+  },
+  {
+    "key": "ui_cac3809c50",
+    "source": "查看匹配结果",
+    "en": "View matches"
+  },
+  {
+    "key": "ui_3b5ac9baaa",
+    "source": "最近搜索",
+    "en": "Recent searches"
+  },
+  {
+    "key": "ui_1ef3de06b3",
+    "source": "清空",
+    "en": "Clear"
+  },
+  {
+    "key": "ui_fdcd6199e5",
+    "source": "试试这些日常表达",
+    "en": "Try an everyday expression"
+  },
+  {
+    "key": "ui_c3e9c3c600",
+    "source": "选择模式",
+    "en": "Selected modes"
+  },
+  {
+    "key": "ui_1e0a4f73f1",
+    "source": "20 篇 · 512 章句 · 白话搜索文言原文",
+    "en": "20 chapters · 512 passages · Search classical Chinese with modern Chinese"
+  },
+  {
+    "key": "ui_7c3ff9a0e4",
+    "source": "114 章 · 6,236 节 · 中阿文本可对照",
+    "en": "114 chapters · 6,236 verses · Chinese and Arabic available offline"
+  },
+  {
+    "key": "ui_2e12854ada",
+    "source": "正在打开离线经文库…",
+    "en": "Opening the offline library…"
+  },
+  {
+    "key": "ui_40493fd844",
+    "source": "经文库暂时无法打开",
+    "en": "The text library is unavailable"
+  },
+  {
+    "key": "ui_b8784c8dd5",
+    "source": "重试",
+    "en": "Retry"
+  },
+  {
+    "key": "ui_16778b4cd1",
+    "source": "正在按句意查找，首次使用需加载本地模型…",
+    "en": "Searching offline; the local model loads on first use."
+  },
+  {
+    "key": "ui_e7c66d9bed",
+    "source": "暂时没有找到",
+    "en": "No matches yet"
+  },
+  {
+    "key": "ui_51f7877be4",
+    "source": "试试更具体的白话描述，并启用“句意搜索”或“日常表达”。也可以输入“论语 1:1”或“学而篇”。",
+    "en": "Try a more specific description in Chinese, or enable Original text or Expressions. You can also enter Analects 1:1."
+  },
+  {
+    "key": "ui_f6a5dbf26d",
+    "source": "试试缩短句子、换个关键词，或切换“日常表达”。也可以输入“约 3:16”。",
+    "en": "Try a shorter sentence, another keyword, or Expressions. You can also enter John 3:16."
+  },
+  {
+    "key": "ui_2ace33819d",
+    "source": "相关经文 · %1$s 处候选",
+    "en": "Related passages · %1$s candidates"
+  },
+  {
+    "key": "ui_77fd8a97e7",
+    "source": "找到 %1$s 处经文",
+    "en": "%1$s matches"
+  },
+  {
+    "key": "ui_cdab8699f7",
+    "source": "结合原文与现代汉语检索提示查找，结果展示文言原文。",
+    "en": "Searches original text and separate modern Chinese hints, and always displays the original passage."
+  },
+  {
+    "key": "ui_27fff02351",
+    "source": "按所选模式合并排序；句意基于马坚中文经义译本，展示所选文本。",
+    "en": "Results combine selected modes. Similarity is not a probability; Latin results use the selected text’s numbering."
+  },
+  {
+    "key": "ui_b0dbc2f2b4",
+    "source": "按所选模式合并排序；句意基于和合本检索，展示当前版本原文。",
+    "en": "Results combine selected modes. Similarity and combined scores are not probabilities."
+  },
+  {
+    "key": "ui_530287e0b1",
+    "source": "已合并去重，卡片标明命中模式。请结合上下文理解。",
+    "en": "Duplicates are merged and each card lists its matching modes. Read the context to understand the text."
+  },
+  {
+    "key": "ui_687a797e36",
+    "source": "按表达与用词的相关程度排序，请结合上下文理解。",
+    "en": "Ranked by related expressions and wording. Read the context to understand the text."
+  },
+  {
+    "key": "ui_5bedbb2bbb",
+    "source": "精确匹配原文，简繁体通用。",
+    "en": "Exact text matching; punctuation is ignored."
+  },
+  {
+    "key": "ui_2b12eb9c73",
+    "source": "已显示前 %1$s 条。加入更具体的词，可进一步缩小范围。",
+    "en": "Showing the first %1$s matches. Use a more specific term to narrow the results."
+  },
+  {
+    "key": "ui_b4e019b615",
+    "source": "搜索模式",
+    "en": "Search modes"
+  },
+  {
+    "key": "ui_a6b6b983b9",
+    "source": "可多选，同时查找并合并重复经文。",
+    "en": "Choose multiple modes to search together and merge duplicate passages."
+  },
+  {
+    "key": "ui_afeebd4e36",
+    "source": "请至少选择一种搜索模式。",
+    "en": "Choose at least one search mode."
+  },
+  {
+    "key": "ui_c853617881",
+    "source": "句意搜索完全离线，理解相关不等于经文原意。",
+    "en": "All searches run offline. A related result may not convey the original meaning."
+  },
+  {
+    "key": "ui_63c73c4730",
+    "source": "应用",
+    "en": "Apply"
+  },
+  {
+    "key": "ui_2cd0f3be87",
+    "source": "取消",
+    "en": "Cancel"
+  },
+  {
+    "key": "ui_a70b1ce594",
+    "source": "用今天的话，\n找到论语原句。",
+    "en": "Use modern Chinese.\nFind the original words."
+  },
+  {
+    "key": "ui_69cb65a50b",
+    "source": "用今天的话，\n找到经典原句。",
+    "en": "Use modern Chinese.\nFind the original words."
+  },
+  {
+    "key": "ui_2db8d1d045",
+    "source": "你想说的话，\n经文里也许有。",
+    "en": "The words you need\nmay already be here."
+  },
+  {
+    "key": "ui_24bdf2a299",
+    "source": "用现代汉语描述意思，读孔子与弟子的文言原文。",
+    "en": "Describe the meaning in modern Chinese to find related classical Chinese passages."
+  },
+  {
+    "key": "ui_ba508d5b85",
+    "source": "在《%1$s》中查找意思相近的文言原文。",
+    "en": "Find related original passages in %1$s."
+  },
+  {
+    "key": "ui_c8c8e88dad",
+    "source": "在古兰经中查找经义，读中文译文与阿拉伯文。",
+    "en": "Find Quran passages and compare Chinese and Arabic."
+  },
+  {
+    "key": "ui_afc8786371",
+    "source": "把一句日常表达，换成一次经文探索。",
+    "en": "Start exploring with an everyday expression."
+  },
+  {
+    "key": "ui_c4da9d52e6",
+    "source": "完全离线 · 无需登录",
+    "en": "Fully offline · No account needed"
+  },
+  {
+    "key": "ui_0641ada9bf",
+    "source": "从一句话开始",
+    "en": "Start with a sentence"
+  },
+  {
+    "key": "ui_a1571c3647",
+    "source": "可输入“学习要结合思考”“论语 2:15”或“学而篇”。现代检索释义只辅助查找；章句编号依所附版本，其他版本分章可能不同。",
+    "en": "Try a modern Chinese description or Analects 2:15. Search glosses are aids, not authoritative translations. Passage numbering follows the bundled edition."
+  },
+  {
+    "key": "ui_bca6e7c942",
+    "source": "检索提示辅助白话查找，不是完整翻译或权威注疏。篇章和段落编号依所附版本。",
+    "en": "Search hints help find passages; they are not full translations or authoritative commentary. Numbering follows the bundled edition."
+  },
+  {
+    "key": "ui_3f6c6be271",
+    "source": "可输入 2:255、古兰经 94:5-6 或开端章。中文内容是经义译文，句意相近不代表经文原意。",
+    "en": "Try 2:255, Quran 94:5-6 or a chapter name. Similarity is not a probability; read the context to understand the text."
+  },
+  {
+    "key": "ui_d3d5f013f1",
+    "source": "也支持出处定位，例如：约 3:16、诗篇 23、John 4:7。表达关联仅辅助查找，点击结果可读上下文和版本对照。",
+    "en": "References also work: John 3:16, Psalms 23, John 4:7. Similarity only helps you find text; use the context and comparisons to read further."
+  },
+  {
+    "key": "ui_5e50d51846",
+    "source": "上一篇",
+    "en": "Previous section"
+  },
+  {
+    "key": "ui_393f2a5120",
+    "source": "上一章",
+    "en": "Previous chapter"
+  },
+  {
+    "key": "ui_673ee5a5a4",
+    "source": "下一篇",
+    "en": "Next section"
+  },
+  {
+    "key": "ui_9443994bc3",
+    "source": "下一章",
+    "en": "Next chapter"
+  },
+  {
+    "key": "ui_573afa897f",
+    "source": "无法加载经文",
+    "en": "Unable to load text"
+  },
+  {
+    "key": "ui_c8886dc3da",
+    "source": "论语·%1$s",
+    "en": "Analects · %1$s"
+  },
+  {
+    "key": "ui_d8fe21c999",
+    "source": "古兰经 %1$s",
+    "en": "Quran %1$s"
+  },
+  {
+    "key": "ui_ca8b90f98d",
+    "source": "点击章句，可收藏、复制并查看检索释义与上下文。",
+    "en": "Tap a passage to save, copy or view its search gloss and context."
+  },
+  {
+    "key": "ui_29d3c74283",
+    "source": "点击任意一节，可收藏、复制并对照其他版本。",
+    "en": "Tap a verse to save, copy or compare versions."
+  },
+  {
+    "key": "ui_a8b275439c",
+    "source": "%1$s · 第 %2$s 章",
+    "en": "%1$s · Chapter %2$s"
+  },
+  {
+    "key": "ui_94f19500d5",
+    "source": "%1$s · 第 %2$s 章",
+    "en": "%1$s · Chapter %2$s"
+  },
+  {
+    "key": "ui_bd541337af",
+    "source": "选择%1$s篇章",
+    "en": "Choose a section of %1$s"
+  },
+  {
+    "key": "ui_3efc94a541",
+    "source": "%1$s 段",
+    "en": "%1$s passages"
+  },
+  {
+    "key": "ui_99c63124e6",
+    "source": "选择论语篇章",
+    "en": "Choose an Analects chapter"
+  },
+  {
+    "key": "ui_222425afab",
+    "source": "%1$s 章句",
+    "en": "%1$s passages"
+  },
+  {
+    "key": "ui_9b4d803f44",
+    "source": "选择古兰经章节",
+    "en": "Choose a Quran chapter"
+  },
+  {
+    "key": "ui_4c1e9455db",
+    "source": "%1$s 节",
+    "en": "%1$s verses"
+  },
+  {
+    "key": "ui_1a138c26f1",
+    "source": "选择书卷与章节",
+    "en": "Choose a book and chapter"
+  },
+  {
+    "key": "ui_f9c7acfecb",
+    "source": "旧约",
+    "en": "Old Testament"
+  },
+  {
+    "key": "ui_a18281e062",
+    "source": "新约",
+    "en": "New Testament"
+  },
+  {
+    "key": "ui_e0bb0e98a0",
+    "source": "第 %1$s 章",
+    "en": "Chapter %1$s"
+  },
+  {
+    "key": "ui_54d9bf6f75",
+    "source": "日常表达 × 经文探索",
+    "en": "Everyday expressions × Text exploration"
+  },
+  {
+    "key": "ui_5e6cd637d3",
+    "source": "%1$s · 离线检索 · 无广告",
+    "en": "%1$s · Offline search · No ads"
+  },
+  {
+    "key": "ui_4c3fe66dba",
+    "source": "显示与阅读",
+    "en": "Display and reading"
+  },
+  {
+    "key": "ui_bc99124901",
+    "source": "动态配色",
+    "en": "Dynamic colours"
+  },
+  {
+    "key": "ui_13383b2187",
+    "source": "使用系统壁纸提供的 Material 色彩",
+    "en": "Use Material colours from your system wallpaper"
+  },
+  {
+    "key": "ui_c700f88f57",
+    "source": "Android 12 及以上可用",
+    "en": "Available on Android 12 and later"
+  },
+  {
+    "key": "ui_cbbbca43b0",
+    "source": "经文字号 · %1$s sp",
+    "en": "Passage size · %1$s sp"
+  },
+  {
+    "key": "ui_11d393ce3c",
+    "source": "经文字号",
+    "en": "Passage text size"
+  },
+  {
+    "key": "ui_b2111b4ec2",
+    "source": "你的话是我脚前的灯，是我路上的光。",
+    "en": "Thy word is a lamp unto my feet, and a light unto my path."
+  },
+  {
+    "key": "ui_5dd460e68f",
+    "source": "诗篇 119:105 · 字体也随系统设置缩放",
+    "en": "Psalms 119:105 · Text also scales with system settings"
+  },
+  {
+    "key": "ui_914f6a1974",
+    "source": "经文与数据",
+    "en": "Texts and data"
+  },
+  {
+    "key": "ui_da29379b71",
+    "source": "内置经典与版本",
+    "en": "Included texts and versions"
+  },
+  {
+    "key": "ui_5b75f44647",
+    "source": "圣经含拉丁文 · 古兰经中阿双语 · 儒释道八部经典",
+    "en": "Bible including Latin · Chinese and Arabic Quran · Confucian, Buddhist and Taoist classics"
+  },
+  {
+    "key": "ui_02c0ab8fbd",
+    "source": "清空搜索历史",
+    "en": "Clear search history"
+  },
+  {
+    "key": "ui_fc4a87fa8d",
+    "source": "%1$s 条记录 · 只保存在本机",
+    "en": "%1$s entries · Stored only on this device"
+  },
+  {
+    "key": "ui_5aad762f28",
+    "source": "查看所用组件、文本来源与授权说明",
+    "en": "Components, text sources and licensing terms"
+  },
+  {
+    "key": "ui_8a36e4082a",
+    "source": "无法导出诊断，请稍后重试",
+    "en": "Unable to export diagnostics. Please try again later."
+  },
+  {
+    "key": "ui_5326ad11c1",
+    "source": "正在准备诊断…",
+    "en": "Preparing diagnostics…"
+  },
+  {
+    "key": "ui_a1fa288e54",
+    "source": "导出本机诊断",
+    "en": "Export local diagnostics"
+  },
+  {
+    "key": "ui_f623485bd2",
+    "source": "包含设备和崩溃信息，由你选择分享；不会自动上传",
+    "en": "Includes device and crash information. You choose where to share it; nothing uploads automatically."
+  },
+  {
+    "key": "ui_2cc61c2dc1",
+    "source": "关于匹配",
+    "en": "About matching"
+  },
+  {
+    "key": "ui_f91cd10a7e",
+    "source": "句意搜索使用本地 BGE 模型，各经典独立检索；可与日常表达、原文搜索同时启用。儒释道结合原文与单独编写的现代检索提示，展示文言原文。拉丁文按所附分节映射关联中文圣经；无对应的部分仍可阅读和搜索原文。结果辅助查找，请结合上下文理解。",
+    "en": "Meaning search uses a local Chinese BGE model and a separate index for each text. Expressions and Original text can run alongside it. Classical texts include separate modern Chinese search aids. Latin results use the bundled verse mapping; unmapped passages remain readable and searchable by original wording. Read the context to understand a result."
+  },
+  {
+    "key": "ui_d0d7217ee0",
+    "source": "模型、经文、收藏和查询均在本机。联网仅用于版本检查和安装包下载，不发送查询、收藏或历史。",
+    "en": "Models, texts, saved passages and searches stay on this device. Network access is used only for checking versions and downloading updates; queries, saved passages and history are not sent."
+  },
+  {
+    "key": "ui_5fb94d43ef",
+    "source": "清空搜索历史？",
+    "en": "Clear search history?"
+  },
+  {
+    "key": "ui_f423d22508",
+    "source": "将删除本机的 %1$s 条搜索记录。",
+    "en": "Delete %1$s searches from this device."
+  },
+  {
+    "key": "ui_cebbc1f61c",
+    "source": "版本与更新",
+    "en": "Version and updates"
+  },
+  {
+    "key": "ui_5a51b05996",
+    "source": "当前版本 %1$s",
+    "en": "Current version %1$s"
+  },
+  {
+    "key": "ui_bccda3b1ca",
+    "source": "从本项目 GitHub Release 获取更新",
+    "en": "Updates come from this project’s GitHub Releases"
+  },
+  {
+    "key": "ui_8917b3c354",
+    "source": "上次检查：%1$s",
+    "en": "Last checked: %1$s"
+  },
+  {
+    "key": "ui_7f68ebad19",
+    "source": "检查更新",
+    "en": "Check for updates"
+  },
+  {
+    "key": "ui_0ca906da49",
+    "source": "新版本 %1$s · %2$s MB",
+    "en": "New version %1$s · %2$s MB"
+  },
+  {
+    "key": "ui_e005bc1767",
+    "source": "立即下载更新",
+    "en": "Download update now"
+  },
+  {
+    "key": "ui_c42a3dd9c2",
+    "source": "自动检查更新",
+    "en": "Check automatically"
+  },
+  {
+    "key": "ui_173d0d252f",
+    "source": "启动时和后台定期检查新版本",
+    "en": "Check at startup and periodically in the background"
+  },
+  {
+    "key": "ui_7392248edb",
+    "source": "自动下载更新",
+    "en": "Download automatically"
+  },
+  {
+    "key": "ui_85786e444b",
+    "source": "发现新版本后自动下载，安装前由你确认",
+    "en": "Download new versions automatically; installation needs your confirmation"
+  },
+  {
+    "key": "ui_3a3fb31bf4",
+    "source": "仅 Wi-Fi 自动下载",
+    "en": "Automatic downloads on Wi-Fi only"
+  },
+  {
+    "key": "ui_526fa83137",
+    "source": "手动点“立即下载”可使用当前网络",
+    "en": "Manual downloads can use your current connection"
+  },
+  {
+    "key": "ui_d9f41c12c3",
+    "source": "下载线路",
+    "en": "Download route"
+  },
+  {
+    "key": "ui_588a1d210d",
+    "source": "直连受限时可切换镜像，下载后核对应用签名",
+    "en": "Switch to a mirror if needed; the app signature is verified after download"
+  },
+  {
+    "key": "ui_c8de69e34e",
+    "source": "发现新版本 %1$s",
+    "en": "Version %1$s is available"
+  },
+  {
+    "key": "ui_63fc3ceccf",
+    "source": "功能改进与问题修复",
+    "en": "Improvements and fixes"
+  },
+  {
+    "key": "ui_0d326909fe",
+    "source": "安装包 %1$s MB",
+    "en": "Download size %1$s MB"
+  },
+  {
+    "key": "ui_e3f33e0777",
+    "source": "后台下载",
+    "en": "Download in background"
+  },
+  {
+    "key": "ui_b088e89d54",
+    "source": "立即下载",
+    "en": "Download now"
+  },
+  {
+    "key": "ui_9d2ca26128",
+    "source": "稍后",
+    "en": "Later"
+  },
+  {
+    "key": "ui_bbd85c1dc1",
+    "source": "允许后返回此处，再点“安装更新”。",
+    "en": "After allowing installation, return here and tap Install update again."
+  },
+  {
+    "key": "ui_dc08150198",
+    "source": "无法打开安装程序，请重试",
+    "en": "Unable to open the installer. Please try again."
+  },
+  {
+    "key": "ui_84717e2cad",
+    "source": "正在校验…",
+    "en": "Verifying…"
+  },
+  {
+    "key": "ui_7a6bafc9c8",
+    "source": "安装更新",
+    "en": "Install update"
+  },
+  {
+    "key": "ui_ab752a7650",
+    "source": "关闭经文详情",
+    "en": "Close passage details"
+  },
+  {
+    "key": "ui_d30cd3b64f",
+    "source": "原文与检索释义",
+    "en": "Original text and search gloss"
+  },
+  {
+    "key": "ui_18f35c09c9",
+    "source": "版本对照",
+    "en": "Compare versions"
+  },
+  {
+    "key": "ui_6fc38ef360",
+    "source": "上下文",
+    "en": "Context"
+  },
+  {
+    "key": "ui_d1d044826a",
+    "source": "加载失败",
+    "en": "Unable to load"
+  },
+  {
+    "key": "ui_bc8c5659e0",
+    "source": "检索释义为本项目编写的白话查找提示，不是完整翻译或权威注疏。章句编号依所附版本。",
+    "en": "Search glosses are project-authored aids in modern Chinese, not full translations or authoritative commentary. Numbering follows the bundled edition."
+  },
+  {
+    "key": "ui_ad84f54382",
+    "source": "同一出处的不同文本。部分版本分节方式可能不同。",
+    "en": "Texts at the corresponding reference. Some versions use different verse divisions."
+  },
+  {
+    "key": "ui_6f04186a09",
+    "source": "取消收藏%1$s",
+    "en": "Remove bookmark for %1$s"
+  },
+  {
+    "key": "ui_6069913efc",
+    "source": "收藏%1$s",
+    "en": "Save %1$s"
+  },
+  {
+    "key": "ui_c56e3871a7",
+    "source": "此版对应 %1$s",
+    "en": "Corresponds to %1$s in this version"
+  },
+  {
+    "key": "ui_abb0fd4d63",
+    "source": "此版本未附对应分节，请阅读当前原文和上下文。",
+    "en": "No mapped passage in this version. Read the original and its context."
+  },
+  {
+    "key": "ui_116add13fa",
+    "source": "现代汉语检索释义",
+    "en": "Modern Chinese search gloss"
+  },
+  {
+    "key": "ui_7e564575eb",
+    "source": "分享",
+    "en": "Share"
+  },
+  {
+    "key": "ui_63d90d9773",
+    "source": "复制",
+    "en": "Copy"
+  },
+  {
+    "key": "ui_b6d0d028d7",
+    "source": "阅读整篇",
+    "en": "Read full section"
+  },
+  {
+    "key": "ui_3012027875",
+    "source": "阅读整章",
+    "en": "Read full chapter"
+  },
+  {
+    "key": "ui_2a6bb329fb",
+    "source": "%1$s:%2$s%3$s",
+    "en": "%1$s:%2$s%3$s"
+  },
+  {
+    "key": "ui_073efc46ad",
+    "source": " · 当前经文",
+    "en": " · Current passage"
+  },
+  {
+    "key": "ui_2ab1425887",
+    "source": "%1$s · 启动恢复",
+    "en": "%1$s · Startup recovery"
+  },
+  {
+    "key": "ui_2bb608ca4c",
+    "source": "上次启动未完成。可以重试，或关闭动态配色和自动检查更新后进入。收藏、历史和阅读进度会保留。",
+    "en": "The previous startup did not finish. Retry, or start with dynamic colours and automatic updates disabled. Saved passages, history and reading progress are preserved."
+  },
+  {
+    "key": "ui_47d5cd3e98",
+    "source": "重试启动",
+    "en": "Retry startup"
+  },
+  {
+    "key": "ui_466dc18f7d",
+    "source": "兼容启动",
+    "en": "Compatibility startup"
+  },
+  {
+    "key": "ui_6cf56c400b",
+    "source": "暂时无法导出，请稍后重试。",
+    "en": "Unable to export right now. Please try again later."
+  },
+  {
+    "key": "ui_db987f1de5",
+    "source": "诊断仅包含设备信息、异常堆栈和系统退出记录；由你选择是否分享。",
+    "en": "Diagnostics contain device information, exception stacks and system exit records. You choose whether to share them."
+  },
+  {
+    "key": "ui_217cfe7db1",
+    "source": "跟随系统",
+    "en": "System"
+  },
+  {
+    "key": "ui_aa0819dfc4",
+    "source": "浅色",
+    "en": "Light"
+  },
+  {
+    "key": "ui_a6b75d0680",
+    "source": "深色",
+    "en": "Dark"
+  },
+  {
+    "key": "ui_b8aa78a241",
+    "source": "经文库加载失败，请重试。",
+    "en": "Unable to load the text library. Please retry."
+  },
+  {
+    "key": "ui_c9b2eeafab",
+    "source": "检索失败，请重试。",
+    "en": "Search failed. Please retry."
+  },
+  {
+    "key": "ui_cb3a0faf06",
+    "source": "暂时无法加载，请关闭后重试。",
+    "en": "Unable to load right now. Close and try again."
+  },
+  {
+    "key": "ui_0e2cd5747f",
+    "source": "圣经",
+    "en": "Bible"
+  },
+  {
+    "key": "ui_606dbd6b27",
+    "source": "古兰经",
+    "en": "Quran"
+  },
+  {
+    "key": "ui_c51146217b",
+    "source": "儒家",
+    "en": "Confucian"
+  },
+  {
+    "key": "ui_1363ec4228",
+    "source": "佛教",
+    "en": "Buddhist"
+  },
+  {
+    "key": "ui_d1e21b634c",
+    "source": "道家",
+    "en": "Taoist"
+  },
+  {
+    "key": "ui_baace69a71",
+    "source": "和合本·简体",
+    "en": "Chinese Union · Simplified"
+  },
+  {
+    "key": "ui_7b13bab106",
+    "source": "白话文 · 简体转换",
+    "en": "Vernacular Chinese · Simplified conversion"
+  },
+  {
+    "key": "ui_d23d957ed9",
+    "source": "和合本·繁體",
+    "en": "Chinese Union · Traditional"
+  },
+  {
+    "key": "ui_2f5dcf76af",
+    "source": "白話文 · 繁體原文",
+    "en": "Vernacular Chinese · Traditional original"
+  },
+  {
+    "key": "ui_bf20918500",
+    "source": "文理和合本",
+    "en": "Chinese Union · Literary"
+  },
+  {
+    "key": "ui_fa7e933721",
+    "source": "文言文 · 繁體",
+    "en": "Classical Chinese · Traditional"
+  },
+  {
+    "key": "ui_fd94c82c5f",
+    "source": "King James Version",
+    "en": "King James Version"
+  },
+  {
+    "key": "ui_cfd9ce64d1",
+    "source": "English · 1769",
+    "en": "English · 1769"
+  },
+  {
+    "key": "ui_246ccd291a",
+    "source": "Vulgata Clementina",
+    "en": "Vulgata Clementina"
+  },
+  {
+    "key": "ui_eced9bec0a",
+    "source": "拉丁文 · 73 卷 · 原版分节",
+    "en": "Latin · 73 books · Original numbering"
+  },
+  {
+    "key": "ui_edf5851580",
+    "source": "古兰经·马坚译本",
+    "en": "Quran · Ma Jian Chinese"
+  },
+  {
+    "key": "ui_d931243865",
+    "source": "中文经义译本 · QuranEnc",
+    "en": "Chinese translation · QuranEnc"
+  },
+  {
+    "key": "ui_d76bdeaf42",
+    "source": "古兰经·阿拉伯文",
+    "en": "Quran · Arabic"
+  },
+  {
+    "key": "ui_e7c6bcd6de",
+    "source": "Tanzil Uthmani · 1.1",
+    "en": "Tanzil Uthmani · 1.1"
+  },
+  {
+    "key": "ui_d119fee8ed",
+    "source": "论语·文言原文",
+    "en": "Analects · Original text"
+  },
+  {
+    "key": "ui_0d068ebbea",
+    "source": "二十篇 · 现代汉语检索",
+    "en": "20 chapters · Modern Chinese search"
+  },
+  {
+    "key": "ui_0d8bb379d0",
+    "source": "大学·文言原文",
+    "en": "Great Learning · Original text"
+  },
+  {
+    "key": "ui_544227b298",
+    "source": "全文 · 所附版本段落编号",
+    "en": "Complete text · Bundled edition numbering"
+  },
+  {
+    "key": "ui_4bb73f988e",
+    "source": "中庸·文言原文",
+    "en": "Doctrine of the Mean · Original text"
+  },
+  {
+    "key": "ui_6069e51f61",
+    "source": "孟子·文言原文",
+    "en": "Mencius · Original text"
+  },
+  {
+    "key": "ui_83f279fc4d",
+    "source": "十四篇 · 现代汉语检索",
+    "en": "14 chapters · Modern Chinese search"
+  },
+  {
+    "key": "ui_af70da5ec9",
+    "source": "心经·玄奘译本",
+    "en": "Heart Sutra · Xuanzang"
+  },
+  {
+    "key": "ui_cff0c6b7e1",
+    "source": "文言原文 · 全文",
+    "en": "Classical Chinese · Complete text"
+  },
+  {
+    "key": "ui_91811727af",
+    "source": "金刚经·鸠摩罗什译本",
+    "en": "Diamond Sutra · Kumārajīva"
+  },
+  {
+    "key": "ui_6c34cc91f4",
+    "source": "文言原文 · 三十二分",
+    "en": "Classical Chinese · 32 sections"
+  },
+  {
+    "key": "ui_482fc29a96",
+    "source": "法华经·鸠摩罗什译本",
+    "en": "Lotus Sutra · Kumārajīva"
+  },
+  {
+    "key": "ui_b4d5e67994",
+    "source": "妙法莲华经 · 全二十八品",
+    "en": "Lotus Sutra · All 28 chapters"
+  },
+  {
+    "key": "ui_758969d38e",
+    "source": "道德经·文言原文",
+    "en": "Tao Te Ching · Original text"
+  },
+  {
+    "key": "ui_2744c4fa16",
+    "source": "八十一章 · 现代汉语检索",
+    "en": "81 chapters · Modern Chinese search"
+  },
+  {
+    "key": "ui_2d6696e0b7",
+    "source": "庄子·文言原文",
+    "en": "Zhuangzi · Original text"
+  },
+  {
+    "key": "ui_195c12a441",
+    "source": "内外杂篇 · 全三十三篇",
+    "en": "Inner, outer and miscellaneous · All 33 chapters"
+  },
+  {
+    "key": "ui_948d1d6892",
+    "source": "句意搜索",
+    "en": "Meaning"
+  },
+  {
+    "key": "ui_83c7b2c9ca",
+    "source": "理解中文句子的意思，即使用词不同也查找相关经文",
+    "en": "Understand Chinese meaning to find related passages even with different wording"
+  },
+  {
+    "key": "ui_b9347c5e68",
+    "source": "日常表达",
+    "en": "Expressions"
+  },
+  {
+    "key": "ui_13a8f0257f",
+    "source": "结合常用说法和相近用词，查找对应经文",
+    "en": "Find passages using common expressions and related wording"
+  },
+  {
+    "key": "ui_cda0204d03",
+    "source": "原文搜索",
+    "en": "Original text"
+  },
+  {
+    "key": "ui_ab41007196",
+    "source": "查找包含输入内容的原文，支持简繁体",
+    "en": "Find original wording, with simplified and traditional Chinese support"
+  },
+  {
+    "key": "ui_67d66ee478",
+    "source": "全本圣经",
+    "en": "Whole Bible"
+  },
+  {
+    "key": "ui_7bc94376a0",
+    "source": "请输入 200 字以内的内容。",
+    "en": "Enter at most 200 characters."
+  },
+  {
+    "key": "ui_55df8c5a87",
+    "source": "此版本中没有这个章节范围，请检查章号和节号。",
+    "en": "This reference range is unavailable in this version. Check the chapter and verse numbers."
+  },
+  {
+    "key": "ui_bc826a751a",
+    "source": "出处定位 · 此版合并分节",
+    "en": "Reference · Merged verses in this edition"
+  },
+  {
+    "key": "ui_6034acde0c",
+    "source": "出处定位",
+    "en": "Reference"
+  },
+  {
+    "key": "ui_36231598c1",
+    "source": "请输入文字、关键词或经文出处。",
+    "en": "Enter a phrase, keyword or reference."
+  },
+  {
+    "key": "ui_c28607abce",
+    "source": "句意搜索需要语义检索组件。",
+    "en": "Meaning search needs the local semantic component."
+  },
+  {
+    "key": "ui_e51850cd4b",
+    "source": "原文包含关键词",
+    "en": "Original text contains the keyword"
+  },
+  {
+    "key": "ui_2ded27fb5c",
+    "source": "常用表达关联",
+    "en": "Related expression"
+  },
+  {
+    "key": "ui_a774c7d400",
+    "source": "原文与检索释义用词相近",
+    "en": "Related original wording and search gloss"
+  },
+  {
+    "key": "ui_ac0879712d",
+    "source": "用词相近",
+    "en": "Related wording"
+  },
+  {
+    "key": "ui_42f9253143",
+    "source": "%1$s的本地组件无法加载",
+    "en": "The local component for %1$s could not load"
+  },
+  {
+    "key": "ui_abb884d68e",
+    "source": "%1$s暂时不可用",
+    "en": "%1$s is temporarily unavailable"
+  },
+  {
+    "key": "ui_48df8db6cd",
+    "source": "，请重试。",
+    "en": ". Please retry."
+  },
+  {
+    "key": "ui_6a03e11949",
+    "source": "。当前结果来自%1$s。",
+    "en": ". Current results come from %1$s."
+  },
+  {
+    "key": "ui_5adfc173a2",
+    "source": "，已合并其他模式的结果。",
+    "en": ". Results from other modes have been combined."
+  },
+  {
+    "key": "ui_ac804358b8",
+    "source": "句意相近",
+    "en": "Related meaning"
+  },
+  {
+    "key": "ui_0a42d9f03d",
+    "source": "未找到足够相关的原文，请换一个更具体的说法。",
+    "en": "No sufficiently related passage. Try a more specific description."
+  },
+  {
+    "key": "ui_fa368c4403",
+    "source": "安装包完整性校验失败",
+    "en": "Package integrity check failed"
+  },
+  {
+    "key": "ui_5b7fc6d216",
+    "source": "不是有效的 Android 安装包",
+    "en": "Not a valid Android package"
+  },
+  {
+    "key": "ui_4ec1b81c9d",
+    "source": "安装包身份与更新信息不一致",
+    "en": "Package identity does not match the update information"
+  },
+  {
+    "key": "ui_e7f99a7cca",
+    "source": "该版本无需安装",
+    "en": "This version does not need to be installed"
+  },
+  {
+    "key": "ui_383c7c6ed3",
+    "source": "安装包签名与当前应用不同，已拒绝安装",
+    "en": "Installation rejected because the package signature differs from the installed app"
+  },
+  {
+    "key": "ui_7e94f5697a",
+    "source": "更新组件暂时不可用，可稍后重试或前往 GitHub 下载。",
+    "en": "Updates are temporarily unavailable. Try later or download from GitHub."
+  },
+  {
+    "key": "ui_3d7de4bc0a",
+    "source": "正在检查 GitHub Release…",
+    "en": "Checking GitHub Releases…"
+  },
+  {
+    "key": "ui_8b2a48dda0",
+    "source": "发现新版，等待 Wi-Fi 自动下载",
+    "en": "Update available; waiting for Wi-Fi to download automatically"
+  },
+  {
+    "key": "ui_285b6fd649",
+    "source": "发现新版，等待网络下载",
+    "en": "Update available; waiting for a network connection"
+  },
+  {
+    "key": "ui_f205bdc28b",
+    "source": "自动切换",
+    "en": "Automatic"
+  },
+  {
+    "key": "ui_294e0dedc9",
+    "source": "镜像优先",
+    "en": "Prefer mirrors"
+  },
+  {
+    "key": "ui_52f5637dd3",
+    "source": "GitHub 直连",
+    "en": "GitHub direct"
+  },
+  {
+    "key": "ui_e1e2b19f31",
+    "source": "更新地址不属于本项目",
+    "en": "The update URL does not belong to this project"
+  },
+  {
+    "key": "ui_922ad93ddf",
+    "source": "更新连接必须使用 HTTPS",
+    "en": "Update connections must use HTTPS"
+  },
+  {
+    "key": "ui_5778435246",
+    "source": "重定向缺少地址",
+    "en": "Redirect is missing a destination"
+  },
+  {
+    "key": "ui_991f77e8b0",
+    "source": "重定向次数过多",
+    "en": "Too many redirects"
+  },
+  {
+    "key": "ui_ec51185064",
+    "source": "更新信息过大",
+    "en": "Update information is too large"
+  },
+  {
+    "key": "ui_a9be422d14",
+    "source": "断点范围不一致",
+    "en": "Download resume range does not match"
+  },
+  {
+    "key": "ui_409bebbcf0",
+    "source": "下载长度异常",
+    "en": "Unexpected download size"
+  },
+  {
+    "key": "ui_461c153672",
+    "source": "下载超过声明大小",
+    "en": "Download exceeds the declared size"
+  },
+  {
+    "key": "ui_7d5d0aacb3",
+    "source": "下载尚未完成",
+    "en": "Download is not complete"
+  },
+  {
+    "key": "ui_b783743f82",
+    "source": "已是最新版本 %1$s",
+    "en": "You have the latest version: %1$s"
+  },
+  {
+    "key": "ui_65c34b0c40",
+    "source": "新版需要 Android API %1$s，当前系统暂不支持",
+    "en": "This update requires Android API %1$s, which this device does not support"
+  },
+  {
+    "key": "ui_5df389145a",
+    "source": "暂时无法检查更新，请换条线路或稍后重试",
+    "en": "Unable to check for updates. Try another route or check later"
+  },
+  {
+    "key": "ui_9fbfea7c70",
+    "source": "正在下载 %1$s…",
+    "en": "Downloading %1$s…"
+  },
+  {
+    "key": "ui_5619ce7c4a",
+    "source": "更新已下载并通过签名校验",
+    "en": "Update downloaded and signature verified"
+  },
+  {
+    "key": "ui_bf4a2d3eff",
+    "source": "无法保存更新",
+    "en": "Unable to save the update"
+  },
+  {
+    "key": "ui_e47e41d111",
+    "source": "下载中断，等待网络后自动重试",
+    "en": "Download interrupted; will retry when connected"
+  },
+  {
+    "key": "ui_7697849586",
+    "source": "下载未完成，可切换线路后重试",
+    "en": "Download incomplete; try another route"
+  },
+  {
+    "key": "ui_a1688b2a54",
+    "source": "下载已暂停，联网后可继续",
+    "en": "Download paused; reconnect to resume"
+  },
+  {
+    "key": "settings_language",
+    "source": "界面语言",
+    "en": "App language"
+  },
+  {
+    "key": "language_system",
+    "source": "跟随系统",
+    "en": "System"
+  },
+  {
+    "key": "language_hint",
+    "source": "只更改界面语言；经典原文和文本版本可独立选择。",
+    "en": "Changes interface language. Original passages and text versions stay independent."
+  },
+  {
+    "key": "update_status_generic",
+    "source": "更新状态已变更，请重新检查以查看当前语言的详情。",
+    "en": "Update status changed. Check again for details in this language."
+  },
+  {
+    "key": "startup_recovery_shortcut",
+    "source": "启动恢复与诊断",
+    "en": "Startup recovery and diagnostics"
+  }
+]

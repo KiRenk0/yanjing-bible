@@ -1,5 +1,8 @@
 package org.yanjing.app
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +16,9 @@ import org.yanjing.app.diagnostics.StartupRecovery
 
 /** Uses platform Views so diagnostics remain reachable if Compose cannot start. */
 class StartupActivity : Activity() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(org.yanjing.app.i18n.I18n.wrap(base))
+    }
     private lateinit var recovery: StartupRecovery
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +43,15 @@ class StartupActivity : Activity() {
         fun button(label: String, action: () -> Unit) {
             content.addView(Button(this).apply { text=label; setOnClickListener { action() } })
         }
-        text("${getString(R.string.app_name)} · 启动恢复",24f)
-        text("上次启动未完成。可以重试，或关闭动态配色和自动检查更新后进入。收藏、历史和阅读进度会保留。",17f)
-        button("重试启动") { openReader() }
-        button("兼容启动") { recovery.enableCompatibility(); openReader() }
-        button("导出本机诊断") {
+        text(tr(R.string.ui_2ab1425887, getString(R.string.app_name)),24f)
+        text(tr(R.string.ui_2bb608ca4c),17f)
+        button(tr(R.string.ui_47d5cd3e98)) { openReader() }
+        button(tr(R.string.ui_466dc18f7d)) { recovery.enableCompatibility(); openReader() }
+        button(tr(R.string.ui_a1fa288e54)) {
             try { startActivity(Diagnostics.shareIntent(this)) }
-            catch (_: Exception) { Toast.makeText(this,"暂时无法导出，请稍后重试。",Toast.LENGTH_LONG).show() }
+            catch (_: Exception) { Toast.makeText(this,tr(R.string.ui_6cf56c400b),Toast.LENGTH_LONG).show() }
         }
-        text("诊断仅包含设备信息、异常堆栈和系统退出记录；由你选择是否分享。",14f)
+        text(tr(R.string.ui_db987f1de5),14f)
         setContentView(ScrollView(this).apply { addView(content) })
     }
 }

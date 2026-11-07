@@ -1,5 +1,8 @@
 package org.yanjing.app.update
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -29,7 +32,7 @@ class UpdateManager(context: Context, private val workManager: (Context) -> Work
     private fun schedulingFailed(failure: Throwable) {
         // Background updates are optional; scheduler/ROM errors must not close the reader.
         runCatching { Diagnostics.record(app, Thread.currentThread(), failure) }
-        store.status(UpdatePhase.ERROR, "更新组件暂时不可用，可稍后重试或前往 GitHub 下载。")
+        store.status(UpdatePhase.ERROR, tr(R.string.ui_7e94f5697a))
     }
     fun start() = safelySchedule {
         if (state.value.autoCheck) {
@@ -43,7 +46,7 @@ class UpdateManager(context: Context, private val workManager: (Context) -> Work
     fun check() {
         if (state.value.phase in setOf(UpdatePhase.DOWNLOADING, UpdatePhase.READY)) return
         safelySchedule {
-            store.status(UpdatePhase.CHECKING, "正在检查 GitHub Release…")
+            store.status(UpdatePhase.CHECKING, tr(R.string.ui_3d7de4bc0a))
             val request = OneTimeWorkRequestBuilder<CheckUpdateWorker>().setInputData(workDataOf("manual" to true))
                 .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()).build()
             workManager(app).enqueueUniqueWork("update-check", ExistingWorkPolicy.KEEP, request)
@@ -89,7 +92,7 @@ class UpdateManager(context: Context, private val workManager: (Context) -> Work
                 .setConstraints(Constraints.Builder().setRequiredNetworkType(if (automatic && state.wifiOnly) NetworkType.UNMETERED else NetworkType.CONNECTED).build())
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.SECONDS)
                 .apply { if (automatic) addTag("update-automatic-download") }.build()
-            store.status(UpdatePhase.AVAILABLE, if (automatic && state.wifiOnly) "发现新版，等待 Wi-Fi 自动下载" else "发现新版，等待网络下载")
+            store.status(UpdatePhase.AVAILABLE, if (automatic && state.wifiOnly) tr(R.string.ui_8b2a48dda0) else tr(R.string.ui_285b6fd649))
             WorkManager.getInstance(context).enqueueUniqueWork("update-download", if (automatic) ExistingWorkPolicy.KEEP else ExistingWorkPolicy.REPLACE, request)
         }
     }

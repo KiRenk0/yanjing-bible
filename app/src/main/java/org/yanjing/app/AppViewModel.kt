@@ -1,5 +1,8 @@
 package org.yanjing.app
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +14,7 @@ import org.yanjing.app.core.*
 import org.yanjing.app.data.*
 import org.yanjing.app.update.UpdateManager
 
-enum class Appearance(val title: String) { SYSTEM("跟随系统"), LIGHT("浅色"), DARK("深色") }
+enum class Appearance(private val titleRes: Int) { SYSTEM(R.string.ui_217cfe7db1), LIGHT(R.string.ui_aa0819dfc4), DARK(R.string.ui_a6b75d0680); val title: String get() = tr(titleRes) }
 data class DetailState(val key: VerseKey, val version: BibleVersion, val comparisons: Map<BibleVersion, Verse?> = emptyMap(), val context: List<Verse> = emptyList(), val loading: Boolean = true, val error: String? = null)
 data class AppState(
     val version: BibleVersion = BibleVersion.CUVS,
@@ -82,7 +85,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 repository.setting("readerChapter", chapter.toString(), true)
                 searchNow(false)
             } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { mutable.update { it.copy(loading = false, error = "经文库加载失败，请重试。") } }
+            catch (_: Exception) { mutable.update { it.copy(loading = false, error = tr(R.string.ui_b8aa78a241)) } }
         }
     }
     fun query(value: String) {
@@ -128,7 +131,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 ensureActive()
                 mutable.update { it.copy(response = response, searching = false) }
             } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { mutable.update { it.copy(searching = false, response = SearchResponse(emptyList(),0,"检索失败，请重试。")) } }
+            catch (_: Exception) { mutable.update { it.copy(searching = false, response = SearchResponse(emptyList(),0,tr(R.string.ui_c9b2eeafab))) } }
         }
     }
     fun clearHistory() { repository.setHistory(emptyList()); mutable.update { it.copy(history = emptyList()) } }
@@ -164,7 +167,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
                 ensureActive()
                 mutable.update { it.copy(detail = DetailState(verse.key, version, comparisons, context, false)) }
             } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { mutable.update { it.copy(detail = it.detail?.copy(loading = false, error = "暂时无法加载，请关闭后重试。")) } }
+            catch (_: Exception) { mutable.update { it.copy(detail = it.detail?.copy(loading = false, error = tr(R.string.ui_cb3a0faf06))) } }
         }
     }
     fun closeDetail() { detailJob?.cancel(); mutable.update { it.copy(detail = null) } }

@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from localization/android.json. -->
+<resources>
+    <string name="app_name">盐筋</string>
+    <string name="ui_fd047ccb20">匹配</string>
+    <string name="ui_ce9b12499c">閱讀</string>
+    <string name="ui_60a53514eb">收藏</string>
+    <string name="ui_df3d58c7d8">設置</string>
+    <string name="ui_d6cc6b2d14">經文與出處已複製</string>
+    <string name="ui_7fa7b63b0e">已取消收藏</string>
+    <string name="ui_95c8e5c111">已收藏經文</string>
+    <string name="ui_c214cf65a4">%1$s閱讀</string>
+    <string name="ui_9385bfefca">我的收藏</string>
+    <string name="ui_72f30a9d58">讓日常的話，遇見經文</string>
+    <string name="ui_2ebb3b278e">讀一句，也讀它的上下文</string>
+    <string name="ui_933a71e100">留住觸動你的字句</string>
+    <string name="ui_cf307954e9">按你的習慣閱讀</string>
+    <string name="ui_ecdf24870a">選擇經典與版本</string>
+    <string name="ui_567a685cee">開源許可與經文來源</string>
+    <string name="ui_2c7bac0bff">正在讀取許可…</string>
+    <string name="ui_c0b3fbff51">完成</string>
+    <string name="ui_550c1bce78">把喜歡的經文留在這裡</string>
+    <string name="ui_66104bccc5">點擊經文卡片上的收藏圖標，即可離線保存經文與版本。</string>
+    <string name="ui_7c998110df">%1$s 條收藏</string>
+    <string name="ui_2c3262050b">分享經文</string>
+    <string name="ui_7f7c718640">\n穆罕默德·馬堅 · QuranEnc.com v1.0.2 · https://quranenc.com/zh/browse/chinese_makin</string>
+    <string name="ui_d8d06d6030">\n原文數據：chinese-poetry/chinese-poetry · MIT</string>
+    <string name="ui_96ca005377">\n原文數據：%1$s</string>
+    <string name="ui_1b5f2ef791">\nVulgata Clementina · Scrollmapper · 公有領域原文；分節對應依所附映射</string>
+    <string name="ui_b067b29f39">取消收藏 %1$s</string>
+    <string name="ui_715c8ae33d">收藏 %1$s</string>
+    <string name="ui_59b529978f">上下文與對照</string>
+    <string name="ui_912cc32cbb">複製 %1$s</string>
+    <string name="ui_6cb0240500">原文：%1$s · 編號依所附版本</string>
+    <string name="ui_3670a14237">拉丁文：Clementina · 73 卷 · 保留原版章號；中拉分節可能不同</string>
+    <string name="ui_5e46be85c6">論語原文：chinese-poetry · MIT · 章句依所附版本</string>
+    <string name="ui_967ab37610">阿拉伯文：Tanzil Project · Uthmani v1.1 · tanzil.net</string>
+    <string name="ui_b40b0fc33a">經義譯文：穆罕默德·馬堅 · QuranEnc.com v1.0.2</string>
+    <string name="ui_3f014bdf31">所有版本均已內置，可離線使用。</string>
+    <string name="ui_08e0264b24">%1$s · %2$s %3$s</string>
+    <string name="ui_0477dbbdee">段</string>
+    <string name="ui_ada40d1b8b">節</string>
+    <string name="ui_d1e7d184ff">聖經：5 套文本，含拉丁文。古蘭經：中阿雙語。儒家四書、佛教心經、金剛經與法華經、道家道德經與莊子均含完整原文，可用現代漢語檢索。</string>
+    <string name="ui_964663269e">用白話描述，或輸入 學而1</string>
+    <string name="ui_875f2290ac">用現代漢語描述意思，或輸入篇章</string>
+    <string name="ui_174fed9168">描述意思，或輸入 2:255</string>
+    <string name="ui_a84afb0ba0">用中文描述意思，或輸入出處</string>
+    <string name="ui_0002c0ee16">輸入想說的話、關鍵詞或出處</string>
+    <string name="ui_cb4e7a1ff5">收起搜索</string>
+    <string name="ui_b6f00afa65">清空搜索</string>
+    <string name="ui_2874151bd3">搜索設置</string>
+    <string name="ui_0e0ecd4c21">搜索“%1$s”</string>
+    <string name="ui_3cdd980817">在%1$s中查找</string>
+    <string name="ui_bdceb7de57">開始搜索</string>
+    <string name="ui_cac3809c50">查看匹配結果</string>
+    <string name="ui_3b5ac9baaa">最近搜索</string>
+    <string name="ui_1ef3de06b3">清空</string>
+    <string name="ui_fdcd6199e5">試試這些日常表達</string>
+    <string name="ui_c3e9c3c600">選擇模式</string>
+    <string name="ui_1e0a4f73f1">20 篇 · 512 章句 · 白話搜索文言原文</string>
+    <string name="ui_7c3ff9a0e4">114 章 · 6,236 節 · 中阿文本可對照</string>
+    <string name="ui_2e12854ada">正在打開離線經文庫…</string>
+    <string name="ui_40493fd844">經文庫暫時無法打開</string>
+    <string name="ui_b8784c8dd5">重試</string>
+    <string name="ui_16778b4cd1">正在按句意查找，首次使用需加載本地模型…</string>
+    <string name="ui_e7c66d9bed">暫時沒有找到</string>
+    <string name="ui_51f7877be4">試試更具體的白話描述，並啟用“句意搜索”或“日常表達”。也可以輸入“論語 1:1”或“學而篇”。</string>
+    <string name="ui_f6a5dbf26d">試試縮短句子、換個關鍵詞，或切換“日常表達”。也可以輸入“約 3:16”。</string>
+    <string name="ui_2ace33819d">相關經文 · %1$s 處候選</string>
+    <string name="ui_77fd8a97e7">找到 %1$s 處經文</string>
+    <string name="ui_cdab8699f7">結合原文與現代漢語檢索提示查找，結果展示文言原文。</string>
+    <string name="ui_27fff02351">按所選模式合併排序；句意基於馬堅中文經義譯本，展示所選文本。</string>
+    <string name="ui_b0dbc2f2b4">按所選模式合併排序；句意基於和合本檢索，展示當前版本原文。</string>
+    <string name="ui_530287e0b1">已合併去重，卡片標明命中模式。請結合上下文理解。</string>
+    <string name="ui_687a797e36">按表達與用詞的相關程度排序，請結合上下文理解。</string>
+    <string name="ui_5bedbb2bbb">精確匹配原文，簡繁體通用。</string>
+    <string name="ui_2b12eb9c73">已顯示前 %1$s 條。加入更具體的詞，可進一步縮小範圍。</string>
+    <string name="ui_b4e019b615">搜索模式</string>
+    <string name="ui_a6b6b983b9">可多選，同時查找併合並重復經文。</string>
+    <string name="ui_afeebd4e36">請至少選擇一種搜索模式。</string>
+    <string name="ui_c853617881">句意搜索完全離線，理解相關不等於經文原意。</string>
+    <string name="ui_63c73c4730">應用</string>
+    <string name="ui_2cd0f3be87">取消</string>
+    <string name="ui_a70b1ce594">用今天的話，\n找到論語原句。</string>
+    <string name="ui_69cb65a50b">用今天的話，\n找到經典原句。</string>
+    <string name="ui_2db8d1d045">你想說的話，\n經文裡也許有。</string>
+    <string name="ui_24bdf2a299">用現代漢語描述意思，讀孔子與弟子的文言原文。</string>
+    <string name="ui_ba508d5b85">在《%1$s》中查找意思相近的文言原文。</string>
+    <string name="ui_c8c8e88dad">在古蘭經中查找經義，讀中文譯文與阿拉伯文。</string>
+    <string name="ui_afc8786371">把一句日常表達，換成一次經文探索。</string>
+    <string name="ui_c4da9d52e6">完全離線 · 無需登錄</string>
+    <string name="ui_0641ada9bf">從一句話開始</string>
+    <string name="ui_a1571c3647">可輸入“學習要結合思考”“論語 2:15”或“學而篇”。現代檢索釋義只輔助查找；章句編號依所附版本，其他版本分章可能不同。</string>
+    <string name="ui_bca6e7c942">檢索提示輔助白話查找，不是完整翻譯或權威註疏。篇章和段落編號依所附版本。</string>
+    <string name="ui_3f6c6be271">可輸入 2:255、古蘭經 94:5-6 或開端章。中文內容是經義譯文，句意相近不代表經文原意。</string>
+    <string name="ui_d3d5f013f1">也支持出處定位，例如：約 3:16、詩篇 23、John 4:7。表達關聯僅輔助查找，點擊結果可讀上下文和版本對照。</string>
+    <string name="ui_5e50d51846">上一篇</string>
+    <string name="ui_393f2a5120">上一章</string>
+    <string name="ui_673ee5a5a4">下一篇</string>
+    <string name="ui_9443994bc3">下一章</string>
+    <string name="ui_573afa897f">無法加載經文</string>
+    <string name="ui_c8886dc3da">論語·%1$s</string>
+    <string name="ui_d8fe21c999">古蘭經 %1$s</string>
+    <string name="ui_ca8b90f98d">點擊章句，可收藏、複製並查看檢索釋義與上下文。</string>
+    <string name="ui_29d3c74283">點擊任意一節，可收藏、複製並對照其他版本。</string>
+    <string name="ui_a8b275439c">%1$s · 第 %2$s 章</string>
+    <string name="ui_94f19500d5">%1$s · 第 %2$s 章</string>
+    <string name="ui_bd541337af">選擇%1$s篇章</string>
+    <string name="ui_3efc94a541">%1$s 段</string>
+    <string name="ui_99c63124e6">選擇論語篇章</string>
+    <string name="ui_222425afab">%1$s 章句</string>
+    <string name="ui_9b4d803f44">選擇古蘭經章節</string>
+    <string name="ui_4c1e9455db">%1$s 節</string>
+    <string name="ui_1a138c26f1">選擇書卷與章節</string>
+    <string name="ui_f9c7acfecb">舊約</string>
+    <string name="ui_a18281e062">新約</string>
+    <string name="ui_e0bb0e98a0">第 %1$s 章</string>
+    <string name="ui_54d9bf6f75">日常表達 × 經文探索</string>
+    <string name="ui_5e6cd637d3">%1$s · 離線檢索 · 無廣告</string>
+    <string name="ui_4c3fe66dba">顯示與閱讀</string>
+    <string name="ui_bc99124901">動態配色</string>
+    <string name="ui_13383b2187">使用系統壁紙提供的 Material 色彩</string>
+    <string name="ui_c700f88f57">Android 12 及以上可用</string>
+    <string name="ui_cbbbca43b0">經文字號 · %1$s sp</string>
+    <string name="ui_11d393ce3c">經文字號</string>
+    <string name="ui_b2111b4ec2">你的話是我腳前的燈，是我路上的光。</string>
+    <string name="ui_5dd460e68f">詩篇 119:105 · 字體也隨系統設置縮放</string>
+    <string name="ui_914f6a1974">經文與數據</string>
+    <string name="ui_da29379b71">內置經典與版本</string>
+    <string name="ui_5b75f44647">聖經含拉丁文 · 古蘭經中阿雙語 · 儒釋道八部經典</string>
+    <string name="ui_02c0ab8fbd">清空搜索歷史</string>
+    <string name="ui_fc4a87fa8d">%1$s 條記錄 · 只保存在本機</string>
+    <string name="ui_5aad762f28">查看所用組件、文本來源與授權說明</string>
+    <string name="ui_8a36e4082a">無法導出診斷，請稍後重試</string>
+    <string name="ui_5326ad11c1">正在準備診斷…</string>
+    <string name="ui_a1fa288e54">導出本機診斷</string>
+    <string name="ui_f623485bd2">包含設備和崩潰信息，由你選擇分享；不會自動上傳</string>
+    <string name="ui_2cc61c2dc1">關於匹配</string>
+    <string name="ui_f91cd10a7e">句意搜索使用本地 BGE 模型，各經典獨立檢索；可與日常表達、原文搜索同時啟用。儒釋道結合原文與單獨編寫的現代檢索提示，展示文言原文。拉丁文按所附分節映射關聯中文聖經；無對應的部分仍可閱讀和搜索原文。結果輔助查找，請結合上下文理解。</string>
+    <string name="ui_d0d7217ee0">模型、經文、收藏和查詢均在本機。聯網僅用於版本檢查和安裝包下載，不發送查詢、收藏或歷史。</string>
+    <string name="ui_5fb94d43ef">清空搜索歷史？</string>
+    <string name="ui_f423d22508">將刪除本機的 %1$s 條搜索記錄。</string>
+    <string name="ui_cebbc1f61c">版本與更新</string>
+    <string name="ui_5a51b05996">當前版本 %1$s</string>
+    <string name="ui_bccda3b1ca">從本項目 GitHub Release 獲取更新</string>
+    <string name="ui_8917b3c354">上次檢查：%1$s</string>
+    <string name="ui_7f68ebad19">檢查更新</string>
+    <string name="ui_0ca906da49">新版本 %1$s · %2$s MB</string>
+    <string name="ui_e005bc1767">立即下載更新</string>
+    <string name="ui_c42a3dd9c2">自動檢查更新</string>
+    <string name="ui_173d0d252f">啟動時和後臺定期檢查新版本</string>
+    <string name="ui_7392248edb">自動下載更新</string>
+    <string name="ui_85786e444b">發現新版本後自動下載，安裝前由你確認</string>
+    <string name="ui_3a3fb31bf4">僅 Wi-Fi 自動下載</string>
+    <string name="ui_526fa83137">手動點“立即下載”可使用當前網絡</string>
+    <string name="ui_d9f41c12c3">下載線路</string>
+    <string name="ui_588a1d210d">直連受限時可切換鏡像，下載後核對應用簽名</string>
+    <string name="ui_c8de69e34e">發現新版本 %1$s</string>
+    <string name="ui_63fc3ceccf">功能改進與問題修復</string>
+    <string name="ui_0d326909fe">安裝包 %1$s MB</string>
+    <string name="ui_e3f33e0777">後臺下載</string>
+    <string name="ui_b088e89d54">立即下載</string>
+    <string name="ui_9d2ca26128">稍後</string>
+    <string name="ui_bbd85c1dc1">允許後返回此處，再點“安裝更新”。</string>
+    <string name="ui_dc08150198">無法打開安裝程序，請重試</string>
+    <string name="ui_84717e2cad">正在校驗…</string>
+    <string name="ui_7a6bafc9c8">安裝更新</string>
+    <string name="ui_ab752a7650">關閉經文詳情</string>
+    <string name="ui_d30cd3b64f">原文與檢索釋義</string>
+    <string name="ui_18f35c09c9">版本對照</string>
+    <string name="ui_6fc38ef360">上下文</string>
+    <string name="ui_d1d044826a">加載失敗</string>
+    <string name="ui_bc8c5659e0">檢索釋義為本項目編寫的白話查找提示，不是完整翻譯或權威註疏。章句編號依所附版本。</string>
+    <string name="ui_ad84f54382">同一出處的不同文本。部分版本分節方式可能不同。</string>
+    <string name="ui_6f04186a09">取消收藏%1$s</string>
+    <string name="ui_6069913efc">收藏%1$s</string>
+    <string name="ui_c56e3871a7">此版對應 %1$s</string>
+    <string name="ui_abb0fd4d63">此版本未附對應分節，請閱讀當前原文和上下文。</string>
+    <string name="ui_116add13fa">現代漢語檢索釋義</string>
+    <string name="ui_7e564575eb">分享</string>
+    <string name="ui_63d90d9773">複製</string>
+    <string name="ui_b6d0d028d7">閱讀整篇</string>
+    <string name="ui_3012027875">閱讀整章</string>
+    <string name="ui_2a6bb329fb">%1$s:%2$s%3$s</string>
+    <string name="ui_073efc46ad"> · 當前經文</string>
+    <string name="ui_2ab1425887">%1$s · 啟動恢復</string>
+    <string name="ui_2bb608ca4c">上次啟動未完成。可以重試，或關閉動態配色和自動檢查更新後進入。收藏、歷史和閱讀進度會保留。</string>
+    <string name="ui_47d5cd3e98">重試啟動</string>
+    <string name="ui_466dc18f7d">兼容啟動</string>
+    <string name="ui_6cf56c400b">暫時無法導出，請稍後重試。</string>
+    <string name="ui_db987f1de5">診斷僅包含設備信息、異常堆棧和系統退出記錄；由你選擇是否分享。</string>
+    <string name="ui_217cfe7db1">跟隨系統</string>
+    <string name="ui_aa0819dfc4">淺色</string>
+    <string name="ui_a6b75d0680">深色</string>
+    <string name="ui_b8aa78a241">經文庫加載失敗，請重試。</string>
+    <string name="ui_c9b2eeafab">檢索失敗，請重試。</string>
+    <string name="ui_cb3a0faf06">暫時無法加載，請關閉後重試。</string>
+    <string name="ui_0e2cd5747f">聖經</string>
+    <string name="ui_606dbd6b27">古蘭經</string>
+    <string name="ui_c51146217b">儒家</string>
+    <string name="ui_1363ec4228">佛教</string>
+    <string name="ui_d1e21b634c">道家</string>
+    <string name="ui_baace69a71">和合本·簡體</string>
+    <string name="ui_7b13bab106">白話文 · 簡體轉換</string>
+    <string name="ui_d23d957ed9">和合本·繁體</string>
+    <string name="ui_2f5dcf76af">白話文 · 繁體原文</string>
+    <string name="ui_bf20918500">文理和合本</string>
+    <string name="ui_fa7e933721">文言文 · 繁體</string>
+    <string name="ui_fd94c82c5f">King James Version</string>
+    <string name="ui_cfd9ce64d1">English · 1769</string>
+    <string name="ui_246ccd291a">Vulgata Clementina</string>
+    <string name="ui_eced9bec0a">拉丁文 · 73 卷 · 原版分節</string>
+    <string name="ui_edf5851580">古蘭經·馬堅譯本</string>
+    <string name="ui_d931243865">中文經義譯本 · QuranEnc</string>
+    <string name="ui_d76bdeaf42">古蘭經·阿拉伯文</string>
+    <string name="ui_e7c6bcd6de">Tanzil Uthmani · 1.1</string>
+    <string name="ui_d119fee8ed">論語·文言原文</string>
+    <string name="ui_0d068ebbea">二十篇 · 現代漢語檢索</string>
+    <string name="ui_0d8bb379d0">大學·文言原文</string>
+    <string name="ui_544227b298">全文 · 所附版本段落編號</string>
+    <string name="ui_4bb73f988e">中庸·文言原文</string>
+    <string name="ui_6069e51f61">孟子·文言原文</string>
+    <string name="ui_83f279fc4d">十四篇 · 現代漢語檢索</string>
+    <string name="ui_af70da5ec9">心經·玄奘譯本</string>
+    <string name="ui_cff0c6b7e1">文言原文 · 全文</string>
+    <string name="ui_91811727af">金剛經·鳩摩羅什譯本</string>
+    <string name="ui_6c34cc91f4">文言原文 · 三十二分</string>
+    <string name="ui_482fc29a96">法華經·鳩摩羅什譯本</string>
+    <string name="ui_b4d5e67994">妙法蓮華經 · 全二十八品</string>
+    <string name="ui_758969d38e">道德經·文言原文</string>
+    <string name="ui_2744c4fa16">八十一章 · 現代漢語檢索</string>
+    <string name="ui_2d6696e0b7">莊子·文言原文</string>
+    <string name="ui_195c12a441">內外雜篇 · 全三十三篇</string>
+    <string name="ui_948d1d6892">句意搜索</string>
+    <string name="ui_83c7b2c9ca">理解中文句子的意思，即使用詞不同也查找相關經文</string>
+    <string name="ui_b9347c5e68">日常表達</string>
+    <string name="ui_13a8f0257f">結合常用說法和相近用詞，查找對應經文</string>
+    <string name="ui_cda0204d03">原文搜索</string>
+    <string name="ui_ab41007196">查找包含輸入內容的原文，支持簡繁體</string>
+    <string name="ui_67d66ee478">全本聖經</string>
+    <string name="ui_7bc94376a0">請輸入 200 字以內的內容。</string>
+    <string name="ui_55df8c5a87">此版本中沒有這個章節範圍，請檢查章號和節號。</string>
+    <string name="ui_bc826a751a">出處定位 · 此版合併分節</string>
+    <string name="ui_6034acde0c">出處定位</string>
+    <string name="ui_36231598c1">請輸入文字、關鍵詞或經文出處。</string>
+    <string name="ui_c28607abce">句意搜索需要語義檢索組件。</string>
+    <string name="ui_e51850cd4b">原文包含關鍵詞</string>
+    <string name="ui_2ded27fb5c">常用表達關聯</string>
+    <string name="ui_a774c7d400">原文與檢索釋義用詞相近</string>
+    <string name="ui_ac0879712d">用詞相近</string>
+    <string name="ui_42f9253143">%1$s的本地組件無法加載</string>
+    <string name="ui_abb884d68e">%1$s暫時不可用</string>
+    <string name="ui_48df8db6cd">，請重試。</string>
+    <string name="ui_6a03e11949">。當前結果來自%1$s。</string>
+    <string name="ui_5adfc173a2">，已合併其他模式的結果。</string>
+    <string name="ui_ac804358b8">句意相近</string>
+    <string name="ui_0a42d9f03d">未找到足夠相關的原文，請換一個更具體的說法。</string>
+    <string name="ui_fa368c4403">安裝包完整性校驗失敗</string>
+    <string name="ui_5b7fc6d216">不是有效的 Android 安裝包</string>
+    <string name="ui_4ec1b81c9d">安裝包身份與更新信息不一致</string>
+    <string name="ui_e7f99a7cca">該版本無需安裝</string>
+    <string name="ui_383c7c6ed3">安裝包簽名與當前應用不同，已拒絕安裝</string>
+    <string name="ui_7e94f5697a">更新組件暫時不可用，可稍後重試或前往 GitHub 下載。</string>
+    <string name="ui_3d7de4bc0a">正在檢查 GitHub Release…</string>
+    <string name="ui_8b2a48dda0">發現新版，等待 Wi-Fi 自動下載</string>
+    <string name="ui_285b6fd649">發現新版，等待網絡下載</string>
+    <string name="ui_f205bdc28b">自動切換</string>
+    <string name="ui_294e0dedc9">鏡像優先</string>
+    <string name="ui_52f5637dd3">GitHub 直連</string>
+    <string name="ui_e1e2b19f31">更新地址不屬於本項目</string>
+    <string name="ui_922ad93ddf">更新連接必須使用 HTTPS</string>
+    <string name="ui_5778435246">重定向缺少地址</string>
+    <string name="ui_991f77e8b0">重定向次數過多</string>
+    <string name="ui_ec51185064">更新信息過大</string>
+    <string name="ui_a9be422d14">斷點範圍不一致</string>
+    <string name="ui_409bebbcf0">下載長度異常</string>
+    <string name="ui_461c153672">下載超過聲明大小</string>
+    <string name="ui_7d5d0aacb3">下載尚未完成</string>
+    <string name="ui_b783743f82">已是最新版本 %1$s</string>
+    <string name="ui_65c34b0c40">新版需要 Android API %1$s，當前系統暫不支持</string>
+    <string name="ui_5df389145a">暫時無法檢查更新，請換條線路或稍後重試</string>
+    <string name="ui_9fbfea7c70">正在下載 %1$s…</string>
+    <string name="ui_5619ce7c4a">更新已下載並通過簽名校驗</string>
+    <string name="ui_bf4a2d3eff">無法保存更新</string>
+    <string name="ui_e47e41d111">下載中斷，等待網絡後自動重試</string>
+    <string name="ui_7697849586">下載未完成，可切換線路後重試</string>
+    <string name="ui_a1688b2a54">下載已暫停，聯網後可繼續</string>
+    <string name="settings_language">界面語言</string>
+    <string name="language_system">跟隨系統</string>
+    <string name="language_hint">只更改界面語言；經典原文和文本版本可獨立選擇。</string>
+    <string name="update_status_generic">更新狀態已變更，請重新檢查以查看當前語言的詳情。</string>
+    <string name="startup_recovery_shortcut">啟動恢復與診斷</string>
+    <string-array name="book_names">
+        <item>創世記</item>
+        <item>出埃及記</item>
+        <item>利未記</item>
+        <item>民數記</item>
+        <item>申命記</item>
+        <item>約書亞記</item>
+        <item>士師記</item>
+        <item>路得記</item>
+        <item>撒母耳記上</item>
+        <item>撒母耳記下</item>
+        <item>列王紀上</item>
+        <item>列王紀下</item>
+        <item>歷代志上</item>
+        <item>歷代志下</item>
+        <item>以斯拉記</item>
+        <item>尼希米記</item>
+        <item>以斯帖記</item>
+        <item>約伯記</item>
+        <item>詩篇</item>
+        <item>箴言</item>
+        <item>傳道書</item>
+        <item>雅歌</item>
+        <item>以賽亞書</item>
+        <item>耶利米書</item>
+        <item>耶利米哀歌</item>
+        <item>以西結書</item>
+        <item>但以理書</item>
+        <item>何西阿書</item>
+        <item>約珥書</item>
+        <item>阿摩司書</item>
+        <item>俄巴底亞書</item>
+        <item>約拿書</item>
+        <item>彌迦書</item>
+        <item>那鴻書</item>
+        <item>哈巴谷書</item>
+        <item>西番雅書</item>
+        <item>哈該書</item>
+        <item>撒迦利亞書</item>
+        <item>瑪拉基書</item>
+        <item>馬太福音</item>
+        <item>馬可福音</item>
+        <item>路加福音</item>
+        <item>約翰福音</item>
+        <item>使徒行傳</item>
+        <item>羅馬書</item>
+        <item>哥林多前書</item>
+        <item>哥林多後書</item>
+        <item>加拉太書</item>
+        <item>以弗所書</item>
+        <item>腓立比書</item>
+        <item>歌羅西書</item>
+        <item>帖撒羅尼迦前書</item>
+        <item>帖撒羅尼迦後書</item>
+        <item>提摩太前書</item>
+        <item>提摩太後書</item>
+        <item>提多書</item>
+        <item>腓利門書</item>
+        <item>希伯來書</item>
+        <item>雅各書</item>
+        <item>彼得前書</item>
+        <item>彼得後書</item>
+        <item>約翰一書</item>
+        <item>約翰二書</item>
+        <item>約翰三書</item>
+        <item>猶大書</item>
+        <item>啟示錄</item>
+    </string-array>
+</resources>

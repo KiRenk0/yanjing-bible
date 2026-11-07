@@ -1,28 +1,33 @@
 package org.yanjing.app.core
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import java.text.Normalizer
 import java.util.Locale
 
-enum class Scripture(val title: String) { BIBLE("圣经"), QURAN("古兰经"), ANALECTS("儒家"), BUDDHISM("佛教"), TAOISM("道家") }
+enum class Scripture(private val titleRes: Int) { BIBLE(R.string.ui_0e2cd5747f), QURAN(R.string.ui_606dbd6b27), ANALECTS(R.string.ui_c51146217b), BUDDHISM(R.string.ui_1363ec4228), TAOISM(R.string.ui_d1e21b634c); val title: String get() = tr(titleRes) }
 
-enum class BibleVersion(val id: String, val title: String, val description: String, val scripture: Scripture = Scripture.BIBLE) {
-    CUVS("cuvs", "和合本·简体", "白话文 · 简体转换"),
-    CUVT("cuvt", "和合本·繁體", "白話文 · 繁體原文"),
-    WENLI("wenli", "文理和合本", "文言文 · 繁體"),
-    KJV("kjv", "King James Version", "English · 1769"),
-    VULGATE("vulgate", "Vulgata Clementina", "拉丁文 · 73 卷 · 原版分节"),
-    QURAN_ZH("quran_zh", "古兰经·马坚译本", "中文经义译本 · QuranEnc", Scripture.QURAN),
-    QURAN_AR("quran_ar", "古兰经·阿拉伯文", "Tanzil Uthmani · 1.1", Scripture.QURAN),
-    ANALECTS("analects", "论语·文言原文", "二十篇 · 现代汉语检索", Scripture.ANALECTS),
-    GREAT_LEARNING("daxue", "大学·文言原文", "全文 · 所附版本段落编号", Scripture.ANALECTS),
-    DOCTRINE_MEAN("zhongyong", "中庸·文言原文", "全文 · 所附版本段落编号", Scripture.ANALECTS),
-    MENCIUS("mengzi", "孟子·文言原文", "十四篇 · 现代汉语检索", Scripture.ANALECTS),
-    HEART_SUTRA("heart_sutra", "心经·玄奘译本", "文言原文 · 全文", Scripture.BUDDHISM),
-    DIAMOND_SUTRA("diamond_sutra", "金刚经·鸠摩罗什译本", "文言原文 · 三十二分", Scripture.BUDDHISM),
-    LOTUS_SUTRA("lotus_sutra", "法华经·鸠摩罗什译本", "妙法莲华经 · 全二十八品", Scripture.BUDDHISM),
-    TAO_TE_CHING("tao_te_ching", "道德经·文言原文", "八十一章 · 现代汉语检索", Scripture.TAOISM),
-    ZHUANGZI("zhuangzi", "庄子·文言原文", "内外杂篇 · 全三十三篇", Scripture.TAOISM);
+enum class BibleVersion(val id: String, private val titleRes: Int, private val descriptionRes: Int, val scripture: Scripture = Scripture.BIBLE) {
+    CUVS("cuvs", R.string.ui_baace69a71, R.string.ui_7b13bab106),
+    CUVT("cuvt", R.string.ui_d23d957ed9, R.string.ui_2f5dcf76af),
+    WENLI("wenli", R.string.ui_bf20918500, R.string.ui_fa7e933721),
+    KJV("kjv", R.string.ui_fd94c82c5f, R.string.ui_cfd9ce64d1),
+    VULGATE("vulgate", R.string.ui_246ccd291a, R.string.ui_eced9bec0a),
+    QURAN_ZH("quran_zh", R.string.ui_edf5851580, R.string.ui_d931243865, Scripture.QURAN),
+    QURAN_AR("quran_ar", R.string.ui_d76bdeaf42, R.string.ui_e7c6bcd6de, Scripture.QURAN),
+    ANALECTS("analects", R.string.ui_d119fee8ed, R.string.ui_0d068ebbea, Scripture.ANALECTS),
+    GREAT_LEARNING("daxue", R.string.ui_0d8bb379d0, R.string.ui_544227b298, Scripture.ANALECTS),
+    DOCTRINE_MEAN("zhongyong", R.string.ui_4bb73f988e, R.string.ui_544227b298, Scripture.ANALECTS),
+    MENCIUS("mengzi", R.string.ui_6069e51f61, R.string.ui_83f279fc4d, Scripture.ANALECTS),
+    HEART_SUTRA("heart_sutra", R.string.ui_af70da5ec9, R.string.ui_cff0c6b7e1, Scripture.BUDDHISM),
+    DIAMOND_SUTRA("diamond_sutra", R.string.ui_91811727af, R.string.ui_6c34cc91f4, Scripture.BUDDHISM),
+    LOTUS_SUTRA("lotus_sutra", R.string.ui_482fc29a96, R.string.ui_b4d5e67994, Scripture.BUDDHISM),
+    TAO_TE_CHING("tao_te_ching", R.string.ui_758969d38e, R.string.ui_2744c4fa16, Scripture.TAOISM),
+    ZHUANGZI("zhuangzi", R.string.ui_2d6696e0b7, R.string.ui_195c12a441, Scripture.TAOISM);
 
+    val title: String get() = tr(titleRes)
+    val description: String get() = tr(descriptionRes)
     val isQuran: Boolean get() = scripture == Scripture.QURAN
     val isAnalects: Boolean get() = this == ANALECTS
     val isClassical: Boolean get() = scripture !in listOf(Scripture.BIBLE,Scripture.QURAN)
@@ -41,7 +46,7 @@ data class VerseKey(val book: Int, val chapter: Int, val verse: Int) {
         book == Analects.BOOK -> "论语·${Analects.chapterName(chapter)} $chapter:$verse"
         Classics.forBook(book) != null -> Classics.forBook(book)!!.let { "${it.title}·${it.names.getOrNull(chapter-1).orEmpty()} $chapter:$verse" }
         book in 101..173 -> "${Vulgate.bookName(book)}〔拉丁文〕 $chapter:$verse"
-        else -> "${Books.names[book - 1]} $chapter:$verse"
+        else -> "${org.yanjing.app.i18n.I18n.bookName(book)} $chapter:$verse"
     }
     companion object {
         fun decode(raw: String): VerseKey? {
@@ -61,12 +66,15 @@ data class VerseKey(val book: Int, val chapter: Int, val verse: Int) {
 
 data class Verse(val key: VerseKey, val text: String, val normalized: String, val notes: String = "", val searchGloss: String = "", val canonicalKeys: List<VerseKey> = emptyList())
 data class SearchHit(val verse: Verse, val score: Double, val reason: String, val matchedModes: Set<SearchMode> = emptySet())
-enum class SearchMode(val title: String, val description: String) {
-    SEMANTIC("句意搜索", "理解中文句子的意思，即使用词不同也查找相关经文"),
-    EXPRESSION("日常表达", "结合常用说法和相近用词，查找对应经文"),
-    KEYWORD("原文搜索", "查找包含输入内容的原文，支持简繁体")
+enum class SearchMode(private val titleRes: Int, private val descriptionRes: Int) {
+    SEMANTIC(R.string.ui_948d1d6892, R.string.ui_83c7b2c9ca),
+    EXPRESSION(R.string.ui_b9347c5e68, R.string.ui_13a8f0257f),
+    KEYWORD(R.string.ui_cda0204d03, R.string.ui_ab41007196);
+    val title: String get() = tr(titleRes)
+    val description: String get() = tr(descriptionRes)
 }
-enum class Testament(val title: String) { ALL("全本圣经"), OLD("旧约"), NEW("新约");
+enum class Testament(private val titleRes: Int) { ALL(R.string.ui_67d66ee478), OLD(R.string.ui_f9c7acfecb), NEW(R.string.ui_a18281e062);
+    val title: String get() = tr(titleRes)
     fun accepts(book: Int) = this == ALL || (this == OLD && (book in 1..39 || book in 101..146)) || (this == NEW && (book in 40..66 || book in 147..173))
 }
 data class SearchResponse(val hits: List<SearchHit>, val total: Int, val message: String? = null)

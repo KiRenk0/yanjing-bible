@@ -1,5 +1,8 @@
 package org.yanjing.app.ui
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import android.os.Build
 import android.app.Activity
 import android.graphics.Color

@@ -1,5 +1,8 @@
 package org.yanjing.app.data
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import android.content.Context
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
@@ -40,9 +43,9 @@ class SemanticRepository(context: Context, private val normalizer: TextNormalize
                 accepts = { testament.accepts(it.book) && engine.verse(it) != null }, checkpoint = { job.ensureActive() }, include = seeds)
             val ranked = retrieval.ranker.rank(raw,candidates,limit)
             val hits = ranked.flatMap { candidate ->
-                engine.versesForSemanticKey(candidate.key).map { SearchHit(it, candidate.score, "句意相近", setOf(SearchMode.SEMANTIC)) }
+                engine.versesForSemanticKey(candidate.key).map { SearchHit(it, candidate.score, tr(R.string.ui_ac804358b8), setOf(SearchMode.SEMANTIC)) }
             }.distinctBy { it.verse.key }.take(limit)
-            SearchResponse(hits, hits.size, if (hits.isEmpty()) "未找到足够相关的原文，请换一个更具体的说法。" else null)
+            SearchResponse(hits, hits.size, if (hits.isEmpty()) tr(R.string.ui_0a42d9f03d) else null)
         }
     }
     fun close() {

@@ -15,6 +15,9 @@ import org.yanjing.app.ui.YanJingApp
 import org.yanjing.app.ui.YanJingTheme
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(org.yanjing.app.i18n.I18n.wrap(base))
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         // Also cover existing desktop shortcuts pointing directly at this component.
         StartupRecovery(applicationContext).begin()

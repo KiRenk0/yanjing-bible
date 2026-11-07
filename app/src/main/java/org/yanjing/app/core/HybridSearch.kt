@@ -1,5 +1,8 @@
 package org.yanjing.app.core
 
+import org.yanjing.app.i18n.tr
+import org.yanjing.app.R
+
 import kotlinx.coroutines.CancellationException
 
 /** Reciprocal rank fusion combines unlike scores without treating them as probabilities. */
@@ -9,9 +12,9 @@ class HybridSearch(
 ) {
     suspend fun search(raw: String, modes: Set<SearchMode>, engine: SearchEngine, testament: Testament, limit: Int = 60): SearchResponse {
         if (raw.isBlank()) return SearchResponse(emptyList(), 0)
-        if (raw.length > 200) return SearchResponse(emptyList(), 0, "请输入 200 字以内的内容。")
-        if (normalizer.normalize(raw).isEmpty()) return SearchResponse(emptyList(), 0, "请输入文字、关键词或经文出处。")
-        if (modes.isEmpty()) return SearchResponse(emptyList(), 0, "请至少选择一种搜索模式。")
+        if (raw.length > 200) return SearchResponse(emptyList(), 0, tr(R.string.ui_7bc94376a0))
+        if (normalizer.normalize(raw).isEmpty()) return SearchResponse(emptyList(), 0, tr(R.string.ui_36231598c1))
+        if (modes.isEmpty()) return SearchResponse(emptyList(), 0, tr(R.string.ui_afeebd4e36))
         if (ReferenceParser.parse(raw, normalizer, engine.version.scripture, engine.version) != null) return engine.search(raw, SearchMode.KEYWORD, testament, limit)
         val responses = mutableListOf<Pair<SearchMode, SearchResponse>>()
         val failures = mutableListOf<String>()
@@ -22,14 +25,14 @@ class HybridSearch(
                     else engine.search(raw, mode, testament, limit)
                 responses += mode to response
             } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: LinkageError) { failures += "${mode.title}的本地组件无法加载" }
-            catch (_: Exception) { failures += "${mode.title}暂时不可用" }
+            catch (_: LinkageError) { failures += tr(R.string.ui_42f9253143, mode.title) }
+            catch (_: Exception) { failures += tr(R.string.ui_abb884d68e, mode.title) }
         }
-        if (responses.isEmpty()) return SearchResponse(emptyList(), 0, failures.joinToString("；") + "，请重试。")
+        if (responses.isEmpty()) return SearchResponse(emptyList(), 0, failures.joinToString("；") + tr(R.string.ui_48df8db6cd))
         if (responses.size == 1) {
             val (mode, response) = responses.single()
             return response.copy(hits = response.hits.map { it.copy(matchedModes = setOf(mode)) },
-                message = if (failures.isEmpty()) response.message else failures.joinToString("；") + "。当前结果来自${mode.title}。")
+                message = if (failures.isEmpty()) response.message else failures.joinToString("；") + tr(R.string.ui_6a03e11949, mode.title))
         }
         val exactExpressionKeys = ExpressionLexicon.forVersion(engine.version).filter { group -> group.phrases.any { normalizer.normalize(it) == normalizer.normalize(raw) } }
             .flatMap { it.references }.map { VerseMappings.resolve(engine.version, it) }.toSet()
@@ -41,7 +44,7 @@ class HybridSearch(
             // A weak expression overlap must not reintroduce candidates rejected by semantic search.
             // If the native service failed, the independent expression fallback remains available.
             if (mode == SearchMode.EXPRESSION && semanticKeys != null && hit.verse.key !in semanticKeys &&
-                hit.reason !in setOf("常用表达关联", "原文包含关键词")) return@forEachIndexed
+                hit.reason !in setOf(tr(R.string.ui_2ded27fb5c), tr(R.string.ui_e51850cd4b))) return@forEachIndexed
             val item = fused.getOrPut(hit.verse.key) { Fused(hit.verse, 0.0, linkedSetOf()) }
             val weight = when (mode) { SearchMode.SEMANTIC -> 1.2; SearchMode.KEYWORD -> 1.1; else -> 1.0 }
             item.score += weight / (40.0 + rank + 1)
@@ -57,7 +60,7 @@ class HybridSearch(
         val hits = fused.values.sortedWith(compareByDescending<Fused> { it.priority }.thenByDescending(::combined)).take(limit).map { item ->
             SearchHit(item.verse, combined(item), item.modes.sortedBy { it.ordinal }.joinToString(" · ") { it.title }, item.modes.toSet())
         }
-        return SearchResponse(hits, fused.size, failures.takeIf { it.isNotEmpty() }?.joinToString("；")?.plus("，已合并其他模式的结果。")
+        return SearchResponse(hits, fused.size, failures.takeIf { it.isNotEmpty() }?.joinToString("；")?.plus(tr(R.string.ui_5adfc173a2))
             ?: if (hits.isEmpty()) semanticResponse?.message else null)
     }
 }
