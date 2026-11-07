@@ -1,0 +1,7 @@
+{
+  "unit_chapter": ["chapters", "章"], "unit_section": ["sections", "分"], "unit_lotus": ["chapters", "品"], "unit_classic": ["chapters", "篇"],
+  "classic_summary": ["%1$s %2$s · %3$s passages · Search classical text in modern Chinese", "%1$s %2$s · %3$s 段 · 现代汉语搜索文言原文"],
+  "chapter_with_title": ["Chapter %1$s · %3$s", "第 %1$s %2$s · %3$s"],
+  "chapter_number": ["Chapter %1$s", "第 %1$s 章"],
+  "latin_reference": ["%1$s [Latin] %2$s:%3$s", "%1$s〔拉丁文〕 %2$s:%3$s"]
+}

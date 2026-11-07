@@ -1,5 +1,5 @@
 {
-  "app.name": ["YanJing", "盐筋"],
+  "app.name": ["YanJing", "盐筋", "盐筋"],
   "tab.search": ["Search", "搜索"], "tab.read": ["Read", "阅读"], "tab.saved": ["Saved", "收藏"], "tab.settings": ["Settings", "设置"],
   "done": ["Done", "完成"], "cancel": ["Cancel", "取消"], "retry": ["Retry", "重试"], "copy": ["Copy", "复制"], "share": ["Share", "分享"], "selected": ["Selected", "已选择"], "saved": ["Saved", "已收藏"], "loading": ["Loading offline text…", "正在读取离线文本…"],
   "save.add": ["Save passage", "收藏经文"], "save.remove": ["Remove bookmark", "取消收藏"], "saved.empty": ["Keep meaningful words", "留住触动你的字句"], "saved.hint": ["Tap the bookmark on a passage to keep the original text and its reference offline.", "点击经文旁的收藏图标，即可在本机保存原文与出处。"],

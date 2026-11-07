@@ -44,7 +44,7 @@ final class LibraryTests: XCTestCase {
     func testTokenizerMatchesAndroidFixturesExactly() throws {
         struct Fixture: Decodable { let text: String; let ids: [Int64] }
         let fixtures = try JSONDecoder().decode([Fixture].self, from: Data(contentsOf: root.appendingPathComponent("tokenizer-fixtures.json")))
-        let tokenizer = try WordPieceTokenizer(vocabulary: String(contentsOf: root.appendingPathComponent("semantic/vocab.txt"), encoding: .utf8).components(separatedBy: .newlines))
+        let tokenizer = try WordPieceTokenizer(vocabulary: String(contentsOf: root.appendingPathComponent("semantic/vocab.txt"), encoding: .utf8).components(separatedBy: "\n"))
         for fixture in fixtures { XCTAssertEqual(tokenizer.encode(fixture.text), fixture.ids, fixture.text) }
     }
     func testActualOfflineModelRetrievalAndCorpusSwitch() throws {
@@ -56,6 +56,7 @@ final class LibraryTests: XCTestCase {
             let hits = try semantic.nearest(index == "analects" ? "学习要结合思考" : "帮助别人", index: index)
             XCTAssertFalse(hits.isEmpty, index)
             XCTAssertTrue(hits.allSatisfy { $0.1.isFinite })
+            if index == "analects" { XCTAssertTrue(hits.prefix(5).contains { $0.0 == VerseKey(68,2,15) }) }
         }
     }
     @MainActor func testLanguageChangesKeepSavedDataAndTextVersionIndependent() async throws {

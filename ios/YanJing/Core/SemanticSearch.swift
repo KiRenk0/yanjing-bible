@@ -20,7 +20,7 @@ final class SemanticSearch {
         let options = try ORTSessionOptions()
         try options.setIntraOpNumThreads(2)
         session = try ORTSession(env: env, modelPath: model.path, sessionOptions: options)
-        tokenizer = try WordPieceTokenizer(vocabulary: String(contentsOf: root.appendingPathComponent("semantic/vocab.txt"), encoding: .utf8).components(separatedBy: .newlines))
+        tokenizer = try WordPieceTokenizer(vocabulary: String(contentsOf: root.appendingPathComponent("semantic/vocab.txt"), encoding: .utf8).components(separatedBy: "\n"))
     }
     func embedding(_ text: String) throws -> [Float] {
         let ids = tokenizer.encode("为这个句子生成表示以用于检索相关文章：" + TextTools.simplified(text))
