@@ -77,6 +77,7 @@ struct PassageRow: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .firstTextBaseline) {
                 Button { open() } label: { Text(model.reference(verse.key)).font(.headline) }
+                    .accessibilityIdentifier("passage.\(verse.key.encoded)")
                 Spacer()
                 Button { model.toggleSave(verse, version) } label: { Image(systemName: model.isSaved(verse, version) ? "bookmark.fill" : "bookmark").frame(minWidth: 44, minHeight: 44) }
                     .accessibilityLabel(model.text(model.isSaved(verse, version) ? "save.remove" : "save.add"))

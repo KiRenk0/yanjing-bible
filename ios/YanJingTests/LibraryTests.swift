@@ -77,5 +77,17 @@ final class LibraryTests: XCTestCase {
         let restored = AppModel(defaults: defaults, root: root)
         XCTAssertEqual(restored.language, .traditional)
         XCTAssertEqual(restored.saved.first?.verse, verse)
+        defaults.set("cuvs", forKey: "version")
+        defaults.set([43, 3], forKey: "position.verses")
+        let reader = AppModel(defaults: defaults, root: root)
+        reader.load()
+        for _ in 0..<200 {
+            if !reader.loading { break }
+            try await Task.sleep(for: .milliseconds(50))
+        }
+        XCTAssertFalse(reader.loading)
+        XCTAssertEqual(reader.readerBook, 43)
+        XCTAssertEqual(reader.readerChapter, 3)
+        XCTAssertTrue(reader.readerVerses.contains { $0.key == VerseKey(43,3,16) })
     }
 }

@@ -83,7 +83,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     private func positionID(_ version: TextVersion) -> String { version.id == "vulgate" ? "vulgate" : version.index }
     func load(_ next: TextVersion? = nil) {
         work?.cancel(); searchWork?.cancel()
-        defaults.set([readerBook, readerChapter], forKey: "position.\(positionID(version))")
+        if !loading { defaults.set([readerBook, readerChapter], forKey: "position.\(positionID(version))") }
         if let next { if version.group != next.group || version.isClassical { testament = 0 }; version = next }
         defaults.set(version.id, forKey: "version")
         loading = true; searching = false; errorKey = nil; hits = []; readerVerses = []

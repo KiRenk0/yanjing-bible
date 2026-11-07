@@ -9,6 +9,18 @@ final class AppFlowTests: XCTestCase {
             XCTAssertTrue(app.navigationBars[name].waitForExistence(timeout: 30))
             XCTAssertTrue(app.buttons["chooseVersion"].exists)
             capture("\(language)-search", app: app)
+            if language == "en" {
+                let example = app.buttons["John 3:16"].firstMatch
+                XCTAssertTrue(example.waitForExistence(timeout: 30))
+                example.tap()
+                let result = app.buttons["passage.43:3:16"].firstMatch
+                XCTAssertTrue(result.waitForExistence(timeout: 30))
+                capture("en-search-results", app: app)
+                result.tap()
+                XCTAssertTrue(app.buttons["Done"].waitForExistence(timeout: 10))
+                capture("en-context", app: app)
+                app.buttons["Done"].tap()
+            }
             app.tabBars.buttons[read].tap()
             XCTAssertTrue(app.navigationBars[read].waitForExistence(timeout: 10))
             capture("\(language)-reader", app: app)
