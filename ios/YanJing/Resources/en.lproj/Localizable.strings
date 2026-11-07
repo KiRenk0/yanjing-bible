@@ -50,7 +50,7 @@
 "search.searching" = "Searching on this device…";
 "search.empty" = "No passages found";
 "search.emptyHint" = "Try a specific keyword or a reference such as John 3:16. Meaning search works primarily with Chinese queries.";
-"search.results" = "%d passages";
+"search.results" = "Results: %d";
 "search.resultHint" = "Related meaning is a search aid, not an interpretation or a probability. Read the original passage in context.";
 "search.limits" = "Meaning search uses a local Chinese BGE model. English interface support does not make this model multilingual. For English text, use Original text or a reference. Classical glosses are modern Chinese search aids, not full translations or authoritative commentary.";
 "search.semanticUnavailable" = "Meaning search is unavailable. Results from other selected modes remain available; you can also use a reference.";

@@ -63,6 +63,7 @@ if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`盐
 await git(['push','origin',tag]);
 const body=fs.readFileSync(path.join(root,'docs/release-1.7.0.md'),'utf8');
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
+if(!release)release=(await api('GET',`/repos/${repository}/releases?per_page=100`))?.find(r=>r.tag_name===tag);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
 if(!release)throw Error('The successful main-branch iOS workflow must stage the draft release first');
 const iosAsset=release.assets.find(a=>a.name==='ios-verification.json');
@@ -90,7 +91,7 @@ for(const name of names){
 }
 const refreshed=await api('GET',`/repos/${repository}/releases/${release.id}`);
 if(!names.every(name=>refreshed.assets.some(a=>a.name===name && a.digest===`sha256:${hashes.get(name)}`)))throw Error('Incomplete draft release');
-release=await api('PATCH',`/repos/${repository}/releases/${release.id}`,{draft:false,prerelease:false,make_latest:'true',name:`盐筋 ${tag} · Swift 原生 iOS + 三语言`,body});
+release=await api('PATCH',`/repos/${repository}/releases/${release.id}`,{draft:false,prerelease:false,make_latest:'true',target_commitish:sourceHead,name:`盐筋 ${tag} · Swift 原生 iOS + 三语言`,body});
 await api('PUT',`/repos/${repository}/topics`,{names:['android','ios','swift','swiftui','bible','quran','analects','chinese','jetpack-compose','material3','offline','semantic-search','localization']});
 fs.writeFileSync(path.join(root,'dist/publication.json'),JSON.stringify({repository:repo.html_url,release:release.html_url,tag,assets:release.assets.map(a=>({name:a.name,size:a.size,digest:a.digest,url:a.browser_download_url}))},null,2));
 console.log('Published: '+release.html_url);

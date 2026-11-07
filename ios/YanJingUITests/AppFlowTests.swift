@@ -7,6 +7,8 @@ final class AppFlowTests: XCTestCase {
             app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", language, "-language", language]
             app.launch()
             XCTAssertTrue(app.navigationBars[name].waitForExistence(timeout: 30))
+            let size = app.screenshot().image.size
+            XCTAssertGreaterThan(size.height / size.width, 1.6, "The iPhone app must use the full screen instead of a legacy compatibility viewport")
             XCTAssertTrue(app.buttons["chooseVersion"].exists)
             capture("\(language)-search", app: app)
             if language == "en" {
@@ -23,6 +25,12 @@ final class AppFlowTests: XCTestCase {
             }
             app.tabBars.buttons[read].tap()
             XCTAssertTrue(app.navigationBars[read].waitForExistence(timeout: 10))
+            XCTAssertTrue(app.buttons["reader.chooseChapter"].isHittable)
+            if language == "en" {
+                XCTAssertTrue(app.buttons["reader.next"].isHittable)
+                app.buttons["reader.next"].tap()
+                XCTAssertTrue(app.staticTexts["John 2"].waitForExistence(timeout: 10))
+            }
             capture("\(language)-reader", app: app)
             app.tabBars.buttons[settings].tap()
             XCTAssertTrue(app.buttons["appLanguage"].exists || app.otherElements["appLanguage"].exists)

@@ -34,12 +34,14 @@ struct ReaderView: View {
             .listStyle(.plain)
             .navigationTitle(model.text("tab.read"))
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button(model.text("reader.previous"), systemImage: "chevron.left") { model.read(book: model.readerBook, chapter: model.readerChapter - 1) }.disabled(model.loading || model.readerChapter <= 1)
-                    Spacer()
-                    Button { picker = true } label: { Label("\(model.readerChapter) / \(model.chapterCounts[model.readerBook] ?? 1)", systemImage: "list.bullet") }.disabled(model.loading).accessibilityLabel(model.text("reader.choose"))
-                    Spacer()
-                    Button(model.text("reader.next"), systemImage: "chevron.right") { model.read(book: model.readerBook, chapter: model.readerChapter + 1) }.disabled(model.loading || model.readerChapter >= (model.chapterCounts[model.readerBook] ?? 1))
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(model.text("reader.previous"), systemImage: "chevron.left") { model.read(book: model.readerBook, chapter: model.readerChapter - 1) }.disabled(model.loading || model.readerChapter <= 1).accessibilityIdentifier("reader.previous")
+                }
+                ToolbarItem(placement: .principal) {
+                    Button { picker = true } label: { Label("\(model.readerChapter) / \(model.chapterCounts[model.readerBook] ?? 1)", systemImage: "list.bullet") }.disabled(model.loading).accessibilityLabel(model.text("reader.choose")).accessibilityIdentifier("reader.chooseChapter")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(model.text("reader.next"), systemImage: "chevron.right") { model.read(book: model.readerBook, chapter: model.readerChapter + 1) }.disabled(model.loading || model.readerChapter >= (model.chapterCounts[model.readerBook] ?? 1)).accessibilityIdentifier("reader.next")
                 }
             }
             .onChange(of: model.readerVerses) { _, _ in proxy.scrollTo("chapterTop", anchor: .top) }
