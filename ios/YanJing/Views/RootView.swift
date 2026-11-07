@@ -94,6 +94,7 @@ struct PassageRow: View {
             }
         }
         .padding(.vertical, 8)
+        .buttonStyle(.borderless)
         .contextMenu {
             Button(model.text("copy"), systemImage: "doc.on.doc") { UIPasteboard.general.string = model.exported(verse, version) }
             Button(model.text(model.isSaved(verse, version) ? "save.remove" : "save.add"), systemImage: "bookmark") { model.toggleSave(verse, version) }
