@@ -115,11 +115,16 @@ struct RosaryView: View {
                     }
                     if let prayer { Section { PrayerActions(title: text(prayer.title), text: text(prayer.text)) } }
                 } else { Section { Text(model.text("devotions.completeHint")).padding(.vertical, 12) } }
-                Section { Button(model.text("devotions.restart")) { restart = true }.accessibilityIdentifier("rosary.restart") }
             }
             .onChange(of: position) { _, _ in proxy.scrollTo("rosaryTop", anchor: .top) }
         }
         .navigationTitle(text(set.title)).navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(model.text("devotions.restart"), systemImage: "arrow.counterclockwise") { restart = true }
+                    .labelStyle(.iconOnly).accessibilityIdentifier("rosary.restart")
+            }
+        }
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 16) {
                 Button(model.text("devotions.previous")) { store.move(set, to: position - 1) }.disabled(position <= 0).buttonStyle(.bordered).accessibilityIdentifier("rosary.previous")

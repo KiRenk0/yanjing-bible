@@ -61,11 +61,15 @@ final class AppFlowTests: XCTestCase {
             app.buttons["rosary.previous"].tap()
             XCTAssertFalse(app.staticTexts["rosary.repetition"].exists)
             let restart = app.buttons["rosary.restart"]
-            if !restart.isHittable { app.swipeUp() }
+            XCTAssertTrue(restart.isHittable)
             restart.tap()
             let resetLabel = language == "en" ? "Start again" : "重新开始"
             let traditionalResetLabel = language == "zh-Hant" ? "重新開始" : resetLabel
-            app.alerts.buttons[traditionalResetLabel].tap()
+            let confirmation = app.alerts.firstMatch
+            XCTAssertTrue(confirmation.waitForExistence(timeout: 10))
+            capture("\(language)-restart-confirmation", app: app)
+            confirmation.buttons[traditionalResetLabel].tap()
+            XCTAssertFalse(app.buttons["rosary.previous"].isEnabled)
             app.navigationBars.buttons.element(boundBy: 0).tap()
             selectTab(settings, app: app)
             XCTAssertTrue(app.buttons["appLanguage"].exists || app.otherElements["appLanguage"].exists)
