@@ -61,7 +61,7 @@ if((await git(['remote','get-url','origin'])).trim()!==repo.clone_url)throw Erro
 await git(['push','-u','origin','main']);
 if(!(await git(['tag','--list',tag])).trim())await git(['tag','-a',tag,'-m',`盐筋 ${tag}`]);
 await git(['push','origin',tag]);
-const body=fs.readFileSync(path.join(root,'docs/release-1.7.0.md'),'utf8');
+const body=fs.readFileSync(path.join(root,`docs/release-${metadata.versionName}.md`),'utf8');
 let release=await api('GET',`/repos/${repository}/releases/tags/${tag}`);
 if(!release)release=(await api('GET',`/repos/${repository}/releases?per_page=100`))?.find(r=>r.tag_name===tag);
 if(release && !release.draft)throw Error('This release is already published; refusing to overwrite it');
@@ -73,7 +73,8 @@ if(!iosResponse.ok)throw Error('Cannot read iOS verification');
 const iosBytes=Buffer.from(await iosResponse.arrayBuffer());
 if('sha256:'+crypto.createHash('sha256').update(iosBytes).digest('hex')!==iosAsset.digest)throw Error('iOS verification digest mismatch');
 const ios=JSON.parse(iosBytes);
-if(ios.sourceCommit!==sourceHead || ios.version!==metadata.versionName || ios.failures!==0 || ios.tests<8 || ios.corpusFilesVerified<57)throw Error('iOS build does not match the tested release commit');
+if(ios.sourceCommit!==sourceHead || ios.version!==metadata.versionName || ios.failures!==0 || ios.tests<10 || ios.corpusFilesVerified<59)throw Error('iOS build does not match the tested release commit');
+if(ios.devotions?.prayers!==12 || ios.devotions?.mysteries!==20 || ios.devotions?.catalogSha256!==verified.devotions?.catalogSha256)throw Error('Shared devotional resources were not verified on both platforms');
 for(const file of ios.artifacts) {
  if(!release.assets.some(a=>a.name===file.name && a.size===file.bytes && a.digest===`sha256:${file.sha256}`))throw Error('iOS asset mismatch: '+file.name);
 }
@@ -91,7 +92,7 @@ for(const name of names){
 }
 const refreshed=await api('GET',`/repos/${repository}/releases/${release.id}`);
 if(!names.every(name=>refreshed.assets.some(a=>a.name===name && a.digest===`sha256:${hashes.get(name)}`)))throw Error('Incomplete draft release');
-release=await api('PATCH',`/repos/${repository}/releases/${release.id}`,{draft:false,prerelease:false,make_latest:'true',target_commitish:sourceHead,name:`盐筋 ${tag} · Swift 原生 iOS + 三语言`,body});
+release=await api('PATCH',`/repos/${repository}/releases/${release.id}`,{draft:false,prerelease:false,make_latest:'true',target_commitish:sourceHead,name:`盐筋 ${tag} · 读经、玫瑰经与祷词`,body});
 await api('PUT',`/repos/${repository}/topics`,{names:['android','ios','swift','swiftui','bible','quran','analects','chinese','jetpack-compose','material3','offline','semantic-search','localization']});
 fs.writeFileSync(path.join(root,'dist/publication.json'),JSON.stringify({repository:repo.html_url,release:release.html_url,tag,assets:release.assets.map(a=>({name:a.name,size:a.size,digest:a.digest,url:a.browser_download_url}))},null,2));
 console.log('Published: '+release.html_url);

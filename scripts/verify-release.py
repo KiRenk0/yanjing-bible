@@ -73,6 +73,12 @@ def main():
     with zipfile.ZipFile(arm_path) as apk:
         assert sha(apk.read(arm_icon_path)) == LAUNCHER_ICON, 'ARM64 launcher logo changed'
     assert arm_path.stat().st_size < apk_path.stat().st_size
+    devotions_bytes = (ASSETS / 'devotions/catalog.json').read_bytes()
+    devotions = json.loads(devotions_bytes)
+    devotions_manifest = read_json(ASSETS / 'devotions/manifest.json')
+    assert sha((ROOT / 'data/devotions.json').read_bytes()) == devotions_manifest['sourceSha256']
+    assert len(devotions['prayers']) == 12 and len(devotions['sets']) == 4
+    assert sum(len(s['mysteries']) for s in devotions['sets']) == 20
     manifest_dump = subprocess.check_output([str(tools / "aapt.exe"), "dump", "xmltree", str(apk_path), "AndroidManifest.xml"], text=True, encoding="utf-8")
     assert re.search(r"extractNativeLibs.*0xffffffff",manifest_dump), "Compressed native libraries must be extracted by Android"
     assert "org.yanjing.app.StartupActivity" in manifest_dump
@@ -225,6 +231,8 @@ def main():
     assert any(s['name'].endswith('ClassicsRepositoryTest') and s['tests'] >= 2 for s in suites)
     assert any(s['name'].endswith('ArchitectureUpdateTest') and s['tests'] >= 2 for s in suites)
     assert any(s['name'].endswith('UpdateManagerTest') and s['tests'] >= 4 for s in suites)
+    assert any(s['name'].endswith('DevotionsTest') and s['tests'] >= 4 for s in suites)
+    assert any(s['name'].endswith('DevotionsFlowTest') and s['tests'] >= 2 for s in suites)
     issues = ET.parse(ROOT / "app/build/reports/lint-results-debug.xml").getroot().findall("issue")
     assert not [i for i in issues if i.attrib["severity"] in ("Error", "Fatal")]
     warnings = [i.attrib["id"] for i in issues if i.attrib["severity"] == "Warning"]
@@ -251,7 +259,7 @@ def main():
     assert evaluation["correctAbstentionsAfter"] >= evaluation["correctAbstentionsBefore"]
     previous_bytes = 181334116
     report = {
-        "date": "2026-10-19", "applicationId": info["applicationId"], "version": info["versionName"], "versionCode": info["versionCode"],
+        "date": __import__('datetime').date.today().isoformat(), "applicationId": info["applicationId"], "version": info["versionName"], "versionCode": info["versionCode"],
         "applicationLabel": app_label, "launcherIconSha256": LAUNCHER_ICON, "launcherIconSourceSha256": LAUNCHER_SOURCE,
         "minimumAndroid": "8.0 (API 26)", "targetSdk": 37,
         "tests": sum(s["tests"] for s in suites), "failures": 0, "suites": suites,
@@ -262,6 +270,7 @@ def main():
                              "strategy":"R8/resource shrinking; compressed model, vectors and native libraries; all four ABIs retained; native libraries extracted at install"},
         "mappingSha256":sha(mapping_path.read_bytes()),"semanticEvaluation":evaluation,
         "classics":classic_summary,
+        "devotions": {'prayers': 12, 'mysteries': 20, 'catalogSha256': sha(devotions_bytes), 'sourceSha256': devotions_manifest['sourceSha256']},
         "latin":{'books':73,'verses':35809,'mappedVerses':latin_manifest['mappedVerses'],'mappingSha256':latin_manifest['mappingSha256'],
                  'numbering':'Native Vulgate book/chapter/verse keys; known shared references mapped with pinned CrossWire data; unmatched material is readable and searchable by original text'},
         "arm64":{'apkBytes':arm_path.stat().st_size,'apkSha256':info['arm64']['sha256'],'previousUniversalBytes':91014763,

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "source": "data/devotions.json",
+  "sourceSha256": "004230e58392d3ef507aae3846346a780a2116f21050ed603b9abe1763b5edc8",
+  "prayers": 12,
+  "sets": 4,
+  "mysteries": 20,
+  "languages": [
+    "en",
+    "zhHans",
+    "zhHant"
+  ]
+}

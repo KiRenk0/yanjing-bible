@@ -1,0 +1,37 @@
+Devotional resources / 读经、玫瑰经与祷词
+
+The traditional prayers (Sign of the Cross, Apostles' Creed, Our Father,
+Hail Mary, Glory Be, Hail Holy Queen, Rosary concluding prayer, Act of
+Contrition and Grace before Meals) have long-established public-domain
+origins. The Fatima invocation dates to 1917. Traditional English forms
+are used. No modern Bible translation passages are reproduced here.
+
+Chinese prayers are project translations/compilations of these traditional
+prayers, not a claim to reproduce an approved regional liturgical edition.
+Morning and evening prayers, mystery meditations, explanatory guidance,
+the data arrangement and Chinese translations are project authored and
+distributed under the project's MIT license. Simplified Chinese is the
+authored source; Traditional Chinese is generated using opencc-js, with
+the same edition identity. Changing the interface language selects these
+devotional translations; it does not change the original classic corpora.
+
+The Holy See Rosary pages were consulted for mystery group names, weekday
+suggestions, scriptural references and the Our Father / ten Hail Marys /
+Glory Be structure of each decade. No Vatican photographs, modern scripture
+quotations or page commentary are copied into the application. The guide
+uses the common Apostles' Creed opening; customs can vary. The weekday
+suggestion is not presented as a mandatory liturgical calendar.
+
+Source references:
+https://www.vatican.va/special/rosary/documents/misteri_en.html
+https://www.vatican.va/special/rosary/documents/misteri_gaudiosi_en.html
+https://www.vatican.va/special/rosary/documents/misteri_luminosi_en.html
+https://www.vatican.va/special/rosary/documents/misteri_dolorosi_en.html
+https://www.vatican.va/special/rosary/documents/misteri_gloriosi_en.html
+https://www.annunciation.catholic.org.hk/常用經文
+
+Consulted 2026-11-08. Machine-readable references and usage notes are kept
+in data/devotions.json, with the prepared data in assets/devotions/.
+The Assumption and Coronation are identified as Catholic tradition; the
+Revelation reference is an image for reflection, not a historical narrative
+of either event. Biblical book names follow Catholic usage in this module.

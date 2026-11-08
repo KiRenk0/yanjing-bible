@@ -27,7 +27,8 @@ import org.yanjing.app.core.*
 private data class Destination(private val titleRes: Int, val icon: Int) { val title: String get() = tr(titleRes) }
 private val destinations = listOf(
     Destination(R.string.ui_fd047ccb20, R.drawable.sym_auto_awesome), Destination(R.string.ui_ce9b12499c, R.drawable.sym_menu_book),
-    Destination(R.string.ui_60a53514eb, R.drawable.sym_bookmark), Destination(R.string.ui_df3d58c7d8, R.drawable.sym_settings)
+    Destination(R.string.ui_60a53514eb, R.drawable.sym_bookmark), Destination(R.string.ui_df3d58c7d8, R.drawable.sym_settings),
+    Destination(R.string.devotions_title, R.drawable.sym_devotions)
 )
 
 @Composable
@@ -63,8 +64,8 @@ fun YanJingApp(state: AppState, model: AppViewModel) {
             }
             Scaffold(modifier = Modifier.weight(1f),
                 topBar = {
-                    TopAppBar(title = { Text(when (destination) { 0 -> stringResource(R.string.app_name); 1 -> tr(R.string.ui_c214cf65a4, state.version.scripture.title); 2 -> tr(R.string.ui_9385bfefca); else -> tr(R.string.ui_df3d58c7d8) }) },
-                        subtitle = { Text(when (destination) { 0 -> tr(R.string.ui_72f30a9d58); 1 -> tr(R.string.ui_2ebb3b278e); 2 -> tr(R.string.ui_933a71e100); else -> tr(R.string.ui_cf307954e9) }) },
+                    TopAppBar(title = { Text(when (destination) { 0 -> stringResource(R.string.app_name); 1 -> tr(R.string.ui_c214cf65a4, state.version.scripture.title); 2 -> tr(R.string.ui_9385bfefca); 4 -> tr(R.string.devotions_title); else -> tr(R.string.ui_df3d58c7d8) }) },
+                        subtitle = { Text(when (destination) { 0 -> tr(R.string.ui_72f30a9d58); 1 -> tr(R.string.ui_2ebb3b278e); 2 -> tr(R.string.ui_933a71e100); 4 -> tr(R.string.devotions_subtitle); else -> tr(R.string.ui_cf307954e9) }) },
                         actions = {
                             if (destination <= 1) TextButton(onClick = { versions = true },modifier=Modifier.semantics { contentDescription=tr(R.string.ui_ecdf24870a) }) {
                                 Text(state.version.title, maxLines = 1, style = MaterialTheme.typography.labelLarge)
@@ -87,6 +88,7 @@ fun YanJingApp(state: AppState, model: AppViewModel) {
                             0 -> MatchScreen(state, model, { verse -> save(verse, state.version) }, { verse -> copy(verse, state.version) })
                             1 -> ReaderScreen(state, model)
                             2 -> SavedScreen(state, model, save, copy)
+                            4 -> DevotionsScreen(state.fontSize)
                             else -> SettingsScreen(state, model, onVersions = { versions = true }, onLegal = {
                                 showLegal = true; scope.launch { legal = model.legalText() }
                             })

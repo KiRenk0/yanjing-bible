@@ -1438,5 +1438,140 @@
     "key": "startup_recovery_shortcut",
     "source": "启动恢复与诊断",
     "en": "Startup recovery and diagnostics"
+  },
+  {
+    "key": "devotions_title",
+    "en": "Devotions",
+    "source": "读经"
+  },
+  {
+    "key": "devotions_subtitle",
+    "en": "Rosary · Prayers",
+    "source": "玫瑰经 · 常用祷词"
+  },
+  {
+    "key": "devotions_prayers",
+    "en": "Prayers",
+    "source": "祷词"
+  },
+  {
+    "key": "devotions_prayers_hint",
+    "en": "Twelve prayers for the Rosary and daily life",
+    "source": "玫瑰经与日常生活中的十二篇祷词"
+  },
+  {
+    "key": "devotions_today",
+    "en": "Suggested for today",
+    "source": "今日推荐"
+  },
+  {
+    "key": "devotions_all_mysteries",
+    "en": "The four sets of mysteries",
+    "source": "四组玫瑰经奥迹"
+  },
+  {
+    "key": "devotions_guide",
+    "en": "How to pray the Rosary",
+    "source": "玫瑰经诵念方法"
+  },
+  {
+    "key": "devotions_sources",
+    "en": "Sources and text edition",
+    "source": "来源与文本版本"
+  },
+  {
+    "key": "devotions_begin",
+    "en": "Begin praying",
+    "source": "开始诵念"
+  },
+  {
+    "key": "devotions_resume",
+    "en": "Continue praying",
+    "source": "继续诵念"
+  },
+  {
+    "key": "devotions_previous",
+    "en": "Previous",
+    "source": "上一步"
+  },
+  {
+    "key": "devotions_next",
+    "en": "Next",
+    "source": "下一步"
+  },
+  {
+    "key": "devotions_finish",
+    "en": "Finish",
+    "source": "完成诵念"
+  },
+  {
+    "key": "devotions_completed",
+    "en": "Rosary completed",
+    "source": "本次诵念已完成"
+  },
+  {
+    "key": "devotions_complete_hint",
+    "en": "Rest for a moment in silence. Your place is saved on this device.",
+    "source": "可以静默片刻。本次进度已保存在本机。"
+  },
+  {
+    "key": "devotions_restart",
+    "en": "Start again",
+    "source": "重新开始"
+  },
+  {
+    "key": "devotions_restart_hint",
+    "en": "This resets the saved progress for this set of mysteries.",
+    "source": "将重置这一组五端的诵念进度。"
+  },
+  {
+    "key": "devotions_optional",
+    "en": "Optional prayer · You may continue to the next step",
+    "source": "可选祷词 · 可直接前往下一步"
+  },
+  {
+    "key": "devotions_opening",
+    "en": "Opening prayers",
+    "source": "开始祷文"
+  },
+  {
+    "key": "devotions_closing",
+    "en": "Closing prayers",
+    "source": "结束祷文"
+  },
+  {
+    "key": "devotions_mystery",
+    "en": "Mystery %1$d",
+    "source": "第 %1$d 端"
+  },
+  {
+    "key": "devotions_repetition",
+    "en": "Hail Mary %1$d / 10",
+    "source": "圣母经 · 第 %1$d / 10 遍"
+  },
+  {
+    "key": "devotions_step",
+    "en": "Step %1$d of %2$d",
+    "source": "第 %1$d / %2$d 步"
+  },
+  {
+    "key": "devotions_rosary_prayers",
+    "en": "Rosary prayers",
+    "source": "玫瑰经祷文"
+  },
+  {
+    "key": "devotions_daily_prayers",
+    "en": "Daily prayers",
+    "source": "日常祷词"
+  },
+  {
+    "key": "devotions_copy",
+    "en": "Copy",
+    "source": "复制"
+  },
+  {
+    "key": "devotions_share",
+    "en": "Share",
+    "source": "分享"
   }
 ]

@@ -25,7 +25,7 @@ function copy(name) {
   fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,bytes);
   copied.push({path:name,bytes:bytes.length,sha256:sha(bytes)});
 }
-for(const directory of ['bibles','semantic','latin','quran','analects','classics'])copyTree(directory);
+for(const directory of ['bibles','semantic','latin','quran','analects','classics','devotions'])copyTree(directory);
 copy('t2s.tsv');copy('data-manifest.json');
 const licenses = fs.readdirSync(assets).filter(name=>/LICENSE|NOTICE|TERMS|Apache-2\.0|GPL-2\.0/.test(name)).sort();
 fs.writeFileSync(path.join(output,'Licenses.txt'),licenses.map(name=>`=== ${name} ===\n${fs.readFileSync(path.join(assets,name),'utf8')}`).join('\n\n'));

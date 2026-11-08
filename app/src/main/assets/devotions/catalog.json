@@ -1,0 +1,646 @@
+{
+  "schema": 1,
+  "edition": {
+    "en": "Traditional Catholic prayers. Chinese texts are project translations of traditional prayers; morning and evening prayers are project authored. Wording can differ from local liturgical editions.",
+    "zhHans": "天主教传统祷文。中文由本项目依据传统祷文编译；晨祷、晚祷为项目编写，用语可能与各地礼仪版本不同。",
+    "zhHant": "天主教傳統禱文。中文由本項目依據傳統禱文編譯；晨禱、晚禱為項目編寫，用語可能與各地禮儀版本不同。"
+  },
+  "guide": {
+    "en": "Begin with the Sign of the Cross, the Apostles’ Creed, one Our Father, three Hail Marys and a Glory Be. For each of the five mysteries, pause to reflect, then pray one Our Father, ten Hail Marys and a Glory Be. The Fatima prayer is optional. End with the Hail Holy Queen, the concluding prayer and the Sign of the Cross. Weekday suggestions are a common custom; you may choose any set.",
+    "zhHans": "开始时念圣号经、宗徒信经、天主经一遍、圣母经三遍、圣三光荣经一遍。每端先默想奥迹，再念天主经一遍、圣母经十遍、圣三光荣经一遍；可加念法蒂玛祷词。五端结束后念又圣母经、结束祷词及圣号经。星期安排依常见习惯推荐，也可自行选择。",
+    "zhHant": "開始時念聖號經、宗徒信經、天主經一遍、聖母經三遍、聖三光榮經一遍。每端先默想奧跡，再念天主經一遍、聖母經十遍、聖三光榮經一遍；可加念法蒂瑪禱詞。五端結束後念又聖母經、結束禱詞及聖號經。星期安排依常見習慣推薦，也可自行選擇。"
+  },
+  "sources": [
+    {
+      "title": "The Holy See · The Mysteries of the Rosary",
+      "url": "https://www.vatican.va/special/rosary/documents/misteri_en.html",
+      "use": "Mystery groups, weekday suggestions and decade structure; explanatory prose is project authored."
+    },
+    {
+      "title": "The Holy See · Joyful Mysteries",
+      "url": "https://www.vatican.va/special/rosary/documents/misteri_gaudiosi_en.html",
+      "use": "Mystery names and biblical references; scripture quotations are not reproduced."
+    },
+    {
+      "title": "The Holy See · Mysteries of Light",
+      "url": "https://www.vatican.va/special/rosary/documents/misteri_luminosi_en.html",
+      "use": "Mystery names and biblical references; scripture quotations are not reproduced."
+    },
+    {
+      "title": "The Holy See · Sorrowful Mysteries",
+      "url": "https://www.vatican.va/special/rosary/documents/misteri_dolorosi_en.html",
+      "use": "Mystery names and biblical references; scripture quotations are not reproduced."
+    },
+    {
+      "title": "The Holy See · Glorious Mysteries",
+      "url": "https://www.vatican.va/special/rosary/documents/misteri_gloriosi_en.html",
+      "use": "Mystery names and biblical references; the final two mysteries express Catholic tradition."
+    },
+    {
+      "title": "Annunciation Church, Hong Kong · Common Prayers",
+      "url": "https://www.annunciation.catholic.org.hk/常用經文",
+      "use": "Cross-check of prayer names and traditional structure. Modern Chinese liturgical translations are not copied."
+    }
+  ],
+  "opening": [
+    "sign_of_cross",
+    "apostles_creed",
+    "our_father",
+    "hail_mary",
+    "hail_mary",
+    "hail_mary",
+    "glory_be"
+  ],
+  "closing": [
+    "hail_holy_queen",
+    "rosary_closing",
+    "sign_of_cross"
+  ],
+  "prayers": [
+    {
+      "id": "sign_of_cross",
+      "category": "rosary",
+      "title": {
+        "en": "Sign of the Cross",
+        "zhHans": "圣号经",
+        "zhHant": "聖號經"
+      },
+      "text": {
+        "en": "In the name of the Father, and of the Son, and of the Holy Spirit. Amen.",
+        "zhHans": "因父、及子、及圣神之名。亚孟。",
+        "zhHant": "因父、及子、及聖神之名。亞孟。"
+      }
+    },
+    {
+      "id": "apostles_creed",
+      "category": "rosary",
+      "title": {
+        "en": "Apostles’ Creed",
+        "zhHans": "宗徒信经",
+        "zhHant": "宗徒信經"
+      },
+      "text": {
+        "en": "I believe in God, the Father almighty, Creator of heaven and earth.\nAnd in Jesus Christ, his only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried. He descended into hell; the third day he rose again from the dead; he ascended into heaven, and sitteth at the right hand of God the Father almighty; from thence he shall come to judge the living and the dead.\nI believe in the Holy Spirit, the holy Catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.",
+        "zhHans": "我信天主，全能的父，天地的创造者。\n我信耶稣基督，他的独生子，我们的主；他由圣神降孕，生于童贞玛利亚，在比拉多执政时受难，被钉在十字架上，死而安葬，下降阴府，第三日从死者中复活；他升了天，坐在全能天主父的右边，将来要从那里降临，审判生者和死者。\n我信圣神，信圣而公的教会，信诸圣相通、罪过的赦免、肉身的复活及永恒的生命。亚孟。",
+        "zhHant": "我信天主，全能的父，天地的創造者。\n我信耶穌基督，他的獨生子，我們的主；他由聖神降孕，生於童貞瑪利亞，在比拉多執政時受難，被釘在十字架上，死而安葬，下降陰府，第三日從死者中復活；他升了天，坐在全能天主父的右邊，將來要從那裡降臨，審判生者和死者。\n我信聖神，信聖而公的教會，信諸聖相通、罪過的赦免、肉身的復活及永恆的生命。亞孟。"
+      }
+    },
+    {
+      "id": "our_father",
+      "category": "rosary",
+      "title": {
+        "en": "Our Father",
+        "zhHans": "天主经",
+        "zhHant": "天主經"
+      },
+      "text": {
+        "en": "Our Father, who art in heaven, hallowed be thy name; thy kingdom come; thy will be done on earth as it is in heaven.\nGive us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.",
+        "zhHans": "我们在天上的父，愿你的名被尊为圣，愿你的国来临，愿你的旨意在地上奉行，如同在天上。\n请赐给我们今天所需的食粮；请宽恕我们的罪过，如同我们宽恕得罪我们的人；不要让我们陷于诱惑，救我们脱离凶恶。亚孟。",
+        "zhHant": "我們在天上的父，願你的名被尊為聖，願你的國來臨，願你的旨意在地上奉行，如同在天上。\n請賜給我們今天所需的食糧；請寬恕我們的罪過，如同我們寬恕得罪我們的人；不要讓我們陷於誘惑，救我們脫離兇惡。亞孟。"
+      }
+    },
+    {
+      "id": "hail_mary",
+      "category": "rosary",
+      "title": {
+        "en": "Hail Mary",
+        "zhHans": "圣母经",
+        "zhHant": "聖母經"
+      },
+      "text": {
+        "en": "Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.",
+        "zhHans": "万福玛利亚，满被恩宠者，主与你同在。你在妇女中受赞颂，你胎中的耶稣也受赞颂。\n天主之母圣玛利亚，请为我们罪人祈求，现在及我们临终的时候。亚孟。",
+        "zhHant": "萬福瑪利亞，滿被恩寵者，主與你同在。你在婦女中受讚頌，你胎中的耶穌也受讚頌。\n天主之母聖瑪利亞，請為我們罪人祈求，現在及我們臨終的時候。亞孟。"
+      }
+    },
+    {
+      "id": "glory_be",
+      "category": "rosary",
+      "title": {
+        "en": "Glory Be",
+        "zhHans": "圣三光荣经",
+        "zhHant": "聖三光榮經"
+      },
+      "text": {
+        "en": "Glory be to the Father, and to the Son, and to the Holy Spirit.\nAs it was in the beginning, is now, and ever shall be, world without end. Amen.",
+        "zhHans": "愿光荣归于父、及子、及圣神，起初如何，今日亦然，直到永远。亚孟。",
+        "zhHant": "願光榮歸於父、及子、及聖神，起初如何，今日亦然，直到永遠。亞孟。"
+      }
+    },
+    {
+      "id": "fatima",
+      "category": "rosary",
+      "title": {
+        "en": "Fatima Prayer",
+        "zhHans": "法蒂玛祷词",
+        "zhHant": "法蒂瑪禱詞"
+      },
+      "text": {
+        "en": "O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to heaven, especially those in most need of thy mercy. Amen.",
+        "zhHans": "我的耶稣，请宽恕我们的罪过，救我们免于地狱的烈火，引领所有灵魂进入天堂，尤其那些最需要你怜悯的人。亚孟。",
+        "zhHant": "我的耶穌，請寬恕我們的罪過，救我們免於地獄的烈火，引領所有靈魂進入天堂，尤其那些最需要你憐憫的人。亞孟。"
+      }
+    },
+    {
+      "id": "hail_holy_queen",
+      "category": "rosary",
+      "title": {
+        "en": "Hail Holy Queen",
+        "zhHans": "又圣母经",
+        "zhHant": "又聖母經"
+      },
+      "text": {
+        "en": "Hail, holy Queen, Mother of mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears.\nTurn then, most gracious advocate, thine eyes of mercy toward us; and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.\nPray for us, O holy Mother of God, that we may be made worthy of the promises of Christ.",
+        "zhHans": "万福，圣后，仁慈的母亲，我们的生命、甘饴和希望。我们这些厄娃被放逐的子孙，向你呼求；我们在这涕泣之谷，悲叹哭泣，向你祈求。\n慈爱的代祷者，请以仁慈的目光眷顾我们；在这流徙的生活结束后，让我们见到你胎中受赞颂的耶稣。仁慈、慈爱、甘饴的童贞玛利亚！\n天主圣母，请为我们祈求，使我们堪当承受基督的许诺。",
+        "zhHant": "萬福，聖後，仁慈的母親，我們的生命、甘飴和希望。我們這些厄娃被放逐的子孫，向你呼求；我們在這涕泣之谷，悲嘆哭泣，向你祈求。\n慈愛的代禱者，請以仁慈的目光眷顧我們；在這流徙的生活結束後，讓我們見到你胎中受讚頌的耶穌。仁慈、慈愛、甘飴的童貞瑪利亞！\n天主聖母，請為我們祈求，使我們堪當承受基督的許諾。"
+      }
+    },
+    {
+      "id": "rosary_closing",
+      "category": "rosary",
+      "title": {
+        "en": "Prayer after the Rosary",
+        "zhHans": "玫瑰经结束祷词",
+        "zhHant": "玫瑰經結束禱詞"
+      },
+      "text": {
+        "en": "O God, whose only-begotten Son, by his life, death and resurrection, has purchased for us the rewards of eternal life; grant, we beseech thee, that meditating upon these mysteries of the most holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise. Through the same Christ our Lord. Amen.",
+        "zhHans": "天主，你的独生子以他的生活、死亡和复活，为我们赢得永生的恩赐。求你使我们在默想荣福童贞玛利亚至圣玫瑰经的奥迹时，效法其中的德行，领受其中的许诺。因我们的主基督。亚孟。",
+        "zhHant": "天主，你的獨生子以他的生活、死亡和復活，為我們贏得永生的恩賜。求你使我們在默想榮福童貞瑪利亞至聖玫瑰經的奧跡時，效法其中的德行，領受其中的許諾。因我們的主基督。亞孟。"
+      }
+    },
+    {
+      "id": "act_of_contrition",
+      "category": "daily",
+      "title": {
+        "en": "Act of Contrition",
+        "zhHans": "痛悔祷词",
+        "zhHant": "痛悔禱詞"
+      },
+      "text": {
+        "en": "O my God, I am heartily sorry for having offended thee, and I detest all my sins, because I dread the loss of heaven and the pains of hell; but most of all because they offend thee, my God, who art all good and deserving of all my love. I firmly resolve, with the help of thy grace, to confess my sins, to do penance, and to amend my life. Amen.",
+        "zhHans": "我的天主，我衷心痛悔得罪了你，并厌恶自己的罪过。我惧怕失落天堂、承受地狱之苦，更因你是无限美善、值得我全心爱慕的天主，而痛悔冒犯了你。我坚决依靠你的恩宠，告明罪过、做补赎、改过自新。亚孟。",
+        "zhHant": "我的天主，我衷心痛悔得罪了你，並厭惡自己的罪過。我懼怕失落天堂、承受地獄之苦，更因你是無限美善、值得我全心愛慕的天主，而痛悔冒犯了你。我堅決依靠你的恩寵，告明罪過、做補贖、改過自新。亞孟。"
+      }
+    },
+    {
+      "id": "morning",
+      "category": "daily",
+      "title": {
+        "en": "Morning Prayer",
+        "zhHans": "晨祷",
+        "zhHant": "晨禱"
+      },
+      "text": {
+        "en": "Heavenly Father, thank you for this new day. I offer you my work, my words and the people I will meet. Help me to act with patience, to speak truthfully and to notice those who need care. Let me walk with Christ and serve you in all things. Amen.",
+        "zhHans": "天父，感谢你赐下新的一天。我把今天的工作、言语和将要遇见的人交托给你。求你使我行事有耐心，言语诚实，留意需要关怀的人。愿我与基督同行，在一切事上事奉你。亚孟。",
+        "zhHant": "天父，感謝你賜下新的一天。我把今天的工作、言語和將要遇見的人交託給你。求你使我行事有耐心，言語誠實，留意需要關懷的人。願我與基督同行，在一切事上事奉你。亞孟。"
+      }
+    },
+    {
+      "id": "evening",
+      "category": "daily",
+      "title": {
+        "en": "Evening Prayer",
+        "zhHans": "晚祷",
+        "zhHant": "晚禱"
+      },
+      "text": {
+        "en": "Heavenly Father, thank you for staying with me today. Forgive the harm I have done and the good I have left undone. I entrust my worries and those I love to your care. Give rest to the weary and comfort to the lonely. Keep us in your peace through this night. Amen.",
+        "zhHans": "天父，感谢你今天与我同在。求你宽恕我所犯的过错，以及我未能行出的善。我把忧虑和所爱的人交在你手中。求你使疲惫的人安歇，使孤独的人得到安慰；守护我们在你的平安中度过今夜。亚孟。",
+        "zhHant": "天父，感謝你今天與我同在。求你寬恕我所犯的過錯，以及我未能行出的善。我把憂慮和所愛的人交在你手中。求你使疲憊的人安歇，使孤獨的人得到安慰；守護我們在你的平安中度過今夜。亞孟。"
+      }
+    },
+    {
+      "id": "before_meals",
+      "category": "daily",
+      "title": {
+        "en": "Grace before Meals",
+        "zhHans": "饭前祷词",
+        "zhHant": "飯前禱詞"
+      },
+      "text": {
+        "en": "Bless us, O Lord, and these thy gifts, which we are about to receive from thy bounty. Through Christ our Lord. Amen.",
+        "zhHans": "主，求你降福我们，降福这些出于你慷慨恩赐、我们将要领受的食物。因我们的主基督。亚孟。",
+        "zhHant": "主，求你降福我們，降福這些出於你慷慨恩賜、我們將要領受的食物。因我們的主基督。亞孟。"
+      }
+    }
+  ],
+  "sets": [
+    {
+      "id": "joyful",
+      "days": [
+        1,
+        6
+      ],
+      "title": {
+        "en": "Joyful Mysteries",
+        "zhHans": "欢喜五端",
+        "zhHant": "歡喜五端"
+      },
+      "schedule": {
+        "en": "Monday · Saturday",
+        "zhHans": "星期一 · 星期六",
+        "zhHant": "星期一 · 星期六"
+      },
+      "mysteries": [
+        {
+          "title": {
+            "en": "The Annunciation",
+            "zhHans": "圣母领报",
+            "zhHant": "聖母領報"
+          },
+          "reference": {
+            "en": "Luke 1:26–38",
+            "zhHans": "路加福音 1:26–38",
+            "zhHant": "路加福音 1:26–38"
+          },
+          "meditation": {
+            "en": "Reflect on Mary’s willing response to God’s call. Ask for a heart ready to listen and to trust.",
+            "zhHans": "默想玛利亚甘愿回应天主的召叫。求赐予乐于聆听、信赖天主的心。",
+            "zhHant": "默想瑪利亞甘願回應天主的召叫。求賜予樂於聆聽、信賴天主的心。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Visitation",
+            "zhHans": "圣母往见依撒伯尔",
+            "zhHant": "聖母往見依撒伯爾"
+          },
+          "reference": {
+            "en": "Luke 1:39–56",
+            "zhHans": "路加福音 1:39–56",
+            "zhHant": "路加福音 1:39–56"
+          },
+          "meditation": {
+            "en": "Reflect on Mary’s journey to serve Elizabeth. Remember someone who needs your presence and care.",
+            "zhHans": "默想玛利亚前往服事依撒伯尔。记起一位需要你陪伴和关怀的人。",
+            "zhHant": "默想瑪利亞前往服事依撒伯爾。記起一位需要你陪伴和關懷的人。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Nativity",
+            "zhHans": "耶稣诞生",
+            "zhHant": "耶穌誕生"
+          },
+          "reference": {
+            "en": "Luke 2:1–20",
+            "zhHans": "路加福音 2:1–20",
+            "zhHant": "路加福音 2:1–20"
+          },
+          "meditation": {
+            "en": "Reflect on Christ coming among us in poverty. Make room for him and for those easily overlooked.",
+            "zhHans": "默想基督在贫寒中来到人间。为他、也为容易被忽略的人留出空间。",
+            "zhHant": "默想基督在貧寒中來到人間。為他、也為容易被忽略的人留出空間。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Presentation in the Temple",
+            "zhHans": "献耶稣于圣殿",
+            "zhHant": "獻耶穌於聖殿"
+          },
+          "reference": {
+            "en": "Luke 2:22–38",
+            "zhHans": "路加福音 2:22–38",
+            "zhHant": "路加福音 2:22–38"
+          },
+          "meditation": {
+            "en": "Reflect on Mary and Joseph offering Jesus to God. Offer your own life in patient faithfulness.",
+            "zhHans": "默想玛利亚和若瑟将耶稣奉献给天主。愿以耐心和忠信奉献自己的生活。",
+            "zhHant": "默想瑪利亞和若瑟將耶穌奉獻給天主。願以耐心和忠信奉獻自己的生活。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Finding of Jesus in the Temple",
+            "zhHans": "在圣殿中寻获耶稣",
+            "zhHant": "在聖殿中尋獲耶穌"
+          },
+          "reference": {
+            "en": "Luke 2:41–52",
+            "zhHans": "路加福音 2:41–52",
+            "zhHant": "路加福音 2:41–52"
+          },
+          "meditation": {
+            "en": "Reflect on the search for Jesus. Bring to God your questions and your desire to understand.",
+            "zhHans": "默想寻找耶稣的历程。把疑问和渴望明白的心带到天主面前。",
+            "zhHant": "默想尋找耶穌的歷程。把疑問和渴望明白的心帶到天主面前。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "luminous",
+      "days": [
+        4
+      ],
+      "title": {
+        "en": "Luminous Mysteries",
+        "zhHans": "光明五端",
+        "zhHant": "光明五端"
+      },
+      "schedule": {
+        "en": "Thursday",
+        "zhHans": "星期四",
+        "zhHant": "星期四"
+      },
+      "mysteries": [
+        {
+          "title": {
+            "en": "The Baptism in the Jordan",
+            "zhHans": "耶稣在约旦河受洗",
+            "zhHant": "耶穌在約旦河受洗"
+          },
+          "reference": {
+            "en": "Matthew 3:13–17",
+            "zhHans": "玛窦福音 3:13–17",
+            "zhHant": "瑪竇福音 3:13–17"
+          },
+          "meditation": {
+            "en": "Reflect on the Father’s love revealed at Jesus’ baptism. Remember your calling to live as God’s child.",
+            "zhHans": "默想耶稣受洗时彰显的天父之爱。记起作为天主子女生活的召叫。",
+            "zhHant": "默想耶穌受洗時彰顯的天父之愛。記起作為天主子女生活的召叫。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Wedding at Cana",
+            "zhHans": "加纳婚宴",
+            "zhHant": "加納婚宴"
+          },
+          "reference": {
+            "en": "John 2:1–11",
+            "zhHans": "若望福音 2:1–11",
+            "zhHant": "若望福音 2:1–11"
+          },
+          "meditation": {
+            "en": "Reflect on Mary noticing the need at Cana. Ask for trust in Christ and attentiveness to others.",
+            "zhHans": "默想玛利亚在加纳察觉他人的需要。求赐信赖基督、关心他人的心。",
+            "zhHant": "默想瑪利亞在加納察覺他人的需要。求賜信賴基督、關心他人的心。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Proclamation of the Kingdom",
+            "zhHans": "宣讲天国，劝人悔改",
+            "zhHant": "宣講天國，勸人悔改"
+          },
+          "reference": {
+            "en": "Mark 1:14–15",
+            "zhHans": "马尔谷福音 1:14–15",
+            "zhHant": "馬爾谷福音 1:14–15"
+          },
+          "meditation": {
+            "en": "Reflect on Jesus calling people to conversion. Name one change that could make your life more loving.",
+            "zhHans": "默想耶稣召叫人悔改。想一想生活中可以作出的一个改变，使爱更具体。",
+            "zhHant": "默想耶穌召叫人悔改。想一想生活中可以作出的一個改變，使愛更具體。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Transfiguration",
+            "zhHans": "耶稣显圣容",
+            "zhHant": "耶穌顯聖容"
+          },
+          "reference": {
+            "en": "Matthew 17:1–8",
+            "zhHans": "玛窦福音 17:1–8",
+            "zhHant": "瑪竇福音 17:1–8"
+          },
+          "meditation": {
+            "en": "Reflect on the disciples seeing Christ’s glory. Ask for strength to listen to him when the way is difficult.",
+            "zhHans": "默想门徒瞻仰基督的光荣。求赐力量，在艰难的道路上仍聆听他。",
+            "zhHant": "默想門徒瞻仰基督的光榮。求賜力量，在艱難的道路上仍聆聽他。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Institution of the Eucharist",
+            "zhHans": "建立圣体圣事",
+            "zhHant": "建立聖體聖事"
+          },
+          "reference": {
+            "en": "Matthew 26:26–29",
+            "zhHans": "玛窦福音 26:26–29",
+            "zhHant": "瑪竇福音 26:26–29"
+          },
+          "meditation": {
+            "en": "Reflect on Christ giving himself in the Eucharist. Ask to become more generous in love and service.",
+            "zhHans": "默想基督在圣体中交付自己。求使我们在爱与服事中更加慷慨。",
+            "zhHant": "默想基督在聖體中交付自己。求使我們在愛與服事中更加慷慨。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sorrowful",
+      "days": [
+        2,
+        5
+      ],
+      "title": {
+        "en": "Sorrowful Mysteries",
+        "zhHans": "痛苦五端",
+        "zhHant": "痛苦五端"
+      },
+      "schedule": {
+        "en": "Tuesday · Friday",
+        "zhHans": "星期二 · 星期五",
+        "zhHant": "星期二 · 星期五"
+      },
+      "mysteries": [
+        {
+          "title": {
+            "en": "The Agony in the Garden",
+            "zhHans": "耶稣山园祈祷",
+            "zhHant": "耶穌山園祈禱"
+          },
+          "reference": {
+            "en": "Matthew 26:36–46",
+            "zhHans": "玛窦福音 26:36–46",
+            "zhHant": "瑪竇福音 26:36–46"
+          },
+          "meditation": {
+            "en": "Reflect on Jesus praying in anguish. Bring your fears to the Father and remember those who feel alone.",
+            "zhHans": "默想耶稣在忧苦中祈祷。把恐惧交托给天父，记念感到孤独的人。",
+            "zhHant": "默想耶穌在憂苦中祈禱。把恐懼交託給天父，記念感到孤獨的人。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Scourging at the Pillar",
+            "zhHans": "耶稣受鞭打",
+            "zhHant": "耶穌受鞭打"
+          },
+          "reference": {
+            "en": "John 19:1",
+            "zhHans": "若望福音 19:1",
+            "zhHant": "若望福音 19:1"
+          },
+          "meditation": {
+            "en": "Reflect on Jesus suffering violence. Pray for the wounded and for an end to cruelty.",
+            "zhHans": "默想耶稣遭受暴力。为受伤的人祈祷，也为残酷的行为止息而祈祷。",
+            "zhHant": "默想耶穌遭受暴力。為受傷的人祈禱，也為殘酷的行為止息而祈禱。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Crowning with Thorns",
+            "zhHans": "耶稣受茨冠",
+            "zhHant": "耶穌受茨冠"
+          },
+          "reference": {
+            "en": "John 19:2–3",
+            "zhHans": "若望福音 19:2–3",
+            "zhHant": "若望福音 19:2–3"
+          },
+          "meditation": {
+            "en": "Reflect on Christ mocked and humiliated. Ask to protect the dignity of every person.",
+            "zhHans": "默想基督被嘲弄、受凌辱。求使我们维护每一个人的尊严。",
+            "zhHant": "默想基督被嘲弄、受凌辱。求使我們維護每一個人的尊嚴。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Carrying of the Cross",
+            "zhHans": "耶稣背负十字架",
+            "zhHant": "耶穌揹負十字架"
+          },
+          "reference": {
+            "en": "John 19:16–17",
+            "zhHans": "若望福音 19:16–17",
+            "zhHant": "若望福音 19:16–17"
+          },
+          "meditation": {
+            "en": "Reflect on Jesus carrying the cross. Consider how you can help someone carry a heavy burden.",
+            "zhHans": "默想耶稣背负十字架。想一想如何帮助他人分担沉重的负担。",
+            "zhHant": "默想耶穌揹負十字架。想一想如何幫助他人分擔沉重的負擔。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Crucifixion",
+            "zhHans": "耶稣被钉死在十字架上",
+            "zhHant": "耶穌被釘死在十字架上"
+          },
+          "reference": {
+            "en": "John 19:25–30",
+            "zhHans": "若望福音 19:25–30",
+            "zhHant": "若望福音 19:25–30"
+          },
+          "meditation": {
+            "en": "Reflect on Christ’s love to the end. Pray for the dying, the bereaved and the grace to forgive.",
+            "zhHans": "默想基督爱人到底。为临终者、哀恸者祈祷，也求赐宽恕的恩宠。",
+            "zhHant": "默想基督愛人到底。為臨終者、哀慟者祈禱，也求賜寬恕的恩寵。"
+          }
+        }
+      ]
+    },
+    {
+      "id": "glorious",
+      "days": [
+        3,
+        7
+      ],
+      "title": {
+        "en": "Glorious Mysteries",
+        "zhHans": "荣福五端",
+        "zhHant": "榮福五端"
+      },
+      "schedule": {
+        "en": "Wednesday · Sunday",
+        "zhHans": "星期三 · 星期日",
+        "zhHant": "星期三 · 星期日"
+      },
+      "mysteries": [
+        {
+          "title": {
+            "en": "The Resurrection",
+            "zhHans": "耶稣复活",
+            "zhHant": "耶穌復活"
+          },
+          "reference": {
+            "en": "Luke 24:1–12",
+            "zhHans": "路加福音 24:1–12",
+            "zhHant": "路加福音 24:1–12"
+          },
+          "meditation": {
+            "en": "Reflect on Christ risen from the dead. Ask for hope where you can see only loss.",
+            "zhHans": "默想基督从死者中复活。求赐希望，照亮我们只看见失落的地方。",
+            "zhHant": "默想基督從死者中復活。求賜希望，照亮我們只看見失落的地方。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Ascension",
+            "zhHans": "耶稣升天",
+            "zhHant": "耶穌昇天"
+          },
+          "reference": {
+            "en": "Acts 1:6–11",
+            "zhHans": "宗徒大事录 1:6–11",
+            "zhHant": "宗徒大事錄 1:6–11"
+          },
+          "meditation": {
+            "en": "Reflect on the risen Lord sending his disciples. Ask how your daily life can bear witness to his love.",
+            "zhHans": "默想复活的主派遣门徒。想一想日常生活如何能见证他的爱。",
+            "zhHant": "默想復活的主派遣門徒。想一想日常生活如何能見證他的愛。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Descent of the Holy Spirit",
+            "zhHans": "圣神降临",
+            "zhHant": "聖神降臨"
+          },
+          "reference": {
+            "en": "Acts 2:1–13",
+            "zhHans": "宗徒大事录 2:1–13",
+            "zhHant": "宗徒大事錄 2:1–13"
+          },
+          "meditation": {
+            "en": "Reflect on the Spirit gathering and strengthening the disciples. Pray for wisdom, courage and unity.",
+            "zhHans": "默想圣神聚集、坚固门徒。为智慧、勇气与合一祈祷。",
+            "zhHant": "默想聖神聚集、堅固門徒。為智慧、勇氣與合一祈禱。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Assumption of Mary",
+            "zhHans": "圣母蒙召升天",
+            "zhHant": "聖母蒙召昇天"
+          },
+          "reference": {
+            "en": "Catholic tradition · cf. Revelation 12:1",
+            "zhHans": "天主教传统 · 参阅默示录 12:1",
+            "zhHant": "天主教傳統 · 參閱默示錄 12:1"
+          },
+          "meditation": {
+            "en": "Reflect on Mary sharing in the glory of her Son. This mystery belongs to Catholic tradition; the reference is an image for reflection, not a narrative of the Assumption.",
+            "zhHans": "默想玛利亚分享圣子的光荣。这一奥迹属于天主教传统；所列经节为默想的意象，并非圣母升天的叙事。",
+            "zhHant": "默想瑪利亞分享聖子的光榮。這一奧跡屬於天主教傳統；所列經節為默想的意象，並非聖母昇天的敘事。"
+          }
+        },
+        {
+          "title": {
+            "en": "The Coronation of Mary",
+            "zhHans": "圣母荣冠天后",
+            "zhHant": "聖母榮冠天后"
+          },
+          "reference": {
+            "en": "Catholic tradition · cf. Revelation 12:1",
+            "zhHans": "天主教传统 · 参阅默示录 12:1",
+            "zhHant": "天主教傳統 · 參閱默示錄 12:1"
+          },
+          "meditation": {
+            "en": "Reflect on Mary honoured as Queen in the communion of saints. Ask to share her humble trust and love; the reference offers an image used in Catholic reflection.",
+            "zhHans": "默想玛利亚在诸圣共融中受尊为天后。求分享她谦卑的信赖与爱；所列经节为天主教默想所用的意象。",
+            "zhHant": "默想瑪利亞在諸聖共融中受尊為天后。求分享她謙卑的信賴與愛；所列經節為天主教默想所用的意象。"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -32,6 +32,41 @@ final class AppFlowTests: XCTestCase {
                 XCTAssertTrue(app.staticTexts["John 2"].waitForExistence(timeout: 10))
             }
             capture("\(language)-reader", app: app)
+            let devotions = language == "en" ? "Devotions" : language == "zh-Hant" ? "讀經" : "读经"
+            app.tabBars.buttons[devotions].tap()
+            XCTAssertTrue(app.navigationBars[devotions].waitForExistence(timeout: 10))
+            capture("\(language)-devotions", app: app)
+            app.buttons["devotions.prayers"].tap()
+            app.buttons["prayer.our_father"].tap()
+            let prayerText = language == "en" ? "Our Father, who art in heaven" : language == "zh-Hant" ? "我們在天上的父" : "我们在天上的父"
+            XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", prayerText)).firstMatch.waitForExistence(timeout: 10))
+            XCTAssertTrue(app.buttons["devotions.copy"].exists)
+            capture("\(language)-prayer", app: app)
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+            app.navigationBars.buttons.element(boundBy: 0).tap()
+            let joyful = app.buttons["rosary.joyful"]
+            if !joyful.isHittable { app.swipeUp() }
+            joyful.tap()
+            XCTAssertFalse(app.buttons["rosary.previous"].isEnabled)
+            for _ in 0..<9 { app.buttons["rosary.next"].tap() }
+            XCTAssertTrue(app.staticTexts["rosary.repetition"].waitForExistence(timeout: 10))
+            capture("\(language)-rosary", app: app)
+            app.terminate()
+            app.launch()
+            app.tabBars.buttons[devotions].tap()
+            let restored = app.buttons["rosary.joyful"]
+            if !restored.isHittable { app.swipeUp() }
+            restored.tap()
+            XCTAssertTrue(app.staticTexts["rosary.repetition"].waitForExistence(timeout: 10))
+            app.buttons["rosary.previous"].tap()
+            XCTAssertFalse(app.staticTexts["rosary.repetition"].exists)
+            let restart = app.buttons["rosary.restart"]
+            if !restart.isHittable { app.swipeUp() }
+            restart.tap()
+            let resetLabel = language == "en" ? "Start again" : "重新开始"
+            let traditionalResetLabel = language == "zh-Hant" ? "重新開始" : resetLabel
+            app.alerts.buttons[traditionalResetLabel].tap()
+            app.navigationBars.buttons.element(boundBy: 0).tap()
             app.tabBars.buttons[settings].tap()
             XCTAssertTrue(app.buttons["appLanguage"].exists || app.otherElements["appLanguage"].exists)
             capture("\(language)-settings", app: app)

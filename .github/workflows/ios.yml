@@ -2,7 +2,7 @@ name: iOS native build
 on:
   push:
     branches: [main, 'codex/**']
-    paths: ['ios/**', 'app/src/main/assets/**', 'scripts/prepare-ios.mjs', 'scripts/verify-ios.py', 'scripts/generate-localizations.mjs', 'localization/**', '.github/workflows/ios.yml']
+    paths: ['ios/**', 'app/src/main/assets/**', 'data/devotions.json', 'scripts/prepare-devotions.mjs', 'scripts/prepare-ios.mjs', 'scripts/verify-ios.py', 'scripts/generate-localizations.mjs', 'localization/**', '.github/workflows/ios.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -37,6 +37,7 @@ jobs:
       - name: Prepare shared offline resources and native project
         run: |
           npm ci
+          node scripts/prepare-devotions.mjs
           node scripts/generate-localizations.mjs
           node scripts/prepare-ios.mjs
           brew install xcodegen
@@ -53,8 +54,8 @@ jobs:
           xcodebuild archive -project ios/YanJing.xcodeproj -scheme YanJing -destination 'generic/platform=iOS' -archivePath ios/build/YanJing.xcarchive CODE_SIGNING_ALLOWED=NO
           mkdir -p ios/build/Payload
           cp -R ios/build/YanJing.xcarchive/Products/Applications/YanJing.app ios/build/Payload/
-          ditto -c -k --keepParent ios/build/Payload ios/build/yanjing-1.7.0-ios-unsigned.ipa
-          ditto -c -k --keepParent ios/DerivedData/Build/Products/Debug-iphonesimulator/YanJing.app ios/build/yanjing-1.7.0-ios-simulator.zip
+          ditto -c -k --keepParent ios/build/Payload ios/build/yanjing-1.8.0-ios-unsigned.ipa
+          ditto -c -k --keepParent ios/DerivedData/Build/Products/Debug-iphonesimulator/YanJing.app ios/build/yanjing-1.8.0-ios-simulator.zip
           shasum -a 256 ios/build/*.ipa ios/build/*simulator.zip > ios/build/ios-SHA256SUMS.txt
           xcodebuild -version > ios/build/xcode-version.txt
           git rev-parse HEAD > ios/build/source-commit.txt
@@ -105,9 +106,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! gh release view v1.7.0 >/dev/null 2>&1; then
-            gh release create v1.7.0 --draft --target "$GITHUB_SHA" --title '盐筋 v1.7.0 · Native iOS and three languages' --notes 'Verified iOS build staged. Android verification and release publication are pending.'
+          if ! gh release view v1.8.0 >/dev/null 2>&1; then
+            gh release create v1.8.0 --draft --target "$GITHUB_SHA" --title '盐筋 v1.8.0 · Rosary and prayers' --notes 'Verified iOS build staged. Android verification and release publication are pending.'
           fi
-          DRAFT=$(gh release view v1.7.0 --json isDraft --jq .isDraft)
+          DRAFT=$(gh release view v1.8.0 --json isDraft --jq .isDraft)
           test "$DRAFT" = true
-          gh release upload v1.7.0 ios/build/yanjing-1.7.0-ios-unsigned.ipa ios/build/yanjing-1.7.0-ios-simulator.zip ios/build/ios-SHA256SUMS.txt ios/build/ios-verification.json ios/build/ios-test-summary.json ios/build/yanjing-xcode-project.zip --clobber
+          gh release upload v1.8.0 ios/build/yanjing-1.8.0-ios-unsigned.ipa ios/build/yanjing-1.8.0-ios-simulator.zip ios/build/ios-SHA256SUMS.txt ios/build/ios-verification.json ios/build/ios-test-summary.json ios/build/yanjing-xcode-project.zip --clobber

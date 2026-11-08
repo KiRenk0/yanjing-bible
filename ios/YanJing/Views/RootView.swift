@@ -6,6 +6,7 @@ struct RootView: View {
     var body: some View {
         TabView(selection: $model.tab) {
             Tab(model.text("tab.read"), systemImage: "book", value: "read") { navigation { ReaderView() } }
+            Tab(model.text("devotions.title"), systemImage: "cross.circle", value: "devotions") { NavigationStack { DevotionsView() } }
             Tab(model.text("tab.saved"), systemImage: "bookmark", value: "saved") { navigation { SavedView() } }
             Tab(model.text("tab.settings"), systemImage: "gearshape", value: "settings") { NavigationStack { SettingsView() } }
             Tab(model.text("tab.search"), systemImage: "magnifyingglass", value: "search", role: .search) { navigation { SearchView() } }

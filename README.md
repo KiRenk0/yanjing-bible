@@ -2,6 +2,16 @@
 
 原生 Android 与 Swift / SwiftUI iOS 应用。输入日常想说的话，找意思相近的真实经文，再读上下文与版本对照。Android 使用官方 **Material 3 Expressive**，iOS 使用 Apple 原生导航、搜索、表单与 Liquid Glass 系统控件。两端支持英语、简体中文与繁体中文界面。
 
+## v1.8.0：读经、玫瑰经与祷词
+
+两端新增独立的 **「读经」入口**，内置玫瑰经欢喜、光明、痛苦、荣福四组五端，二十个奥迹各附出处与简短默想；按本机日期推荐，也可自由选择。逐步诵念显示当前祷文、每端十遍圣母经的计数及总进度，支持前进、后退和确认后重置。四组分别保存本机进度，重启后可继续。
+
+另附十二篇祷词：圣号经、宗徒信经、天主经、圣母经、圣三光荣经、法蒂玛祷词、又圣母经、玫瑰经结束祷词、痛悔祷词、晨祷、晚祷、饭前祷词。支持英／简中／繁中、文字选择、复制、系统分享、字号设置与系统字体缩放，全部离线内置。
+
+中文为项目依据传统祷文编译的文本；晨祷、晚祷和奥迹默想由项目编写。用语可能与当地礼仪版本不同，应用内附来源与版本说明。星期推荐、奥迹结构与出处核对梵蒂冈玫瑰经资料；圣母蒙召升天、荣冠天后注明为天主教传统。数据源为 `data/devotions.json`，通过 `node scripts/prepare-devotions.mjs` 生成两端共享资源。完整说明见 [Release notes](docs/release-1.8.0.md) 和 [文本说明](third_party/DEVOTIONS-NOTICE.txt)。
+
+提供 `yanjing-1.8.0-arm64-v8a.apk`、通用 `yanjing-1.8.0.apk` 与 `yanjing-1.8.0-ios-unsigned.ipa`。Android 保持原签名，可覆盖升级。iOS 沿用本机签名侧载方式，最低 iOS 18；未签名 IPA 不能直接点击安装。继续执行两端现有回归与打包资源验证；未进行物理设备测试。
+
 ## v1.7.0：Swift 原生 iOS 与三语言界面
 
 新增 iPhone / iPad 原生应用，最低 iOS 18。完整复用现有 16 套文本、BGE 离线模型与全部经典索引，支持出处、句意、表达与原文检索、阅读、上下文、版本对照、收藏、复制和系统分享；各经典独立保存阅读位置。采用系统搜索标签、原生导航、列表、表单、弹层与 SF Symbols，随平台呈现 Liquid Glass；支持深色、Dynamic Type 与阿拉伯文 RTL。[iOS 工程、构建与侧载说明](ios/README.md)。
@@ -119,7 +129,7 @@ python scripts/prepare-semantic.py --corpus quran
 
 ## 安装与搜索
 
-Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.6.1-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.6.1.apk` 通用包。无需登录，所有文本和模型已内置，可离线使用。
+Android 8.0（API 26）及以上。前往 [GitHub Release](https://github.com/KiRenk0/yanjing-bible/releases/latest)：ARM64 手机可选 `yanjing-1.8.0-arm64-v8a.apk`；其他设备或不确定时选 `yanjing-1.8.0.apk` 通用包。iPhone / iPad 请下载 `yanjing-1.8.0-ios-unsigned.ipa` 并按 [侧载说明](ios/README.md) 在本机签名安装。无需登录，所有文本和模型已内置，可离线使用。
 
 搜索栏旁的设置按钮可**多选**搜索模式，至少保留一种，选择会保存在本机。默认同时启用句意搜索和日常表达。
 

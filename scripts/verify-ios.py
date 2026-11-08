@@ -9,17 +9,17 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / 'ios/build'
-ipa = BUILD / 'yanjing-1.7.0-ios-unsigned.ipa'
-simulator = BUILD / 'yanjing-1.7.0-ios-simulator.zip'
+ipa = BUILD / 'yanjing-1.8.0-ios-unsigned.ipa'
+simulator = BUILD / 'yanjing-1.8.0-ios-simulator.zip'
 summary = json.loads(subprocess.check_output(['xcrun','xcresulttool','get','test-results','summary','--path',str(BUILD / 'Tests.xcresult')],text=True))
-assert summary['failedTests'] == 0 and summary['passedTests'] >= 8, summary
+assert summary['failedTests'] == 0 and summary['passedTests'] >= 10, summary
 sha = lambda data: hashlib.sha256(data).hexdigest()
 prefix = 'Payload/YanJing.app/'
 with zipfile.ZipFile(ipa) as archive:
     info = plistlib.loads(archive.read(prefix + 'Info.plist'))
     assert info['CFBundleIdentifier'] == 'org.yanjing.app'
-    assert info['CFBundleShortVersionString'] == '1.7.0'
-    assert info['CFBundleVersion'] == '13'
+    assert info['CFBundleShortVersionString'] == '1.8.0'
+    assert info['CFBundleVersion'] == '14'
     assert info['MinimumOSVersion'] == '18.0'
     assert set(info['CFBundleLocalizations']) == {'en','zh-Hans','zh-Hant'}
     assert 'UILaunchScreen' in info
@@ -34,8 +34,13 @@ with zipfile.ZipFile(ipa) as archive:
         assert prefix + language + '.lproj/Localizable.strings' in archive.namelist(), language
     assert len(archive.read(prefix + 'Corpus/Licenses.txt')) > 1000
     assert prefix + 'PrivacyInfo.xcprivacy' in archive.namelist()
+    devotions_bytes = archive.read(prefix + 'Corpus/devotions/catalog.json')
+    devotions = json.loads(devotions_bytes)
+    assert len(devotions['prayers']) == 12 and len(devotions['sets']) == 4
+    assert sum(len(s['mysteries']) for s in devotions['sets']) == 20
+    assert devotions_bytes == (ROOT / 'app/src/main/assets/devotions/catalog.json').read_bytes()
 report = {
-    'version': '1.7.0', 'build': 13,
+    'version': '1.8.0', 'build': 14,
     'sourceCommit': subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
     'xcode': subprocess.check_output(['xcodebuild','-version'],text=True).strip(),
     'tests': summary['passedTests'], 'failures': summary['failedTests'],
@@ -43,6 +48,7 @@ report = {
     'deviceTesting': 'Automated iPhone simulator tests, actual local ONNX inference and source-byte validation. No physical-device sideload installation test.',
     'minimumIOS': '18.0', 'languages': ['en','zh-Hans','zh-Hant'],
     'corpusFilesVerified': len(manifest['files']),
+    'devotions': {'prayers': 12, 'mysteries': 20, 'catalogSha256': sha(devotions_bytes)},
     'artifacts': [{'name': p.name, 'bytes': p.stat().st_size, 'sha256': sha(p.read_bytes())} for p in (ipa,simulator)]
 }
 (BUILD / 'ios-verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
