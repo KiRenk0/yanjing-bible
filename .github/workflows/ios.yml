@@ -2,7 +2,7 @@ name: iOS native build
 on:
   push:
     branches: [main, 'codex/**']
-    paths: ['ios/**', 'app/src/main/assets/**', 'data/devotions.json', 'scripts/prepare-devotions.mjs', 'scripts/prepare-ios.mjs', 'scripts/verify-ios.py', 'scripts/generate-localizations.mjs', 'localization/**', '.github/workflows/ios.yml']
+    paths: ['ios/**', 'app/build.gradle.kts', 'app/src/main/assets/**', 'data/devotions.json', 'scripts/prepare-devotions.mjs', 'scripts/prepare-ios.mjs', 'scripts/verify-ios.py', 'scripts/generate-localizations.mjs', 'scripts/validate-localizations.mjs', 'localization/**', '.github/workflows/ios.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -39,6 +39,7 @@ jobs:
           npm ci
           node scripts/prepare-devotions.mjs
           node scripts/generate-localizations.mjs
+          node scripts/validate-localizations.mjs
           node scripts/prepare-ios.mjs
           brew install xcodegen
           cd ios

@@ -27,7 +27,7 @@ class LocalizationTest {
         repository.setHistory(listOf("约 3:16"))
         val store = UpdateStore(context)
         val notes = mapOf("en" to "English notes", "zh-CN" to "简中说明", "zh-TW" to "繁中說明")
-        store.release(ReleaseInfo(14, "1.8.0", "https://github.com/KiRenk0/yanjing-bible/releases/download/v1.8.0/yanjing-1.8.0.apk", 1_000_000, "0".repeat(64), "fallback", 26, notes))
+        store.release(ReleaseInfo(org.yanjing.app.BuildConfig.VERSION_CODE + 1L, "99.0.0", "https://github.com/KiRenk0/yanjing-bible/releases/download/v99.0.0/yanjing-99.0.0.apk", 1_000_000, "0".repeat(64), "fallback", 26, notes))
         try {
             I18n.setLanguage(context, "en")
             assertEquals("Settings", tr(R.string.ui_df3d58c7d8))

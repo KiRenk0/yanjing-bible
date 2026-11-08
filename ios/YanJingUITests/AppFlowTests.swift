@@ -23,7 +23,7 @@ final class AppFlowTests: XCTestCase {
                 capture("en-context", app: app)
                 app.buttons["Done"].tap()
             }
-            app.tabBars.buttons[read].tap()
+            selectTab(read, app: app)
             XCTAssertTrue(app.navigationBars[read].waitForExistence(timeout: 10))
             XCTAssertTrue(app.buttons["reader.chooseChapter"].isHittable)
             if language == "en" {
@@ -33,7 +33,7 @@ final class AppFlowTests: XCTestCase {
             }
             capture("\(language)-reader", app: app)
             let devotions = language == "en" ? "Devotions" : language == "zh-Hant" ? "讀經" : "读经"
-            app.tabBars.buttons[devotions].tap()
+            selectTab(devotions, app: app)
             XCTAssertTrue(app.navigationBars[devotions].waitForExistence(timeout: 10))
             capture("\(language)-devotions", app: app)
             app.buttons["devotions.prayers"].tap()
@@ -53,7 +53,7 @@ final class AppFlowTests: XCTestCase {
             capture("\(language)-rosary", app: app)
             app.terminate()
             app.launch()
-            app.tabBars.buttons[devotions].tap()
+            selectTab(devotions, app: app)
             let restored = app.buttons["rosary.joyful"]
             if !restored.isHittable { app.swipeUp() }
             restored.tap()
@@ -67,11 +67,21 @@ final class AppFlowTests: XCTestCase {
             let traditionalResetLabel = language == "zh-Hant" ? "重新開始" : resetLabel
             app.alerts.buttons[traditionalResetLabel].tap()
             app.navigationBars.buttons.element(boundBy: 0).tap()
-            app.tabBars.buttons[settings].tap()
+            selectTab(settings, app: app)
             XCTAssertTrue(app.buttons["appLanguage"].exists || app.otherElements["appLanguage"].exists)
             capture("\(language)-settings", app: app)
             app.terminate()
         }
+    }
+    private func selectTab(_ label: String, app: XCUIApplication) {
+        let bar = app.tabBars.firstMatch
+        XCTAssertTrue(bar.waitForExistence(timeout: 10))
+        let tab = bar.buttons[label]
+        // The system can restore its compact tab bar on relaunch. Tapping the
+        // visible selected tab expands it before choosing another destination.
+        if !tab.exists { bar.buttons.firstMatch.tap() }
+        XCTAssertTrue(tab.waitForExistence(timeout: 10))
+        tab.tap()
     }
     private func capture(_ name: String, app: XCUIApplication) {
         let attachment = XCTAttachment(screenshot: app.screenshot()); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
